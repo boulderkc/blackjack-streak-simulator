@@ -21,6 +21,7 @@ Operational rules and domain context for AI-assisted work in this repo. Keep thi
   - Bulk simulation (thousands/tens of thousands of hands, results only, no per-hand UI).
 - All seats, including the tracked player, always play fixed basic strategy (hit/stand/double/split) — no human-controlled play decisions anywhere in the app, including step-through mode.
 - Splits and double-down are in scope for v1; a Seat can hold multiple Hands for a round.
+- Splitting requires matching **rank**, not just matching value — e.g. two Jacks can split; a King and a Jack cannot, despite both being worth 10.
 - Streak (Paroli) win/reset/push is determined by **net profit across all of a seat's hands in the round** — covers splits; net positive continues the streak, net negative resets it, net zero (push) leaves it unchanged.
 - Manual step-through mode is spectator-only: each click plays and reveals one full round (all seats' final hands, dealer's hand, outcome) via the same engine call bulk mode uses — not a per-action reveal, not human-controlled play.
 
