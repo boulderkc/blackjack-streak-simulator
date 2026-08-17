@@ -1,5 +1,9 @@
-﻿namespace BlackjackStreakSimulator.Engine;
+namespace BlackjackStreakSimulator.Engine;
 
+// Each rank has a distinct underlying value so rank *identity* (needed for
+// same-rank-only splitting) can be told apart at runtime — Ten, Jack, Queen,
+// and King all score the same in blackjack (10), but they are not the same
+// rank. Blackjack point value is computed separately; see Hand.PointValue.
 public enum CardRank
 {
     Two = 2,
@@ -11,8 +15,8 @@ public enum CardRank
     Eight = 8,
     Nine = 9,
     Ten = 10,
-    Jack = 10,
-    Queen = 10,
-    King = 10,
-    Ace = 11
+    Jack = 11,
+    Queen = 12,
+    King = 13,
+    Ace = 14
 }
