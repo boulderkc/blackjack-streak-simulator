@@ -64,6 +64,22 @@ This doesn't need to be free — it needs to be reasonable for a personal demo t
 - **Azure SQL, Azure OpenAI, App Service** — each has real (if modest) cost at low volume; not chasing free tiers here at the expense of a smoother build.
 - **Budget/spending alerts** are planned, but deliberately deferred until something is actually deployed — not needed during local engine/UI development.
 
+## Why player decisions are fixed basic strategy, not configurable or human-controlled
+
+Considered letting the tracked seat play manually (hit/stand/double/split buttons) in step-through mode. Rejected: the project's actual question is how bet-sizing reshapes variance, not play skill — giving the human control over play decisions would confound that. Every seat, including the tracked one, always plays fixed basic strategy; the only lever exposed anywhere in the app is betting mode/config, never in-hand choices.
+
+## Why splits and double-down are in scope for v1
+
+Chosen over deferring to v2 for realism, accepting the added surface area (a seat can hold multiple hands per round after a split) up front rather than retrofitting it later.
+
+## Why streak (Paroli) outcome is net profit per round, not per-hand
+
+Splitting breaks the assumption that a round has one win/loss outcome — a split can produce hands with mixed results. Considered requiring all hands from a split to win for the streak to continue (stricter/more "pure" Paroli) and considered banning splits for the streak seat entirely (sidesteps the question). Settled on: sum profit/loss across every hand in the round; net positive continues the streak, net negative resets it, net zero (push) leaves it unchanged. Keeps the rule at the round level, matching how a human bettor would judge "did that bet pay off."
+
+## Why manual step-through shows one full round per click, not one action at a time
+
+Considered having the engine record a breadcrumb trail of the tracked seat's individual actions (hit/stand/split/double) and revealing them one click at a time, purely as a UI-level slideshow over an already-fully-computed round (no engine change required either way). Rejected as unnecessary: a round's final state (all hands, dealer's hand, outcome) is legible at a glance without narrating how it got there, and it keeps `RoundResult` and the step-through UI simpler.
+
 ## Build sequence / phases
 
 **Phase 1 — local, working app**
