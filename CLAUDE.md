@@ -24,6 +24,8 @@ Operational rules and domain context for AI-assisted work in this repo. Keep thi
 - Splitting requires matching **rank**, not just matching value — e.g. two Jacks can split; a King and a Jack cannot, despite both being worth 10.
 - Streak (Paroli) win/reset/push is determined by **net profit across all of a seat's hands in the round** — covers splits; net positive continues the streak, net negative resets it, net zero (push) leaves it unchanged.
 - Manual step-through mode is spectator-only: each click plays and reveals one full round (all seats' final hands, dealer's hand, outcome) via the same engine call bulk mode uses — not a per-action reveal, not human-controlled play.
+- Reported results track streak-length *frequency* (a count of how many streaks concluded at each length, 1 through the configured max) rather than a single "longest streak" number — the highest populated bucket already gives you longest streak for free.
+- Reaching the configured max streak length (e.g. 4) triggers an automatic reset to base bet — a "full" streak completing is a deliberate reset (classic Paroli "cash out"), the same as a loss-triggered reset, just not caused by a loss. A streak can never exceed the configured max in length.
 
 ## Coding conventions
 

@@ -1,3 +1,5 @@
+using System.Diagnostics.Contracts;
+
 namespace BlackjackStreakSimulator.Engine;
 
 public class Hand
@@ -38,6 +40,11 @@ public class Hand
     // Same-rank only (e.g. two Jacks), not just same value (King + Jack does
     // not qualify) — see CLAUDE.md domain rules.
     public bool CanSplit => Cards.Count == 2 && Cards[0].Rank == Cards[1].Rank;
+
+    public int SettleProfit(Hand dealerHand)
+    {
+        return 10; // junk value, logic tbd
+    }
 
     private (int Total, bool IsSoft) CalculateBestValue()
     {

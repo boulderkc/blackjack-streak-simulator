@@ -34,7 +34,7 @@ Three different kinds of state, three different homes — deliberately not unifi
 
 ## Why Azure SQL, not Cosmos DB
 
-Would have liked to use Cosmos DB to pick up NoSQL experience, but deliberately limited new-skill surface area for this project — Blazor, Azure Functions, and Azure OpenAI already represent three new things to learn at once. SQL is familiar territory, so it's a low-effort Azure-hosted addition rather than another learning curve. Persisting one row per simulation run (parameters, result, summary stats: max drawdown, longest streak, hands played) — not every individual hand, at least not in v1.
+Would have liked to use Cosmos DB to pick up NoSQL experience, but deliberately limited new-skill surface area for this project — Blazor, Azure Functions, and Azure OpenAI already represent three new things to learn at once. SQL is familiar territory, so it's a low-effort Azure-hosted addition rather than another learning curve. Persisting one row per simulation run (parameters, result, summary stats: max drawdown, streak-length frequency, hands played) — not every individual hand, at least not in v1.
 
 ## Why Azure OpenAI
 
@@ -79,6 +79,10 @@ Splitting breaks the assumption that a round has one win/loss outcome — a spli
 ## Why manual step-through shows one full round per click, not one action at a time
 
 Considered having the engine record a breadcrumb trail of the tracked seat's individual actions (hit/stand/split/double) and revealing them one click at a time, purely as a UI-level slideshow over an already-fully-computed round (no engine change required either way). Rejected as unnecessary: a round's final state (all hands, dealer's hand, outcome) is legible at a glance without narrating how it got there, and it keeps `RoundResult` and the step-through UI simpler.
+
+## Why streak-length frequency, not just longest streak
+
+A single "longest streak reached" number tells a player almost nothing about how the strategy actually behaved over a run — a real player evaluating Paroli cares about the *distribution*: how often did a streak fizzle at 2 wins versus build all the way to the configured max? Tracking a frequency count per streak length (1 through the configured max) captures that directly, and "longest streak" falls out for free as the highest populated bucket — no need for a separate field alongside it.
 
 ## Build sequence / phases
 

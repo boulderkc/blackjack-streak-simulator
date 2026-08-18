@@ -17,7 +17,7 @@ Paroli is a positive-progression betting system: double your bet through a win s
 - Two run modes: watch a bulk simulation play out round-by-round (engine always plays fixed basic strategy — spectator view, not manual play), or run the whole batch at once for results only
 - Configurable streak length (how many consecutive wins define a "streak")
 - Toggle between streak (Paroli) betting and flat/regular betting, for direct comparison
-- Simulation run history, persisted and browsable, with summary stats (max drawdown, longest streak, hands played) and a plain-English AI-generated summary of each run
+- Simulation run history, persisted and browsable, with summary stats (max drawdown, streak-length frequency — how many streaks concluded at each length, 1 through the configured max, hands played) and a plain-English AI-generated summary of each run
 
 ## Tech stack
 
