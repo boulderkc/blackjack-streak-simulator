@@ -6,7 +6,9 @@ Operational rules and domain context for AI-assisted work in this repo. Keep thi
 
 - Standard Vegas rules apply unless noted otherwise.
   - Dealer hits soft 17.
-  - *(add further table rules here as they're settled — e.g. blackjack payout, split/double-down limits)*
+  - Double down allowed on any two cards (no hard-9/10/11 restriction).
+  - Double after split (DAS) is allowed.
+  - Resplitting is allowed up to 4 hands total (3 resplits) per seat per round. Split Aces are the exception: never resplit, receive exactly one card each, no further hitting.
 - 5-player table.
 - Configurable shoe size (e.g. 5 decks).
 - Configurable starting bankroll (X) and win-goal target (Y).
