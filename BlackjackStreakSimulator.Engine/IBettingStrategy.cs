@@ -2,5 +2,5 @@
 
 public interface IBettingStrategy
 {
-    public (int Bet, bool StreakCompleted) GetNextBet(int baseBet, int streakCount);
+    public (decimal Bet, bool StreakCompleted) GetNextBet(decimal baseBet, int streakCount);
 }

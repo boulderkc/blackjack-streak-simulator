@@ -2,7 +2,7 @@
 
 public class FlatBettingStrategy : IBettingStrategy
 {
-    public (int Bet, bool StreakCompleted) GetNextBet(int baseBet, int streakCount)
+    public (decimal Bet, bool StreakCompleted) GetNextBet(decimal baseBet, int streakCount)
     {
         return (baseBet, false); // never changes for flat betting
     }

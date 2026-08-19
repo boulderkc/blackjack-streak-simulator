@@ -9,9 +9,9 @@ public class StreakBettingStrategy : IBettingStrategy
         this.maxStreakLength = maxStreakLength;
     }
 
-    public (int Bet, bool StreakCompleted) GetNextBet(int baseBet, int streakCount)
+    public (decimal Bet, bool StreakCompleted) GetNextBet(decimal baseBet, int streakCount)
     {
-        int returnBet = baseBet;
+        decimal returnBet = baseBet;
         bool streakComplete = false;
         if (streakCount >= maxStreakLength)
         {

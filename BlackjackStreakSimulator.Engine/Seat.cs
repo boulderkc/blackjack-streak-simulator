@@ -2,13 +2,13 @@
 
 public class Seat
 {
-    public int Bankroll { get; private set; }
+    public decimal Bankroll { get; private set; }
     public int StreakCount { get; private set; }
     public List<Hand> Hands;
     public IBettingStrategy BettingStrategy;
-    private readonly int baseBet;
+    private readonly decimal baseBet;
 
-    public Seat(int initialBankroll, int baseBet, IBettingStrategy bettingStrategy)
+    public Seat(decimal initialBankroll, decimal baseBet, IBettingStrategy bettingStrategy)
     {
 
         Hands = new List<Hand>();
@@ -30,7 +30,7 @@ public class Seat
 
     public void ApplyRoundResult(Hand dealerHand)
     {
-        int netProfit = 0;
+        decimal netProfit = 0;
         foreach (Hand hand in Hands)
         {
             netProfit += hand.SettleProfit(dealerHand);
