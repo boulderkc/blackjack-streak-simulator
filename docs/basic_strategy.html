@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Basic Strategy Reference</title>
+<style>
+  body {
+    font-family: -apple-system, Segoe UI, Arial, sans-serif;
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    color: #1a1a1a;
+    background: #fff;
+  }
+  h1 { margin-bottom: 0.25rem; }
+  h2 { margin-top: 2.5rem; border-bottom: 2px solid #333; padding-bottom: 0.25rem; }
+  .meta, .legend {
+    background: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+  th, td {
+    border: 1px solid #ccc;
+    text-align: center;
+    padding: 0.4rem 0.5rem;
+  }
+  thead th {
+    background: #333;
+    color: #fff;
+  }
+  tbody th {
+    background: #eee;
+    text-align: left;
+    white-space: nowrap;
+  }
+  td.H { background: #eaf3ff; }
+  td.S { background: #eaffea; }
+  td.D { background: #fff6da; }
+  td.Sp { background: #ffe8e8; }
+  .notes { font-size: 0.9rem; color: #333; }
+  .notes li { margin-bottom: 0.4rem; }
+</style>
+</head>
+<body>
+
+<h1>Basic Strategy Reference</h1>
+<p class="meta">
+  Every seat plays this exact strategy, including the tracked player — no human-controlled play decisions anywhere in the app.
+  Transcribed by hand from <code>BlackjackStreakSimulator.Engine/BasicStrategy.cs</code> — see
+  <a href="BASIC_STRATEGY.md">BASIC_STRATEGY.md</a> for the plain-text version (the one that renders natively when browsing the repo on GitHub).
+</p>
+<p class="legend">
+  <strong>House rules:</strong> dealer hits soft 17 &middot; double down on any two cards &middot; double after split (DAS) allowed &middot;
+  resplit up to 4 hands total, except Aces (never resplit, one card each, no further hitting).<br>
+  <strong>Legend:</strong> H = Hit &middot; S = Stand &middot; D = Double (see note) &middot; Sp = Split &middot;
+  columns are the <strong>dealer's up card</strong>.
+</p>
+
+<h2>Hard totals</h2>
+<p>No Ace, or an Ace already forced to count as 1.</p>
+<table>
+  <thead>
+    <tr><th>Player total</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>A</th></tr>
+  </thead>
+  <tbody>
+    <tr><th>8 or less</th><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+    <tr><th>9</th><td class="H">H</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+    <tr><th>10</th><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="H">H</td><td class="H">H</td></tr>
+    <tr><th>11</th><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td></tr>
+    <tr><th>12</th><td class="H">H</td><td class="H">H</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+    <tr><th>13</th><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+    <tr><th>14</th><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+    <tr><th>15</th><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+    <tr><th>16</th><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+    <tr><th>17 or more</th><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td></tr>
+  </tbody>
+</table>
+<p class="notes">11 doubles against everything, including a dealer Ace — specific to dealer-hits-soft-17 games; in dealer-stands-soft-17 games it's usually just a Hit.</p>
+
+<h2>Soft totals</h2>
+<p>An Ace currently counted as 11.</p>
+<table>
+  <thead>
+    <tr><th>Player total</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>A</th></tr>
+  </thead>
+  <tbody>
+    <tr><th>13 (A,2)</th><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="D">D</td><td class="D">D</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+    <tr><th>14 (A,3)</th><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="D">D</td><td class="D">D</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+    <tr><th>15 (A,4)</th><td class="H">H</td><td class="H">H</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+    <tr><th>16 (A,5)</th><td class="H">H</td><td class="H">H</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+    <tr><th>17 (A,6)</th><td class="H">H</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+    <tr><th>18 (A,7)</th><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="S">S</td><td class="S">S</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+    <tr><th>19 (A,8)</th><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="D">D</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td></tr>
+    <tr><th>20 or more</th><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td></tr>
+  </tbody>
+</table>
+<p class="notes">If doubling isn't available (already hit once): soft 13&ndash;17 fall back to <strong>Hit</strong>, but soft 18 and 19 fall back to <strong>Stand</strong> instead &mdash; the one genuinely non-obvious wrinkle in this chart.</p>
+
+<h2>Pairs</h2>
+<p>Same rank only &mdash; King+Jack doesn't qualify even though both are worth 10.</p>
+<table>
+  <thead>
+    <tr><th>Pair</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>A</th></tr>
+  </thead>
+  <tbody>
+    <tr><th>A,A</th><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td></tr>
+    <tr><th>10-value (10/J/Q/K)</th><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td></tr>
+    <tr><th>9,9</th><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="S">S</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="S">S</td><td class="S">S</td></tr>
+    <tr><th>8,8</th><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td></tr>
+    <tr><th>7,7</th><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+    <tr><th>6,6</th><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+    <tr><th>5,5</th><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="H">H</td><td class="H">H</td></tr>
+    <tr><th>4,4</th><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+    <tr><th>3,3</th><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+    <tr><th>2,2</th><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="Sp">Sp</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+  </tbody>
+</table>
+<ul class="notes">
+  <li>10-value pairs never split, regardless of rank — 20 is already a stand.</li>
+  <li>5,5 never splits either — it's played as a hard 10 instead.</li>
+  <li>6,6 splits only against 2&ndash;6 — a stricter cutoff than 2,2 / 3,3 / 7,7, which split against 2&ndash;7. Easy to conflate since they look like the same shape of rule.</li>
+  <li>A pair otherwise eligible to split won't be offered Split once a seat already has 4 hands for the round, or if this hand is itself a split Ace (which never resplits) — it falls through to the hard/soft table for its total instead.</li>
+</ul>
+
+</body>
+</html>
