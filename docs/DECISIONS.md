@@ -84,6 +84,10 @@ Considered having the engine record a breadcrumb trail of the tracked seat's ind
 
 A single "longest streak reached" number tells a player almost nothing about how the strategy actually behaved over a run — a real player evaluating Paroli cares about the *distribution*: how often did a streak fizzle at 2 wins versus build all the way to the configured max? Tracking a frequency count per streak length (1 through the configured max) captures that directly, and "longest streak" falls out for free as the highest populated bucket — no need for a separate field alongside it.
 
+## Why card/table graphics, not plain text, for step-through display
+
+While building the engine, a throwaway text-only script (print each hand as cards + total + status) turned out to be surprisingly legible — legible enough to make plain text look like a tempting shortcut for the real UI. Going with actual graphics anyway, deliberately: a text-only spectator view would undersell the project as a portfolio piece, and rendering cards/table images is itself a skill worth the practice in Blazor (image assets, layout, likely some component composition) — especially now that generating a full deck of card art with AI is fast and low-effort, removing what used to be the main cost of doing this.
+
 ## Build sequence / phases
 
 **Phase 1 — local, working app**

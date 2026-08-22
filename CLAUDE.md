@@ -42,8 +42,9 @@ Operational rules and domain context for AI-assisted work in this repo. Keep thi
 - Engine internal shape: `Card`, `Shoe`, `Hand` (one hand's cards + its own bet; a `Seat` holds a list of these, >1 after a split), `Seat` (persists bankroll/streak across the session).
 - Dealer play is a fixed method, not an interface — same reasoning as the local/remote engine decision above: don't abstract what's never actually swapped.
 - `IBettingStrategy` (Streak vs. Flat) is the only pluggable piece in the engine; only the tracked seat's strategy is ever swapped, everyone else always flat-bets.
-- `RoundEngine.PlayRound(...)` is the single orchestration entry point — plays one full round (deal, every seat's basic-strategy turn including splits, dealer's turn, settlement) and returns one `RoundResult`. Both hosts call this same method; the only difference between manual step-through and bulk simulation is how many times, and how fast, it's called.
+- `RoundEngine.PlayRound(dealerHand, shoe, seats)` is the single orchestration entry point — plays one full round (deal, every seat's basic-strategy turn including splits, dealer's turn, settlement) and returns `void`. `Hand`/`Seat` are reference types the caller already holds, so mutating them in place is all that's needed — no result object to build or return. Both hosts call this same method; the only difference between manual step-through and bulk simulation is how many times, and how fast, it's called.
 - `SimulationConfig`/`SimulationResult` are shared shapes reused across manual session, bulk run, and later the Function request/response — not duplicated per host.
+- Step-through and results display are intended to use actual card/table **graphics** (e.g. AI-generated card art), not plain text — this was left unspecified early on; graphics are the deliberate choice, both for a better demo/portfolio impression and as practice displaying images/assets in Blazor. See `docs/DECISIONS.md`.
 
 ## Tech stack (quick reference)
 
