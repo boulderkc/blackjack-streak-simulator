@@ -22,7 +22,7 @@ public class BasicStrategyTests
     {
         Hand hand = CreateHand(CardRank.Five, CardRank.Three); // hard 8
 
-        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(CardRank.Six), seatHandCount: 1);
+        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(CardRank.Six), seatHandCount: 1, remainingBankroll: 1000m);
 
         Assert.Equal(PlayerAction.Hit, action);
     }
@@ -34,7 +34,7 @@ public class BasicStrategyTests
     {
         Hand hand = CreateHand(CardRank.Six, CardRank.Three); // hard 9
 
-        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(dealerRank), seatHandCount: 1);
+        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(dealerRank), seatHandCount: 1, remainingBankroll: 1000m);
 
         Assert.Equal(expected, action);
     }
@@ -46,7 +46,7 @@ public class BasicStrategyTests
     {
         Hand hand = CreateHand(CardRank.Six, CardRank.Four); // hard 10
 
-        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(dealerRank), seatHandCount: 1);
+        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(dealerRank), seatHandCount: 1, remainingBankroll: 1000m);
 
         Assert.Equal(expected, action);
     }
@@ -57,7 +57,7 @@ public class BasicStrategyTests
         // H17: 11 doubles against everything, including a dealer Ace.
         Hand hand = CreateHand(CardRank.Six, CardRank.Five); // hard 11
 
-        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(CardRank.Ace), seatHandCount: 1);
+        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(CardRank.Ace), seatHandCount: 1, remainingBankroll: 1000m);
 
         Assert.Equal(PlayerAction.Double, action);
     }
@@ -68,7 +68,7 @@ public class BasicStrategyTests
         // Three cards -> can't double even though the total qualifies.
         Hand hand = CreateHand(CardRank.Two, CardRank.Four, CardRank.Five); // hard 11
 
-        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(CardRank.Six), seatHandCount: 1);
+        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(CardRank.Six), seatHandCount: 1, remainingBankroll: 1000m);
 
         Assert.Equal(PlayerAction.Hit, action);
     }
@@ -80,7 +80,7 @@ public class BasicStrategyTests
     {
         Hand hand = CreateHand(CardRank.Ten, CardRank.Two); // hard 12
 
-        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(dealerRank), seatHandCount: 1);
+        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(dealerRank), seatHandCount: 1, remainingBankroll: 1000m);
 
         Assert.Equal(expected, action);
     }
@@ -92,7 +92,7 @@ public class BasicStrategyTests
     {
         Hand hand = CreateHand(CardRank.Ten, CardRank.Four); // hard 14
 
-        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(dealerRank), seatHandCount: 1);
+        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(dealerRank), seatHandCount: 1, remainingBankroll: 1000m);
 
         Assert.Equal(expected, action);
     }
@@ -102,7 +102,7 @@ public class BasicStrategyTests
     {
         Hand hand = CreateHand(CardRank.Ten, CardRank.Seven); // hard 17
 
-        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(CardRank.Two), seatHandCount: 1);
+        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(CardRank.Two), seatHandCount: 1, remainingBankroll: 1000m);
 
         Assert.Equal(PlayerAction.Stand, action);
     }
@@ -116,7 +116,7 @@ public class BasicStrategyTests
     {
         Hand hand = CreateHand(CardRank.Ace, CardRank.Two); // soft 13
 
-        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(dealerRank), seatHandCount: 1);
+        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(dealerRank), seatHandCount: 1, remainingBankroll: 1000m);
 
         Assert.Equal(expected, action);
     }
@@ -128,7 +128,7 @@ public class BasicStrategyTests
     {
         Hand hand = CreateHand(CardRank.Ace, CardRank.Four); // soft 15
 
-        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(dealerRank), seatHandCount: 1);
+        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(dealerRank), seatHandCount: 1, remainingBankroll: 1000m);
 
         Assert.Equal(expected, action);
     }
@@ -140,7 +140,7 @@ public class BasicStrategyTests
     {
         Hand hand = CreateHand(CardRank.Ace, CardRank.Six); // soft 17
 
-        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(dealerRank), seatHandCount: 1);
+        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(dealerRank), seatHandCount: 1, remainingBankroll: 1000m);
 
         Assert.Equal(expected, action);
     }
@@ -153,7 +153,7 @@ public class BasicStrategyTests
     {
         Hand hand = CreateHand(CardRank.Ace, CardRank.Seven); // soft 18
 
-        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(dealerRank), seatHandCount: 1);
+        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(dealerRank), seatHandCount: 1, remainingBankroll: 1000m);
 
         Assert.Equal(expected, action);
     }
@@ -166,7 +166,7 @@ public class BasicStrategyTests
         // soft totals do.
         Hand hand = CreateHand(CardRank.Ace, CardRank.Three, CardRank.Four); // soft 18, 3 cards
 
-        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(CardRank.Four), seatHandCount: 1);
+        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(CardRank.Four), seatHandCount: 1, remainingBankroll: 1000m);
 
         Assert.Equal(PlayerAction.Stand, action);
     }
@@ -178,7 +178,7 @@ public class BasicStrategyTests
     {
         Hand hand = CreateHand(CardRank.Ace, CardRank.Eight); // soft 19
 
-        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(dealerRank), seatHandCount: 1);
+        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(dealerRank), seatHandCount: 1, remainingBankroll: 1000m);
 
         Assert.Equal(expected, action);
     }
@@ -188,7 +188,7 @@ public class BasicStrategyTests
     {
         Hand hand = CreateHand(CardRank.Ace, CardRank.Nine); // soft 20
 
-        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(CardRank.Ten), seatHandCount: 1);
+        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(CardRank.Ten), seatHandCount: 1, remainingBankroll: 1000m);
 
         Assert.Equal(PlayerAction.Stand, action);
     }
@@ -200,7 +200,7 @@ public class BasicStrategyTests
     {
         Hand hand = CreateHand(CardRank.Ace, CardRank.Ace);
 
-        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(CardRank.Ten), seatHandCount: 1);
+        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(CardRank.Ten), seatHandCount: 1, remainingBankroll: 1000m);
 
         Assert.Equal(PlayerAction.Split, action);
     }
@@ -210,7 +210,7 @@ public class BasicStrategyTests
     {
         Hand hand = CreateHand(CardRank.Eight, CardRank.Eight);
 
-        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(CardRank.Ace), seatHandCount: 1);
+        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(CardRank.Ace), seatHandCount: 1, remainingBankroll: 1000m);
 
         Assert.Equal(PlayerAction.Split, action);
     }
@@ -222,7 +222,7 @@ public class BasicStrategyTests
     {
         Hand hand = CreateHand(CardRank.Nine, CardRank.Nine);
 
-        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(dealerRank), seatHandCount: 1);
+        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(dealerRank), seatHandCount: 1, remainingBankroll: 1000m);
 
         Assert.Equal(expected, action);
     }
@@ -233,7 +233,7 @@ public class BasicStrategyTests
         // Never split - treated as a hard 10 instead.
         Hand hand = CreateHand(CardRank.Five, CardRank.Five);
 
-        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(CardRank.Six), seatHandCount: 1);
+        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(CardRank.Six), seatHandCount: 1, remainingBankroll: 1000m);
 
         Assert.Equal(PlayerAction.Double, action);
     }
@@ -243,7 +243,7 @@ public class BasicStrategyTests
     {
         Hand hand = CreateHand(CardRank.King, CardRank.King);
 
-        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(CardRank.Two), seatHandCount: 1);
+        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(CardRank.Two), seatHandCount: 1, remainingBankroll: 1000m);
 
         Assert.Equal(PlayerAction.Stand, action);
     }
@@ -255,7 +255,7 @@ public class BasicStrategyTests
     {
         Hand hand = CreateHand(CardRank.Two, CardRank.Two);
 
-        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(dealerRank), seatHandCount: 1);
+        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(dealerRank), seatHandCount: 1, remainingBankroll: 1000m);
 
         Assert.Equal(expected, action);
     }
@@ -267,7 +267,7 @@ public class BasicStrategyTests
         // easy to mix up since they look like the same shape of rule.
         Hand hand = CreateHand(CardRank.Six, CardRank.Six);
 
-        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(CardRank.Seven), seatHandCount: 1);
+        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(CardRank.Seven), seatHandCount: 1, remainingBankroll: 1000m);
 
         Assert.Equal(PlayerAction.Hit, action);
     }
@@ -279,7 +279,7 @@ public class BasicStrategyTests
     {
         Hand hand = CreateHand(CardRank.Four, CardRank.Four);
 
-        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(dealerRank), seatHandCount: 1);
+        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(dealerRank), seatHandCount: 1, remainingBankroll: 1000m);
 
         Assert.Equal(expected, action);
     }
@@ -292,7 +292,7 @@ public class BasicStrategyTests
         Hand hand = CreateHand(CardRank.Ace, CardRank.Five);
         hand.IsSplitAces = true;
 
-        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(CardRank.Six), seatHandCount: 1);
+        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(CardRank.Six), seatHandCount: 1, remainingBankroll: 1000m);
 
         Assert.Equal(PlayerAction.Stand, action);
     }
@@ -305,8 +305,56 @@ public class BasicStrategyTests
         // total logic (16 vs 9 = Hit) instead of Split.
         Hand hand = CreateHand(CardRank.Eight, CardRank.Eight);
 
-        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(CardRank.Nine), seatHandCount: 4);
+        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(CardRank.Nine), seatHandCount: 4, remainingBankroll: 1000m);
 
         Assert.Equal(PlayerAction.Hit, action);
+    }
+
+    [Fact]
+    public void CannotAffordSplit_PlaysAsNaturalTotalInstead()
+    {
+        // Would normally always split, but there isn't enough remaining
+        // bankroll to cover a second hand at this bet size.
+        Hand hand = CreateHand(CardRank.Eight, CardRank.Eight);
+        hand.Bet = 10m;
+
+        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(CardRank.Nine), seatHandCount: 1, remainingBankroll: 5m);
+
+        Assert.Equal(PlayerAction.Hit, action); // hard 16 vs 9
+    }
+
+    [Fact]
+    public void CanAffordSplit_SplitsNormally()
+    {
+        // Same hand/dealer as above, with just enough funds - confirms the
+        // gate really is the bankroll check, and that it's inclusive (>=).
+        Hand hand = CreateHand(CardRank.Eight, CardRank.Eight);
+        hand.Bet = 10m;
+
+        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(CardRank.Nine), seatHandCount: 1, remainingBankroll: 10m);
+
+        Assert.Equal(PlayerAction.Split, action);
+    }
+
+    [Fact]
+    public void CannotAffordDouble_HitsInstead()
+    {
+        Hand hand = CreateHand(CardRank.Six, CardRank.Five); // hard 11
+        hand.Bet = 10m;
+
+        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(CardRank.Six), seatHandCount: 1, remainingBankroll: 5m);
+
+        Assert.Equal(PlayerAction.Hit, action); // would otherwise double
+    }
+
+    [Fact]
+    public void CanAffordDouble_DoublesNormally()
+    {
+        Hand hand = CreateHand(CardRank.Six, CardRank.Five); // hard 11
+        hand.Bet = 10m;
+
+        PlayerAction action = BasicStrategy.GetAction(hand, DealerCard(CardRank.Six), seatHandCount: 1, remainingBankroll: 10m);
+
+        Assert.Equal(PlayerAction.Double, action);
     }
 }

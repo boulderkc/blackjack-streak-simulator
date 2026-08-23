@@ -65,7 +65,10 @@ public static class RoundEngine
 
         while (true)
         {
-            PlayerAction action = BasicStrategy.GetAction(hand, dealerUpCard, seat.Hands.Count);
+            // Recomputed every iteration - a split earlier in this same loop
+            // (or another hand entirely) changes how much is already staked.
+            decimal remainingBankroll = seat.Bankroll - seat.Hands.Sum(h => h.Bet);
+            PlayerAction action = BasicStrategy.GetAction(hand, dealerUpCard, seat.Hands.Count, remainingBankroll);
 
             switch (action)
             {

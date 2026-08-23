@@ -6,7 +6,7 @@ namespace BlackjackStreakSimulator.Engine;
 // after split allowed; resplit up to 4 hands, Aces excepted.
 public static class BasicStrategy
 {
-    public static PlayerAction GetAction(Hand hand, Card dealerUpCard, int seatHandCount)
+    public static PlayerAction GetAction(Hand hand, Card dealerUpCard, int seatHandCount, decimal remainingBankroll)
     {
         // Split Aces get exactly one card and never act again, regardless
         // of what that card was — defensive guard, not just RoundEngine's
@@ -17,14 +17,20 @@ public static class BasicStrategy
         }
 
         int dealerValue = dealerUpCard.PointValue;
-        bool canSplitFurther = seatHandCount < 4 && !hand.IsSplitAces;
+
+        // A split and a double cost the same thing: one more bet matching
+        // this hand's current one. If that's not affordable, neither option
+        // gets offered — each falls through to whatever's next-best, same
+        // as when a seat's already at 4 hands or a hand's already been hit.
+        bool canAffordAnotherBet = remainingBankroll >= hand.Bet;
+        bool canSplitFurther = seatHandCount < 4 && !hand.IsSplitAces && canAffordAnotherBet;
 
         if (hand.CanSplit && canSplitFurther)
         {
             return GetPairAction(hand.Cards[0].Rank, dealerValue);
         }
 
-        bool canDouble = hand.Cards.Count == 2;
+        bool canDouble = hand.Cards.Count == 2 && canAffordAnotherBet;
 
         return hand.IsSoft
             ? GetSoftTotalAction(hand.Value, dealerValue, canDouble)

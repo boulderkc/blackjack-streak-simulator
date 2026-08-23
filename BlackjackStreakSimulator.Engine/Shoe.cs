@@ -10,7 +10,7 @@ public class Shoe
 
     // default to 6 decks — matches typical Vegas shoe sizes, and leaves enough
     // reserve past the penetration threshold for a heavy multi-split round.
-    public Shoe(int deckCount = 6)
+    public Shoe(int deckCount)
     {
         this.deckCount = deckCount;
         BuildAndShuffle();

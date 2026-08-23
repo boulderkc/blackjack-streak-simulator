@@ -9,15 +9,15 @@ Operational rules and domain context for AI-assisted work in this repo. Keep thi
   - Double down allowed on any two cards (no hard-9/10/11 restriction).
   - Double after split (DAS) is allowed.
   - Resplitting is allowed up to 4 hands total (3 resplits) per seat per round. Split Aces are the exception: never resplit, receive exactly one card each, no further hitting.
-- 5-player table.
+- Configurable seat count (5-player table by default).
 - Configurable shoe size (e.g. 5 decks).
-- Configurable starting bankroll (X) and win-goal target (Y).
+- Configurable starting bankroll (X), base bet, and win-goal target (Y) for the tracked seat.
   - Bankroll reaching 0 = run fails.
   - Bankroll reaching Y = run succeeds.
 - Betting modes:
   - **Streak (Paroli-style) mode** — double the bet through a win streak of N hands (N configurable); any loss resets to base bet.
   - **Flat mode** — same bet every hand; used as the comparison baseline.
-  - Seats other than the tracked player always use standard/flat betting.
+  - Seats other than the tracked player always use standard/flat betting, with a fixed low base bet and a fixed large bankroll — no configuration surface, and never meaningfully at risk of busting.
 - Two run modes:
   - Manual step-through (one hand at a time) — nice-to-have, not required for v1.
   - Bulk simulation (thousands/tens of thousands of hands, results only, no per-hand UI).

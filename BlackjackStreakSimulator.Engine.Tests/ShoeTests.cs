@@ -6,7 +6,7 @@ public class ShoeTests
     public void NeedsReshuffle_NewShoe_ReturnsFalse()
     {
         // Arrange
-        Shoe shoe = new Shoe();
+        Shoe shoe = new Shoe(6);
 
         // Act, assert
         Assert.False(shoe.NeedsReshuffle);
@@ -32,7 +32,7 @@ public class ShoeTests
     public void DrawCard_ReturnsACard()
     {
         // Arrange
-        Shoe shoe = new Shoe();
+        Shoe shoe = new Shoe(6);
 
         // Act
         Card card = shoe.DrawCard();

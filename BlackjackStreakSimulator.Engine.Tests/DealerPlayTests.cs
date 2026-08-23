@@ -18,7 +18,7 @@ public class DealerPlayTests
     {
         // Arrange
         Hand dealerHand = CreateHand(CardRank.Ten, CardRank.Seven);
-        Shoe shoe = new Shoe();
+        Shoe shoe = new Shoe(6);
 
         // Act
         DealerPlay.Play(dealerHand, shoe);
@@ -33,7 +33,7 @@ public class DealerPlayTests
     {
         // Arrange
         Hand dealerHand = CreateHand(CardRank.Ten, CardRank.Eight);
-        Shoe shoe = new Shoe();
+        Shoe shoe = new Shoe(6);
 
         // Act
         DealerPlay.Play(dealerHand, shoe);
@@ -48,7 +48,7 @@ public class DealerPlayTests
     {
         // Arrange
         Hand dealerHand = CreateHand(CardRank.Ace, CardRank.Six);
-        Shoe shoe = new Shoe();
+        Shoe shoe = new Shoe(6);
 
         // Act
         DealerPlay.Play(dealerHand, shoe);
@@ -64,7 +64,7 @@ public class DealerPlayTests
     {
         // Arrange
         Hand dealerHand = CreateHand(CardRank.Ten, CardRank.Six);
-        Shoe shoe = new Shoe();
+        Shoe shoe = new Shoe(6);
 
         // Act
         DealerPlay.Play(dealerHand, shoe);
