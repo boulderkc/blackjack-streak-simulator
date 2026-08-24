@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackjackStreakSimulator.En
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackjackStreakSimulator.Engine.Tests", "BlackjackStreakSimulator.Engine.Tests\BlackjackStreakSimulator.Engine.Tests.csproj", "{7107ADD8-3FBD-47CF-8540-AB13762D066E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackjackStreakSimulator.Web", "BlackjackStreakSimulator.Web\BlackjackStreakSimulator.Web.csproj", "{AE93892E-A450-4DEE-BB28-BC6B53CFC83F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackjackStreakSimulator.Web", "BlackjackStreakSimulator.Web\BlackjackStreakSimulator.Web.csproj", "{775B60A9-A753-41E5-83E4-6ADF8B318635}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,18 +43,18 @@ Global
 		{7107ADD8-3FBD-47CF-8540-AB13762D066E}.Release|x64.Build.0 = Release|Any CPU
 		{7107ADD8-3FBD-47CF-8540-AB13762D066E}.Release|x86.ActiveCfg = Release|Any CPU
 		{7107ADD8-3FBD-47CF-8540-AB13762D066E}.Release|x86.Build.0 = Release|Any CPU
-		{AE93892E-A450-4DEE-BB28-BC6B53CFC83F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AE93892E-A450-4DEE-BB28-BC6B53CFC83F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AE93892E-A450-4DEE-BB28-BC6B53CFC83F}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{AE93892E-A450-4DEE-BB28-BC6B53CFC83F}.Debug|x64.Build.0 = Debug|Any CPU
-		{AE93892E-A450-4DEE-BB28-BC6B53CFC83F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{AE93892E-A450-4DEE-BB28-BC6B53CFC83F}.Debug|x86.Build.0 = Debug|Any CPU
-		{AE93892E-A450-4DEE-BB28-BC6B53CFC83F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AE93892E-A450-4DEE-BB28-BC6B53CFC83F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AE93892E-A450-4DEE-BB28-BC6B53CFC83F}.Release|x64.ActiveCfg = Release|Any CPU
-		{AE93892E-A450-4DEE-BB28-BC6B53CFC83F}.Release|x64.Build.0 = Release|Any CPU
-		{AE93892E-A450-4DEE-BB28-BC6B53CFC83F}.Release|x86.ActiveCfg = Release|Any CPU
-		{AE93892E-A450-4DEE-BB28-BC6B53CFC83F}.Release|x86.Build.0 = Release|Any CPU
+		{775B60A9-A753-41E5-83E4-6ADF8B318635}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{775B60A9-A753-41E5-83E4-6ADF8B318635}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{775B60A9-A753-41E5-83E4-6ADF8B318635}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{775B60A9-A753-41E5-83E4-6ADF8B318635}.Debug|x64.Build.0 = Debug|Any CPU
+		{775B60A9-A753-41E5-83E4-6ADF8B318635}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{775B60A9-A753-41E5-83E4-6ADF8B318635}.Debug|x86.Build.0 = Debug|Any CPU
+		{775B60A9-A753-41E5-83E4-6ADF8B318635}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{775B60A9-A753-41E5-83E4-6ADF8B318635}.Release|Any CPU.Build.0 = Release|Any CPU
+		{775B60A9-A753-41E5-83E4-6ADF8B318635}.Release|x64.ActiveCfg = Release|Any CPU
+		{775B60A9-A753-41E5-83E4-6ADF8B318635}.Release|x64.Build.0 = Release|Any CPU
+		{775B60A9-A753-41E5-83E4-6ADF8B318635}.Release|x86.ActiveCfg = Release|Any CPU
+		{775B60A9-A753-41E5-83E4-6ADF8B318635}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
