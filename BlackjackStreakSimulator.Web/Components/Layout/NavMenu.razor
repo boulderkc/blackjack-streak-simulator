@@ -1,9 +1,29 @@
-﻿
-<MudNavMenu>
+﻿<MudNavMenu>
     <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
+
+
+    <MudNavLink Href="techstack" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Technology Stack Info
+    </MudNavLink>
+
+    <MudNavGroup Title="Simulate" Expanded='true'>
+
+        <MudNavLink Href="simconfig" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Simulation
+            Configuration
+        </MudNavLink>
+        <MudNavLink Href="manualsim" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Manual Simulation
+        </MudNavLink>
+
+        <MudNavLink Href="batchsim" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Batch Simulation
+        </MudNavLink>
+        <MudNavLink Href="simhistory" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Simulation Result
+            History
+        </MudNavLink>
+    </MudNavGroup>
+
     <MudNavLink Href="counter" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">Counter</MudNavLink>
-    
+
     <MudNavLink Href="weather" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Weather</MudNavLink>
+
 
 </MudNavMenu>
 
