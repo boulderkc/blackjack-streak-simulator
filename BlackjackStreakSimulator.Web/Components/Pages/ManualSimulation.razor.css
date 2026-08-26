@@ -1,0 +1,81 @@
+#page {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(60px, 1fr));
+    grid-template-areas: 
+        ".  .  Dealer  .  ."
+        "Player1  .  .  .  Player5"
+        ".  Player2  .  Player4  ."
+        ".  .  Player3  .  .";
+    gap: 8px;
+}
+
+#page .player1 {
+    grid-area: Player1;
+    background-color: #061351;
+}
+
+#page .player2 {
+    grid-area: Player2;
+    background-color: #43090a;
+}
+
+#page .player3 {
+    grid-area: Player3;
+    background-color: #43090a;
+}
+
+#page .player4 {
+    grid-area: Player4;
+    background-color: #43090a;
+}
+
+#page .player5 {
+    grid-area: Player5;
+    background-color: #43090a;
+}
+
+#page .dealer {
+    grid-area: Dealer;
+    background-color: #2d0d69;
+}
+
+.hand {
+    display: flex;
+    gap: 8px;
+    min-width: 0; /* same fix as .hand-row - let the cards shrink/wrap instead
+                     of forcing the row wider than its column */
+}
+
+.hand-row {
+    display: flex;
+    flex-direction: row; /* optional - row is already flex's default */
+    align-items: center;
+    min-width: 0; /* flex items default to min-width: auto - without this, a
+                     wide hand-row refuses to shrink below its own content
+                     size and overflows its column instead of respecting it */
+}
+
+.hand-info {
+    text-align: left;
+}
+
+#page .dealer,
+#page .player1,
+#page .player2,
+#page .player3,
+#page .player4,
+#page .player5 {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0; /* these are grid items - same default min-width: auto
+                     problem, one level further out */
+}
+
+.overflowwide {
+    overflow-x: auto;
+}
+
+.playertitle {
+    text-align: center !important;
+}

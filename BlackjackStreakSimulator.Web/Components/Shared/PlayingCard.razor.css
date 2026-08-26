@@ -1,0 +1,69 @@
+.playing-card {
+    position: relative;
+    /* Scales with the viewport (the vw part) between a floor and a ceiling
+       (the clamp bounds), so it neither disappears on a small window nor
+       grows absurdly large on a wide one. */
+    width: clamp(45px, 7vw, 90px);
+    min-width: 32px;
+    aspect-ratio: 7 / 10; /* replaces a fixed height - keeps card proportions correct as width scales */
+    font-size: clamp(0.5rem, 1vw, 1rem); /* base size everything inside scales from, via em below */
+    background-color: white !important;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    font-family: Georgia, 'Times New Roman', serif;
+    user-select: none;
+    /* Allowed to shrink now (was 0) - lets a crowded row (a seat with 4
+       split hands) compress further than a sparse one, on top of the
+       viewport-based scaling above. */
+    flex-shrink: 1;
+}
+
+/* !important here too - a card's face/suit colors are fixed by definition,
+   not something an ambient page or MudBlazor theme should ever be able to
+   reach in and override. */
+.playing-card.red {
+    color: #c0392b !important;
+}
+
+.playing-card.black {
+    color: #1a1a1a !important;
+}
+
+.corner {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1;
+}
+
+.corner-top {
+    top: 4px;
+    left: 4px;
+}
+
+/* Mirrored so it reads right-side-up from the opposite side of the table -
+   same reason a real card's corners are printed this way. */
+.corner-bottom {
+    bottom: 4px;
+    right: 4px;
+    transform: rotate(180deg);
+}
+
+.corner .rank {
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.corner .suit {
+    font-size: 0.85em;
+}
+
+.suit-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2em;
+}

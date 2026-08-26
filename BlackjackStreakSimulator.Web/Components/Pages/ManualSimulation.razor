@@ -1,7 +1,151 @@
 @page "/manualsim"
 
+
 <PageTitle>Manual Simulation</PageTitle>
 
 <h1>Manual Simulation</h1>
 
 <div>Begin and observe a simulation in progress.</div>
+
+<MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="RunTest">Begin Sim</MudButton>
+<MudButton Variant="Variant.Filled" Color="Color.Secondary" @onclick="NextRound">Next Round</MudButton>
+<MudButton Variant="Variant.Filled" Color="Color.Primary">Finish Sim Automatically</MudButton>
+
+<div class="overflowwide">
+    <div id="page">
+        <div class="dealer">
+            <h2 class="playertitle">Dealer</h2>
+            <div class="hand">
+                @foreach (Card card in currentRun?.LastDealerHand?.Cards ?? [])
+                {
+                    <PlayingCard Card="@card" />
+                }
+            </div>
+
+        </div>
+        <div class="player1">
+            <h2 class="playertitle">Player 1 - Tracked Player</h2>
+            <div>Bankroll: @currentRun?.Seats[0].Bankroll.ToString("C")</div>
+
+            @foreach (Hand hand in currentRun?.Seats[0]?.Hands ?? [])
+            {
+                <div class="hand-row">
+                    <div class="hand">
+                        @foreach (Card card in hand?.Cards ?? [])
+                        {
+                            <PlayingCard Card="@card" />
+                        }
+                    </div>
+                    <div class="hand-info">
+                        <div>
+                            Bet: @hand.Bet.ToString("C")                          
+                        </div>
+                        <div>Hand value: @hand.Value</div>
+                        <div>Result: @GetResultText(hand)</div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="player2">
+            <h2 class="playertitle">Player 2</h2>
+            <div>Bankroll: @currentRun?.Seats[1].Bankroll.ToString("C")</div>
+
+            @foreach (Hand hand in currentRun?.Seats[1]?.Hands ?? [])
+            {
+                <div class="hand-row">
+                    <div class="hand">
+                        @foreach (Card card in hand?.Cards ?? [])
+                        {
+                            <PlayingCard Card="@card" />
+                        }
+                    </div>
+                    <div class="hand-info">
+                        <div>
+                            Bet: @hand.Bet.ToString("C")
+                        </div>
+                        <div>Hand value: @hand.Value</div>
+                        <div>Result: @GetResultText(hand)</div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="player3">
+            <h2 class="playertitle">Player 3</h2>
+            <div>Bankroll: @currentRun?.Seats[2].Bankroll.ToString("C")</div>
+
+            @foreach (Hand hand in currentRun?.Seats[2]?.Hands ?? [])
+            {
+                <div class="hand-row">
+                    <div class="hand">
+                        @foreach (Card card in hand?.Cards ?? [])
+                        {
+                            <PlayingCard Card="@card" />
+                        }
+                    </div>
+                    <div class="hand-info">
+                        <div>
+                            Bet: @hand.Bet.ToString("C")
+                        </div>
+                        <div>Hand value: @hand.Value</div>
+                        <div>Result: @GetResultText(hand)</div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="player4">
+            <h2 class="playertitle">Player 4</h2>
+            <div>Bankroll: @currentRun?.Seats[3].Bankroll.ToString("C")</div>
+
+            @foreach (Hand hand in currentRun?.Seats[3]?.Hands ?? [])
+            {
+                <div class="hand-row">
+                    <div class="hand">
+                        @foreach (Card card in hand?.Cards ?? [])
+                        {
+                            <PlayingCard Card="@card" />
+                        }
+                    </div>
+                    <div class="hand-info">
+                        <div>
+                            Bet: @hand.Bet.ToString("C")
+                        </div>
+                        <div>Hand value: @hand.Value</div>
+                        <div>Result: @GetResultText(hand)</div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="player5">
+            <h2 class="playertitle">Player 5</h2>
+            <div>Bankroll: @currentRun?.Seats[4].Bankroll.ToString("C")</div>
+
+            @foreach (Hand hand in currentRun?.Seats[4]?.Hands ?? [])
+            {
+                <div class="hand-row">
+                    <div class="hand">
+                        @foreach (Card card in hand?.Cards ?? [])
+                        {
+                            <PlayingCard Card="@card" />
+                        }
+                    </div>
+                    <div class="hand-info">
+                        <div>
+                            Bet: @hand.Bet.ToString("C")
+                        </div>
+                        <div>Hand value: @hand.Value</div>
+                        <div>Result: @GetResultText(hand)</div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+
+@code {
+
+
+
+
+}

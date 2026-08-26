@@ -1,0 +1,41 @@
+@* Renders one card as HTML/CSS - no image assets. Usage: <PlayingCard Card="someCard" /> *@
+
+<div class="playing-card @ColorClass">
+    <div class="corner corner-top">
+        <span class="rank">@RankText</span>
+        <span class="suit">@SuitSymbol</span>
+    </div>
+    <div class="suit-center">@SuitSymbol</div>
+    <div class="corner corner-bottom">
+        <span class="rank">@RankText</span>
+        <span class="suit">@SuitSymbol</span>
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public Card Card { get; set; } = null!;
+
+    // Ten, Jack, Queen, King, Ace all have PointValue/rank identity values
+    // that don't match what should actually be printed on the card, so this
+    // is its own mapping rather than reusing PointValue or Rank directly.
+    private string RankText => Card.Rank switch
+    {
+        CardRank.Ace => "A",
+        CardRank.King => "K",
+        CardRank.Queen => "Q",
+        CardRank.Jack => "J",
+        _ => Card.PointValue.ToString()
+    };
+
+    private string SuitSymbol => Card.Suit switch
+    {
+        CardSuit.Clubs => "♣",
+        CardSuit.Diamonds => "♦",
+        CardSuit.Hearts => "♥",
+        CardSuit.Spades => "♠",
+        _ => "?"
+    };
+
+    private string ColorClass => Card.Suit is CardSuit.Diamonds or CardSuit.Hearts ? "red" : "black";
+}
