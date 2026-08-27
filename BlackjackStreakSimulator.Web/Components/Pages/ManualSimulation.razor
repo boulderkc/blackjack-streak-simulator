@@ -7,25 +7,44 @@
 
 <div>Begin and observe a simulation in progress.</div>
 
-<MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="RunTest">Begin Sim</MudButton>
+<MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="RunSim">Begin Sim</MudButton>
 <MudButton Variant="Variant.Filled" Color="Color.Secondary" @onclick="NextRound">Next Round</MudButton>
-<MudButton Variant="Variant.Filled" Color="Color.Primary">Finish Sim Automatically</MudButton>
+<MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="FinishInBatchMode">Finish Sim In Batch Mode</MudButton>
 
 <div class="overflowwide">
     <div id="page">
         <div class="dealer">
             <h2 class="playertitle">Dealer</h2>
-            <div class="hand">
-                @foreach (Card card in currentRun?.LastDealerHand?.Cards ?? [])
-                {
-                    <PlayingCard Card="@card" />
-                }
+            <div class="hand-row">
+                <div class="hand">
+                    @foreach (Card card in currentRun?.LastDealerHand?.Cards ?? [])
+                    {
+                        <PlayingCard Card="@card" />
+                    }
+                </div>
+                <div class="hand-info">
+                    <div>&nbsp;Hand value: @currentRun?.LastDealerHand?.Value</div>
+                    <div>&nbsp;Result: @GetDealerResultText()</div>
+                </div>
             </div>
-
         </div>
         <div class="player1">
             <h2 class="playertitle">Player 1 - Tracked Player</h2>
-            <div>Bankroll: @currentRun?.Seats[0].Bankroll.ToString("C")</div>
+            <div>
+                @{
+                    decimal bankrollDelta = GetBankrollDelta();
+                }
+                <span class="@(bankrollDelta > 0 ? "up" : bankrollDelta < 0 ? "down" : "")">
+                    @(bankrollDelta switch
+                    {
+                        > 0 => "▲",
+                        < 0 => "▼",
+                        _ => ""
+                    })
+                </span>
+                Bankroll: @currentRun?.Seats[0].Bankroll.ToString("C")
+            </div>
+            <div>Streak count: @currentRun?.Seats[0]?.StreakCount</div>
 
             @foreach (Hand hand in currentRun?.Seats[0]?.Hands ?? [])
             {
@@ -38,10 +57,10 @@
                     </div>
                     <div class="hand-info">
                         <div>
-                            Bet: @hand.Bet.ToString("C")                          
+                            &nbsp;Bet: @hand.Bet.ToString("C")
                         </div>
-                        <div>Hand value: @hand.Value</div>
-                        <div>Result: @GetResultText(hand)</div>
+                        <div>&nbsp;Hand value: @hand.Value</div>
+                        <div>&nbsp;Result: @GetResultText(hand)</div>
                     </div>
                 </div>
             }
@@ -61,10 +80,10 @@
                     </div>
                     <div class="hand-info">
                         <div>
-                            Bet: @hand.Bet.ToString("C")
+                            &nbsp;Bet: @hand.Bet.ToString("C")
                         </div>
-                        <div>Hand value: @hand.Value</div>
-                        <div>Result: @GetResultText(hand)</div>
+                        <div>&nbsp;Hand value: @hand.Value</div>
+                        <div>&nbsp;Result: @GetResultText(hand)</div>
                     </div>
                 </div>
             }
@@ -84,10 +103,10 @@
                     </div>
                     <div class="hand-info">
                         <div>
-                            Bet: @hand.Bet.ToString("C")
+                            &nbsp;Bet: @hand.Bet.ToString("C")
                         </div>
-                        <div>Hand value: @hand.Value</div>
-                        <div>Result: @GetResultText(hand)</div>
+                        <div>&nbsp;Hand value: @hand.Value</div>
+                        <div>&nbsp;Result: @GetResultText(hand)</div>
                     </div>
                 </div>
             }
@@ -107,10 +126,10 @@
                     </div>
                     <div class="hand-info">
                         <div>
-                            Bet: @hand.Bet.ToString("C")
+                            &nbsp;Bet: @hand.Bet.ToString("C")
                         </div>
-                        <div>Hand value: @hand.Value</div>
-                        <div>Result: @GetResultText(hand)</div>
+                        <div>&nbsp;Hand value: @hand.Value</div>
+                        <div>&nbsp;Result: @GetResultText(hand)</div>
                     </div>
                 </div>
             }
@@ -130,10 +149,10 @@
                     </div>
                     <div class="hand-info">
                         <div>
-                            Bet: @hand.Bet.ToString("C")
+                            &nbsp;Bet: @hand.Bet.ToString("C")
                         </div>
-                        <div>Hand value: @hand.Value</div>
-                        <div>Result: @GetResultText(hand)</div>
+                        <div>&nbsp;Hand value: @hand.Value</div>
+                        <div>&nbsp;Result: @GetResultText(hand)</div>
                     </div>
                 </div>
             }

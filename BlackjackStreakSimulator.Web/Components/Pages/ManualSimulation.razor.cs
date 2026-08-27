@@ -5,23 +5,8 @@ using BlackjackStreakSimulator.Engine;
 public partial class ManualSimulation
 {
     public SingleRoundRunner currentRun;
-    public Card TestCard()
-    {
-        Card testCard = new Card();
-        testCard.Rank = CardRank.Eight;
-        testCard.Suit = CardSuit.Clubs;
-        return testCard;
-    }
 
-    public Card TestCard2()
-    {
-        Card testCard = new Card();
-        testCard.Rank = CardRank.King;
-        testCard.Suit = CardSuit.Hearts;
-        return testCard;
-    }
-
-    public void RunTest()
+    public void RunSim()
     {
         SimulationConfig config = new SimulationConfig(); // default constructor values
         currentRun = new SingleRoundRunner(config);
@@ -67,5 +52,48 @@ public partial class ManualSimulation
         }
 
         return "Push";
+    }
+
+    // Dealer equivalent of GetResultText - no bet/profit involved, just the
+    // hand's own final status.
+    public string GetDealerResultText()
+    {
+        if (currentRun?.LastDealerHand is null)
+        {
+            return string.Empty;
+        }
+
+        if (currentRun.LastDealerHand.IsBusted)
+        {
+            return "Bust";
+        }
+
+        if (currentRun.LastDealerHand.IsBlackjack)
+        {
+            return "Blackjack!";
+        }
+
+        return "Stands";
+    }
+
+    public decimal GetBankrollDelta()
+    {
+        if (currentRun?.LastDealerHand is null)
+        {
+            return 0;
+        }
+
+        decimal bankrollDelta = 0;
+        foreach (Hand hand in currentRun?.Seats?[0].Hands)
+        {
+            bankrollDelta += hand.SettleProfit(currentRun?.LastDealerHand);
+        }
+
+        return bankrollDelta;
+    }
+
+    public void FinishInBatchMode()
+    {
+        
     }
 }

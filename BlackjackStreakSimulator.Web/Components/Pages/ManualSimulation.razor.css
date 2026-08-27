@@ -70,6 +70,14 @@
     gap: 4px;
     min-width: 0; /* these are grid items - same default min-width: auto
                      problem, one level further out */
+    /* These boxes always have a fixed dark background regardless of
+       MudBlazor's light/dark toggle, so text color needs to be fixed too -
+       otherwise it inherits the theme's default (dark text in light mode),
+       unreadable against a background that never changes. !important for
+       the same reason as PlayingCard's colors: an ambient theme rule
+       shouldn't be able to reach in and override a fixed-color box's own
+       contrast. */
+    color: white !important;
 }
 
 .overflowwide {
@@ -79,3 +87,6 @@
 .playertitle {
     text-align: center !important;
 }
+
+.up { color: limegreen; }
+.down { color: #ff6b6b; }
