@@ -1,15 +1,19 @@
 @page "/manualsim"
 
-
 <PageTitle>Manual Simulation</PageTitle>
 
 <h1>Manual Simulation</h1>
 
 <div>Begin and observe a simulation in progress.</div>
 
-<MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="RunSim">Begin Sim</MudButton>
-<MudButton Variant="Variant.Filled" Color="Color.Secondary" @onclick="NextRound">Next Round</MudButton>
-<MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="FinishInBatchMode">Finish Sim In Batch Mode</MudButton>
+<MudButton Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" @onclick="RunSim">Begin Sim</MudButton>
+<MudButton Disabled="@(!RunState.IsRunActive)" Size="Size.Large" Variant="Variant.Filled" Color="Color.Secondary" @onclick="NextRound">Next Round</MudButton>
+<span class="finish-btn"><MudButton Disabled="@(!RunState.IsRunActive)" Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" @onclick="FinishInBatchMode" >
+    Finish Sim In Batch Mode</MudButton></span>
+
+<div>initbankroll @ConfigState.Current.InitialBankroll basebet @ConfigState.Current.BaseBet bankrollgoal @ConfigState.Current.BankrollGoal 
+    maxstreakcount @ConfigState.Current.MaxStreakCount decksinshoe @ConfigState.Current.DecksInShoe seatcount @ConfigState.Current.SeatCount 
+    bettingmode @ConfigState.Current.BettingMode</div>
 
 <div class="overflowwide">
     <div id="page">
@@ -17,13 +21,13 @@
             <h2 class="playertitle">Dealer</h2>
             <div class="hand-row">
                 <div class="hand">
-                    @foreach (Card card in currentRun?.LastDealerHand?.Cards ?? [])
+                    @foreach (Card card in @RunState.CurrentRun?.LastDealerHand?.Cards ?? [])
                     {
                         <PlayingCard Card="@card" />
                     }
                 </div>
                 <div class="hand-info">
-                    <div>&nbsp;Hand value: @currentRun?.LastDealerHand?.Value</div>
+                    <div>&nbsp;Hand value: @RunState.CurrentRun?.LastDealerHand?.Value</div>
                     <div>&nbsp;Result: @GetDealerResultText()</div>
                 </div>
             </div>
@@ -42,11 +46,11 @@
                         _ => ""
                     })
                 </span>
-                Bankroll: @currentRun?.Seats[0].Bankroll.ToString("C")
+                Bankroll: @RunState.CurrentRun?.Seats[0].Bankroll.ToString("C")
             </div>
-            <div>Streak count: @currentRun?.Seats[0]?.StreakCount</div>
+            <div>Streak count: @RunState.CurrentRun?.Seats[0]?.StreakCount</div>
 
-            @foreach (Hand hand in currentRun?.Seats[0]?.Hands ?? [])
+            @foreach (Hand hand in @RunState.CurrentRun?.Seats[0]?.Hands ?? [])
             {
                 <div class="hand-row">
                     <div class="hand">
@@ -67,9 +71,9 @@
         </div>
         <div class="player2">
             <h2 class="playertitle">Player 2</h2>
-            <div>Bankroll: @currentRun?.Seats[1].Bankroll.ToString("C")</div>
+            <div>Bankroll: @RunState.CurrentRun?.Seats[1].Bankroll.ToString("C")</div>
 
-            @foreach (Hand hand in currentRun?.Seats[1]?.Hands ?? [])
+            @foreach (Hand hand in @RunState.CurrentRun?.Seats[1]?.Hands ?? [])
             {
                 <div class="hand-row">
                     <div class="hand">
@@ -90,9 +94,9 @@
         </div>
         <div class="player3">
             <h2 class="playertitle">Player 3</h2>
-            <div>Bankroll: @currentRun?.Seats[2].Bankroll.ToString("C")</div>
+            <div>Bankroll: @RunState.CurrentRun?.Seats[2].Bankroll.ToString("C")</div>
 
-            @foreach (Hand hand in currentRun?.Seats[2]?.Hands ?? [])
+            @foreach (Hand hand in @RunState.CurrentRun?.Seats[2]?.Hands ?? [])
             {
                 <div class="hand-row">
                     <div class="hand">
@@ -113,9 +117,9 @@
         </div>
         <div class="player4">
             <h2 class="playertitle">Player 4</h2>
-            <div>Bankroll: @currentRun?.Seats[3].Bankroll.ToString("C")</div>
+            <div>Bankroll: @RunState.CurrentRun?.Seats[3].Bankroll.ToString("C")</div>
 
-            @foreach (Hand hand in currentRun?.Seats[3]?.Hands ?? [])
+            @foreach (Hand hand in @RunState.CurrentRun?.Seats[3]?.Hands ?? [])
             {
                 <div class="hand-row">
                     <div class="hand">
@@ -136,9 +140,9 @@
         </div>
         <div class="player5">
             <h2 class="playertitle">Player 5</h2>
-            <div>Bankroll: @currentRun?.Seats[4].Bankroll.ToString("C")</div>
+            <div>Bankroll: @RunState.CurrentRun?.Seats[4].Bankroll.ToString("C")</div>
 
-            @foreach (Hand hand in currentRun?.Seats[4]?.Hands ?? [])
+            @foreach (Hand hand in @RunState.CurrentRun?.Seats[4]?.Hands ?? [])
             {
                 <div class="hand-row">
                     <div class="hand">

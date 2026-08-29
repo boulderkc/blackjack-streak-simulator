@@ -90,3 +90,7 @@
 
 .up { color: limegreen; }
 .down { color: #ff6b6b; }
+
+.finish-btn {
+    margin-left: 100px;
+}

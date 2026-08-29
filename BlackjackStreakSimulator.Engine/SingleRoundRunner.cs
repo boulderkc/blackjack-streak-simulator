@@ -1,3 +1,6 @@
+using System.Security.Principal;
+using Microsoft.VisualBasic.FileIO;
+
 namespace BlackjackStreakSimulator.Engine;
 
 // The engine-provided session object a Blazor Scoped/per-circuit service
@@ -45,11 +48,13 @@ public class SingleRoundRunner
 
     // "Finish Simulation Automatically" — just PlayNextRound in a loop,
     // starting from wherever this session currently stands.
-    public void FinishAutomatically()
+    public SimulationResult? FinishAutomatically()
     {
         while (!IsFinished)
         {
             PlayNextRound();
         }
+        
+        return Result;
     }
 }

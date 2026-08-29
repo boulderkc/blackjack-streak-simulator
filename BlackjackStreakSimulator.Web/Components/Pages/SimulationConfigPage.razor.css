@@ -1,0 +1,7 @@
+  .num-input-size ::deep {
+      width: 40ch;
+  }
+
+  .betting-mode-size {
+    width: fit-content;
+}

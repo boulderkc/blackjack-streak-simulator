@@ -1,22 +1,23 @@
 ﻿namespace BlackjackStreakSimulator.Web.Components.Pages;
 
 using BlackjackStreakSimulator.Engine;
+using BlackjackStreakSimulator.Web.Services;
+using Microsoft.AspNetCore.Components;
 
 public partial class ManualSimulation
 {
-    public SingleRoundRunner currentRun;
+    [Inject] public SimulationConfigState ConfigState { get; set; }
+    [Inject] public ManualSimulationState RunState { get; set; }
 
     public void RunSim()
     {
-        SimulationConfig config = new SimulationConfig(); // default constructor values
-        currentRun = new SingleRoundRunner(config);
-
-        currentRun.PlayNextRound();
+        RunState.CurrentRun = new SingleRoundRunner(ConfigState.Current);
+        RunState.CurrentRun.PlayNextRound();
     }
 
     public void NextRound()
     {
-        currentRun.PlayNextRound();
+        RunState.CurrentRun.PlayNextRound();
     }
 
     // Read-only re-derivation of a hand's outcome for display - safe to call
@@ -24,7 +25,7 @@ public partial class ManualSimulation
     // ScratchWatchRounds script: it doesn't mutate anything.
     public string GetResultText(Hand hand)
     {
-        if (currentRun?.LastDealerHand is null)
+        if (RunState.CurrentRun?.LastDealerHand is null)
         {
             return string.Empty;
         }
@@ -39,7 +40,7 @@ public partial class ManualSimulation
             return "Blackjack!";
         }
 
-        decimal profit = hand.SettleProfit(currentRun.LastDealerHand);
+        decimal profit = hand.SettleProfit(RunState.CurrentRun.LastDealerHand);
 
         if (profit > 0)
         {
@@ -58,17 +59,17 @@ public partial class ManualSimulation
     // hand's own final status.
     public string GetDealerResultText()
     {
-        if (currentRun?.LastDealerHand is null)
+        if (RunState.CurrentRun?.LastDealerHand is null)
         {
             return string.Empty;
         }
 
-        if (currentRun.LastDealerHand.IsBusted)
+        if (RunState.CurrentRun.LastDealerHand.IsBusted)
         {
             return "Bust";
         }
 
-        if (currentRun.LastDealerHand.IsBlackjack)
+        if (RunState.CurrentRun.LastDealerHand.IsBlackjack)
         {
             return "Blackjack!";
         }
@@ -78,15 +79,15 @@ public partial class ManualSimulation
 
     public decimal GetBankrollDelta()
     {
-        if (currentRun?.LastDealerHand is null)
+        if (RunState.CurrentRun?.LastDealerHand is null)
         {
             return 0;
         }
 
         decimal bankrollDelta = 0;
-        foreach (Hand hand in currentRun?.Seats?[0].Hands)
+        foreach (Hand hand in RunState.CurrentRun?.Seats?[0].Hands)
         {
-            bankrollDelta += hand.SettleProfit(currentRun?.LastDealerHand);
+            bankrollDelta += hand.SettleProfit(RunState.CurrentRun?.LastDealerHand);
         }
 
         return bankrollDelta;
@@ -94,6 +95,12 @@ public partial class ManualSimulation
 
     public void FinishInBatchMode()
     {
-        
+        if (RunState.CurrentRun is null)
+        {
+            return;
+        }
+
+        SimulationResult? result = RunState.CurrentRun.FinishAutomatically(); 
+        RunState.CurrentRun = null;  
     }
 }
