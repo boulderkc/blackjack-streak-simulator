@@ -5,3 +5,9 @@
   .betting-mode-size {
     width: fit-content;
 }
+
+.field-error {
+    color: #ff6b6b !important;
+    font-size: 0.75rem;
+    margin-top: 2px;
+}

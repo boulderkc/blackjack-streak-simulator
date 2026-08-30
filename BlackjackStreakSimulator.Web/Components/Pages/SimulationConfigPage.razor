@@ -6,38 +6,58 @@
 <PageTitle>Simulation Configuration</PageTitle>
 
 <h1>Simulation Configuration</h1>
-<h3 class="mb-6">These configurations will be used the next time you run the simulation in both batch and manual modes.
+<h3 class="mb-6">These configurations will be used the next time you run the simulation in either batch or manual modes.
 </h3>
 @if (RunState.IsRunActive)
 {
-<MudAlert Severity="Severity.Warning">Configuration is disabled while a manual run is in progress.</MudAlert>
+    <MudAlert Severity="Severity.Warning">Configuration is disabled while a manual run is in progress.</MudAlert>
 }
 
 <div Class="num-input-size">
-    <MudNumericField HideSpinButtons="true" @bind-Value="ConfigState.Current.InitialBankroll" Label="Initial Bankroll" Variant="Variant.Outlined"
-                     Min="0" Disabled="@RunState.IsRunActive"/>
+    <MudNumericField HideSpinButtons="true" @bind-Value="ConfigState.Current.InitialBankroll" Label="Initial Bankroll"
+                     Variant="Variant.Outlined" Min="1" Disabled="@RunState.IsRunActive" />
+</div>
+
+<div Class="num-input-size">
+    <MudNumericField HideSpinButtons="true" @bind-Value="ConfigState.Current.BankrollGoal" Label="Bankroll Goal"
+                     Variant="Variant.Outlined" Min="1" Disabled="@RunState.IsRunActive" />
+</div>
+@if (ConfigState.HasBankrollGoalError)
+{
+    <div class="field-error">@ConfigState.BankrollGoalErrorText</div>
+}
+
+<div Class="num-input-size">
+    <MudNumericField HideSpinButtons="true" @bind-Value="ConfigState.Current.BaseBet" Label="Base Bet"
+                     Variant="Variant.Outlined" Min="1" Disabled="@RunState.IsRunActive" />
+</div>
+@if (ConfigState.HasBaseBetError)
+{
+    <div class="field-error">@ConfigState.BaseBetErrorText</div>
+}
+
+<div Class="num-input-size">
+    <MudNumericField @bind-Value="ConfigState.Current.MaxStreakCount" Label="Max Streak Count"
+                     Variant="Variant.Outlined" Min="1" Max="10" Disabled="@RunState.IsRunActive" />
 </div>
 <div Class="num-input-size">
-    <MudNumericField HideSpinButtons="true" @bind-Value="ConfigState.Current.BaseBet" Label="Base Bet" Variant="Variant.Outlined"
-                     Min="1" Disabled="@RunState.IsRunActive"/>
+    <MudNumericField @bind-Value="ConfigState.Current.DecksInShoe" Label="Decks in Shoe" Variant="Variant.Outlined"
+                     Min="1" Max="10" Disabled="@RunState.IsRunActive" />
 </div>
-<div Class="num-input-size">
-    <MudNumericField HideSpinButtons="true" @bind-Value="ConfigState.Current.BankrollGoal" Label="Bankroll Goal" Variant="Variant.Outlined"
-                     Min="1" Disabled="@RunState.IsRunActive"/>
-</div>
-<div Class="num-input-size">
-    <MudNumericField @bind-Value="ConfigState.Current.MaxStreakCount" Label="Max Streak Count" Variant="Variant.Outlined" Min="1" Max="10" Disabled="@RunState.IsRunActive"/>
-</div>
-<div Class="num-input-size">
-    <MudNumericField @bind-Value="ConfigState.Current.DecksInShoe" Label="Decks in Shoe" Variant="Variant.Outlined" Min="1" Max="10" Disabled="@RunState.IsRunActive"/>
-</div>
+@if (ConfigState.HasDeckCountError)
+{
+    <div class="field-error">@ConfigState.DeckCountErrorText</div>
+}
+
 <div Class="num-input-size">
     <MudNumericField @bind-Value="ConfigState.Current.SeatCount" Label="Number of Players, including target player"
-                     Variant="Variant.Outlined" Min="1" Max="5" Disabled="@RunState.IsRunActive"/>
+                     Variant="Variant.Outlined" Min="1" Max="5" Disabled="@RunState.IsRunActive" />
 </div>
 <div class="betting-mode-size">
-    <MudSelect @bind-Value="ConfigState.Current.BettingMode" Label="Betting Mode" Variant="Variant.Outlined" Disabled="@RunState.IsRunActive">
-        <MudSelectItem Value="@("Streak")">Streak</MudSelectItem>
-        <MudSelectItem Value="@("Flat")">Flat</MudSelectItem>
+    <MudSelect @bind-Value="ConfigState.Current.BettingMode" Label="Betting Mode" Variant="Variant.Outlined"
+               Disabled="@RunState.IsRunActive">
+        <MudSelectItem Value="@(BettingMode.Streak)">Streak</MudSelectItem>
+        <MudSelectItem Value="@(BettingMode.Flat)">Flat</MudSelectItem>
     </MudSelect>
 </div>
+

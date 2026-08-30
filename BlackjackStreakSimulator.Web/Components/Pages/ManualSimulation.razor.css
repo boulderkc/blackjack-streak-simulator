@@ -1,11 +1,18 @@
 #page {
     display: grid;
     grid-template-columns: repeat(5, minmax(60px, 1fr));
+    grid-template-areas:
+        ".  .  Dealer  .  ."
+        "Player1  .  .  .  ."
+        ".  Player2  Player3  Player4  Player5"
+        ".  .  .  .  .";
+    /*
     grid-template-areas: 
         ".  .  Dealer  .  ."
         "Player1  .  .  .  Player5"
         ".  Player2  .  Player4  ."
         ".  .  Player3  .  .";
+        */
     gap: 8px;
 }
 
@@ -42,15 +49,18 @@
 .hand {
     display: flex;
     gap: 8px;
-    min-width: 0; /* same fix as .hand-row - let the cards shrink/wrap instead
+    min-width: 0;
+    /* same fix as .hand-row - let the cards shrink/wrap instead
                      of forcing the row wider than its column */
 }
 
 .hand-row {
     display: flex;
-    flex-direction: row; /* optional - row is already flex's default */
+    flex-direction: row;
+    /* optional - row is already flex's default */
     align-items: center;
-    min-width: 0; /* flex items default to min-width: auto - without this, a
+    min-width: 0;
+    /* flex items default to min-width: auto - without this, a
                      wide hand-row refuses to shrink below its own content
                      size and overflows its column instead of respecting it */
 }
@@ -68,7 +78,8 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
-    min-width: 0; /* these are grid items - same default min-width: auto
+    min-width: 0;
+    /* these are grid items - same default min-width: auto
                      problem, one level further out */
     /* These boxes always have a fixed dark background regardless of
        MudBlazor's light/dark toggle, so text color needs to be fixed too -
@@ -88,8 +99,13 @@
     text-align: center !important;
 }
 
-.up { color: limegreen; }
-.down { color: #ff6b6b; }
+.up {
+    color: limegreen;
+}
+
+.down {
+    color: #ff6b6b;
+}
 
 .finish-btn {
     margin-left: 100px;

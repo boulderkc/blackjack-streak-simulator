@@ -17,4 +17,24 @@ namespace BlackjackStreakSimulator.Web.Services;
 public class SimulationConfigState
 {
     public SimulationConfig Current { get; set; } = new();
+
+    // Validation lives here rather than on the config page itself, so the
+    // exact same check drives both the inline error caption on the config
+    // page AND the "disable the run button" logic on manual/batch sim -
+    // one implementation, can't drift out of sync the way two separate
+    // copies could.
+    public bool HasBankrollGoalError => Current.InitialBankroll >= Current.BankrollGoal;
+    public string BankrollGoalErrorText => "Bankroll goal must be larger than initial bankroll.";
+
+    public bool HasBaseBetError => Current.BaseBet >= Current.InitialBankroll;
+    public string BaseBetErrorText => "Base bet must be smaller than initial bankroll.";
+
+    // "One deck per player" - avoids reshuffling mid-round for a realistic
+    // table size. Not rigorously derived (see docs/DECISIONS.md discussion)
+    // but the shoe self-heals on running dry regardless, so getting this
+    // exactly right isn't load-bearing.
+    public bool HasDeckCountError => Current.DecksInShoe < Current.SeatCount;
+    public string DeckCountErrorText => "To avoid reshuffles in the middle of a round, must have at least one deck per player.";
+
+    public bool HasProblems => HasBankrollGoalError || HasBaseBetError || HasDeckCountError;
 }
