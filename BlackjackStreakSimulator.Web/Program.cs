@@ -11,13 +11,14 @@ builder.Services.AddMudServices();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-// Per-circuit simulation config, set on the config page and read by manual
-// and batch sim - see SimulationConfigState for why this is Scoped.
+// Per-circuit simulation config, set on the config page and read by
+// step-through and batch sim - see SimulationConfigState for why this is
+// Scoped.
 builder.Services.AddScoped<SimulationConfigState>();
 
-// Per-circuit in-progress manual sim session - survives navigating away
-// from and back to the manual sim page, same Scoped reasoning as above.
-builder.Services.AddScoped<ManualSimulationState>();
+// Per-circuit in-progress step-through session - survives navigating away
+// from and back to the step-through page, same Scoped reasoning as above.
+builder.Services.AddScoped<StepThroughSimulationState>();
 
 var app = builder.Build();
 

@@ -1,16 +1,16 @@
 @page "/simconfig"
 @using BlackjackStreakSimulator.Web.Services
 @inject SimulationConfigState ConfigState
-@inject ManualSimulationState RunState
+@inject StepThroughSimulationState RunState
 
 <PageTitle>Simulation Configuration</PageTitle>
 
 <h1>Simulation Configuration</h1>
-<h3 class="mb-6">These configurations will be used the next time you run the simulation in either batch or manual modes.
+<h3 class="mb-6">These configurations will be used the next time you run the simulation in either batch or step-through modes.
 </h3>
 @if (RunState.IsRunActive)
 {
-    <MudAlert Severity="Severity.Warning">Configuration is disabled while a manual run is in progress.</MudAlert>
+    <MudAlert Severity="Severity.Warning">Configuration is disabled while a step-through run is in progress.</MudAlert>
 }
 
 <div Class="num-input-size">

@@ -2,14 +2,15 @@ using BlackjackStreakSimulator.Engine;
 
 namespace BlackjackStreakSimulator.Web.Services;
 
-// Holds the in-progress manual step-through session, if any. Scoped, same
+// Holds the in-progress step-through session, if any. Scoped, same
 // reasoning as SimulationConfigState: one instance per browser circuit, so
 // it survives navigating between pages (a plain field on the page component
 // does not - Blazor tears down and rebuilds the component on navigation,
 // only a Scoped service outlives that). Still ephemeral by design: a
 // browser refresh tears down the whole circuit and this resets to null,
-// same accepted v1 tradeoff documented for manual-session state generally.
-public class ManualSimulationState
+// same accepted v1 tradeoff documented for step-through session state
+// generally.
+public class StepThroughSimulationState
 {
     public SingleRoundRunner? CurrentRun { get; set; }
 

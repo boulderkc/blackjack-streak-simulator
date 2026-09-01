@@ -4,10 +4,10 @@ using BlackjackStreakSimulator.Engine;
 using BlackjackStreakSimulator.Web.Services;
 using Microsoft.AspNetCore.Components;
 
-public partial class ManualSimulation
+public partial class StepThroughSimulation
 {
     [Inject] public SimulationConfigState ConfigState { get; set; }
-    [Inject] public ManualSimulationState RunState { get; set; }
+    [Inject] public StepThroughSimulationState RunState { get; set; }
 
     public void RunSim()
     {

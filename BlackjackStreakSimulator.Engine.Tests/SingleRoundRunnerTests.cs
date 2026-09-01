@@ -41,7 +41,7 @@ public class SingleRoundRunnerTests
     }
 
     [Fact]
-    public void FinishAutomatically_AfterManualRounds_ContinuesFromThatPoint()
+    public void FinishAutomatically_AfterStepThroughRounds_ContinuesFromThatPoint()
     {
         SingleRoundRunner runner = new SingleRoundRunner(new SimulationConfig());
         runner.PlayNextRound();

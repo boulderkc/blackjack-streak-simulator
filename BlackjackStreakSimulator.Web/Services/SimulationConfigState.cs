@@ -3,12 +3,12 @@ using BlackjackStreakSimulator.Engine;
 namespace BlackjackStreakSimulator.Web.Services;
 
 // Holds the simulation config the user has set up on the config page, for
-// the rest of the circuit (manual and batch sim pages) to read. Scoped, not
-// Singleton - each browser circuit gets its own instance, so one user's
-// settings never leak into another user's session. Ephemeral by design,
-// same as the rest of manual-session state: a refresh tears down the
-// circuit and resets this back to defaults, which is an accepted v1
-// tradeoff, not a bug.
+// the rest of the circuit (step-through and batch sim pages) to read.
+// Scoped, not Singleton - each browser circuit gets its own instance, so
+// one user's settings never leak into another user's session. Ephemeral by
+// design, same as the rest of step-through session state: a refresh tears
+// down the circuit and resets this back to defaults, which is an accepted
+// v1 tradeoff, not a bug.
 //
 // `Current` is field-initialized to `new()` so a config always exists, even
 // if the user never visits the config page - SimulationConfig's own
@@ -20,7 +20,7 @@ public class SimulationConfigState
 
     // Validation lives here rather than on the config page itself, so the
     // exact same check drives both the inline error caption on the config
-    // page AND the "disable the run button" logic on manual/batch sim -
+    // page AND the "disable the run button" logic on step-through/batch sim -
     // one implementation, can't drift out of sync the way two separate
     // copies could.
     public bool HasBankrollGoalError => Current.InitialBankroll >= Current.BankrollGoal;

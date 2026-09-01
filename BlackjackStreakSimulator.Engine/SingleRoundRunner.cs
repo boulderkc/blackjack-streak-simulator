@@ -4,7 +4,7 @@ using Microsoft.VisualBasic.FileIO;
 namespace BlackjackStreakSimulator.Engine;
 
 // The engine-provided session object a Blazor Scoped/per-circuit service
-// wraps for manual step-through mode (see docs/DECISIONS.md). Unlike
+// wraps for step-through mode (see docs/DECISIONS.md). Unlike
 // everything else in the engine, this genuinely needs to be instanced: it
 // holds a Shoe/Seats/hands-played that persist across many separate calls —
 // one per "Next Round" click — rather than living and dying within one

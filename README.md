@@ -35,7 +35,7 @@ See [`docs/DECISIONS.md`](docs/DECISIONS.md) for the reasoning behind each of th
 
 ## Architecture
 
-The game engine is a single shared class library — it isn't reimplemented per host. The Blazor app references it directly for manual step-through play; the Azure Function references it directly to run bulk batches at scale. Neither is a "fallback" for the other; they're two hosts calling the same code. The same pattern applies to persistence: a small shared project writes finished results to Azure SQL, referenced directly by both hosts rather than routed through an extra Function call.
+The game engine is a single shared class library — it isn't reimplemented per host. The Blazor app references it directly for step-through play; the Azure Function references it directly to run bulk batches at scale. Neither is a "fallback" for the other; they're two hosts calling the same code. The same pattern applies to persistence: a small shared project writes finished results to Azure SQL, referenced directly by both hosts rather than routed through an extra Function call.
 
 ```
 Blazor UI (step-through) ──────────────► BlackjackEngine (class library)
