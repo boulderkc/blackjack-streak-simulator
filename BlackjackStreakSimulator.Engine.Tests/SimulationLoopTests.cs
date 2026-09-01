@@ -186,4 +186,40 @@ public class SimulationLoopTests
 
         Assert.False(result.ReachedGoal);
     }
+
+    // ---- GetLowestBankrollBucket ----
+
+    [Theory]
+    [InlineData(1000, 1000, 90)]  // never dropped below the start (100%) - top bucket, no 11th special case
+    [InlineData(950, 1000, 90)]   // 95% - top bucket
+    [InlineData(900, 1000, 90)]   // exactly on the 90 boundary
+    [InlineData(730, 1000, 70)]   // 73% - floors down to its bucket, not rounds
+    [InlineData(500, 1000, 50)]   // exactly on the 50 boundary
+    [InlineData(100, 1000, 10)]   // 10% - exactly on the 10 boundary
+    [InlineData(50, 1000, 0)]     // barely survived - bottom bucket
+    [InlineData(0, 1000, 0)]      // as low as a reached-goal run's trough can get without busting
+    public void GetLowestBankrollBucket_ReturnsExpectedBucketFloor(decimal lowestBankroll, decimal initialBankroll, int expectedBucket)
+    {
+        int bucket = SimulationLoop.GetLowestBankrollBucket(lowestBankroll, initialBankroll);
+
+        Assert.Equal(expectedBucket, bucket);
+    }
+
+    [Fact]
+    public void GetLowestBankrollBucket_AboveInitialBankroll_ClampsToTopBucket()
+    {
+        // Shouldn't happen in practice (LowestBankroll can never exceed
+        // InitialBankroll), but the clamp should stay safe if it ever does.
+        int bucket = SimulationLoop.GetLowestBankrollBucket(1500m, 1000m);
+
+        Assert.Equal(90, bucket);
+    }
+
+    [Fact]
+    public void GetLowestBankrollBucket_Negative_ClampsToBottomBucket()
+    {
+        int bucket = SimulationLoop.GetLowestBankrollBucket(-50m, 1000m);
+
+        Assert.Equal(0, bucket);
+    }
 }

@@ -63,7 +63,24 @@ public static class SimulationLoop
         {
             ReachedGoal = trackedSeat.Bankroll >= config.BankrollGoal,
             HandsPlayed = handsPlayed,
-            FinalBankroll = trackedSeat.Bankroll
+            FinalBankroll = trackedSeat.Bankroll,
+            StreakLengthFrequency = new Dictionary<int, int>(trackedSeat.StreakLengthFrequency),
+            MaxDrawdown = trackedSeat.MaxDrawdown,
+            LowestBankroll = trackedSeat.LowestBankroll
         };
+    }
+
+    // Which 10-point bucket a run's lowest-bankroll-as-a-percentage-of-
+    // initial falls into, for BatchSimulationResult.LowestBankrollBucketFrequency.
+    // Buckets are the percentage floor: 0, 10, 20, ... 90 - a run whose
+    // lowest point was, say, 73% of its starting bankroll falls in bucket
+    // 70. A run that never dipped below its starting bankroll at all (100%)
+    // falls in the top bucket (90) alongside anything from 90-100%, rather
+    // than needing an eleventh bucket just for that edge case.
+    public static int GetLowestBankrollBucket(decimal lowestBankroll, decimal initialBankroll)
+    {
+        decimal percentage = lowestBankroll / initialBankroll * 100m;
+        int bucket = (int)(percentage / 10m) * 10;
+        return Math.Clamp(bucket, 0, 90);
     }
 }

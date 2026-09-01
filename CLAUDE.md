@@ -2,6 +2,12 @@
 
 Operational rules and domain context for AI-assisted work in this repo. Keep this terse and current — it's read before every task, not prose for humans.
 
+## Terminology
+
+- **Round** — one hand dealt and settled (`RoundEngine.PlayRound`).
+- **Run** — one full playthrough of the tracked seat from `InitialBankroll` to bust or goal, made up of many Rounds (`SimulationResult`, produced by `SimulationRunner.RunSimulation` or a manual "Finish Automatically" session).
+- **Batch** — many independent Runs using the same config, aggregated into `BatchSimulationResult`. Don't use "trial" or other synonyms for Run — three tiers, three names, no overlap.
+
 ## Domain rules (blackjack simulation)
 
 - Standard Vegas rules apply unless noted otherwise.
