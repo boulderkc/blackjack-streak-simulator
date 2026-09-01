@@ -12,6 +12,31 @@
                 "/consoleloggerparameters:NoSummary"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "run functions host",
+            "type": "shell",
+            "command": "dotnet run",
+            "options": {
+                "cwd": "${workspaceFolder}/BlackjackStreakSimulator.Functions"
+            },
+            "isBackground": true,
+            "problemMatcher": {
+                "pattern": {
+                    "regexp": "^.*$",
+                    "file": 1,
+                    "location": 2,
+                    "message": 3
+                },
+                "background": {
+                    // "Host lock lease acquired" is the last line the host
+                    // prints before it's actually ready to serve requests -
+                    // confirmed by watching real `dotnet run` output.
+                    "activeOnStart": true,
+                    "beginsPattern": "^.*Azure Functions Core Tools.*$",
+                    "endsPattern": "^.*Host lock lease acquired.*$"
+                }
+            }
         }
     ]
 }

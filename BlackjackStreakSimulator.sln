@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackjackStreakSimulator.En
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackjackStreakSimulator.Web", "BlackjackStreakSimulator.Web\BlackjackStreakSimulator.Web.csproj", "{775B60A9-A753-41E5-83E4-6ADF8B318635}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackjackStreakSimulator.Functions", "BlackjackStreakSimulator.Functions\BlackjackStreakSimulator.Functions.csproj", "{05210F32-CC16-4815-BD8C-ACA882D60829}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,18 @@ Global
 		{775B60A9-A753-41E5-83E4-6ADF8B318635}.Release|x64.Build.0 = Release|Any CPU
 		{775B60A9-A753-41E5-83E4-6ADF8B318635}.Release|x86.ActiveCfg = Release|Any CPU
 		{775B60A9-A753-41E5-83E4-6ADF8B318635}.Release|x86.Build.0 = Release|Any CPU
+		{05210F32-CC16-4815-BD8C-ACA882D60829}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05210F32-CC16-4815-BD8C-ACA882D60829}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05210F32-CC16-4815-BD8C-ACA882D60829}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{05210F32-CC16-4815-BD8C-ACA882D60829}.Debug|x64.Build.0 = Debug|Any CPU
+		{05210F32-CC16-4815-BD8C-ACA882D60829}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{05210F32-CC16-4815-BD8C-ACA882D60829}.Debug|x86.Build.0 = Debug|Any CPU
+		{05210F32-CC16-4815-BD8C-ACA882D60829}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05210F32-CC16-4815-BD8C-ACA882D60829}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05210F32-CC16-4815-BD8C-ACA882D60829}.Release|x64.ActiveCfg = Release|Any CPU
+		{05210F32-CC16-4815-BD8C-ACA882D60829}.Release|x64.Build.0 = Release|Any CPU
+		{05210F32-CC16-4815-BD8C-ACA882D60829}.Release|x86.ActiveCfg = Release|Any CPU
+		{05210F32-CC16-4815-BD8C-ACA882D60829}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -11,6 +11,13 @@
 *.sln.docstates
 *.env
 
+# Azurite (local Azure Storage emulator) - regenerated whenever the
+# Functions host runs locally, not something to commit
+AzuriteConfig
+__azurite_db_*__.json
+__blobstorage__/
+__queuestorage__/
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 

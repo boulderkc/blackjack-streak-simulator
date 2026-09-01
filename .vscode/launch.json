@@ -17,6 +17,13 @@
                 "action": "openExternally",
                 "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
             }
+        },
+        {
+            "name": "BlackjackStreakSimulator.Functions",
+            "type": "coreclr",
+            "request": "attach",
+            "processId": "${command:azureFunctions.pickProcess}",
+            "preLaunchTask": "run functions host"
         }
     ]
 }
