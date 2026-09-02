@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using BlackjackStreakSimulator.Engine;
 
 namespace BlackjackStreakSimulator.Web.Services;
@@ -18,23 +19,21 @@ public class SimulationConfigState
 {
     public SimulationConfig Current { get; set; } = new();
 
-    // Validation lives here rather than on the config page itself, so the
-    // exact same check drives both the inline error caption on the config
-    // page AND the "disable the run button" logic on step-through/batch sim -
-    // one implementation, can't drift out of sync the way two separate
-    // copies could.
-    public bool HasBankrollGoalError => Current.InitialBankroll >= Current.BankrollGoal;
-    public string BankrollGoalErrorText => "Bankroll goal must be larger than initial bankroll.";
+    // The rules themselves live on SimulationConfig (IValidatableObject.Validate),
+    // not here - this is just a thin adapter translating
+    // Validator.TryValidateObject's results into the bool/string shape the
+    // config page's markup wants. The batch Function validates the exact
+    // same way, against the exact same model, so a rule only ever needs to
+    // change in one place.
+    private List<ValidationResult> Validate()
+    {
+        List<ValidationResult> results = [];
+        Validator.TryValidateObject(Current, new ValidationContext(Current), results, validateAllProperties: true);
+        return results;
+    }
 
-    public bool HasBaseBetError => Current.BaseBet >= Current.InitialBankroll;
-    public string BaseBetErrorText => "Base bet must be smaller than initial bankroll.";
+    public bool HasProblems => Validate().Count > 0;
 
-    // "One deck per player" - avoids reshuffling mid-round for a realistic
-    // table size. Not rigorously derived (see docs/DECISIONS.md discussion)
-    // but the shoe self-heals on running dry regardless, so getting this
-    // exactly right isn't load-bearing.
-    public bool HasDeckCountError => Current.DecksInShoe < Current.SeatCount;
-    public string DeckCountErrorText => "To avoid reshuffles in the middle of a round, must have at least one deck per player.";
-
-    public bool HasProblems => HasBankrollGoalError || HasBaseBetError || HasDeckCountError;
+    public string? GetErrorFor(string propertyName)
+        => Validate().FirstOrDefault(r => r.MemberNames.Contains(propertyName))?.ErrorMessage;
 }

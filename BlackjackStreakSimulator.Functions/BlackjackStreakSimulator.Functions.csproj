@@ -14,4 +14,9 @@
     <PackageReference Include="Azure.Monitor.OpenTelemetry.Exporter" Version="1.7.0" />
   </ItemGroup>
 
+    <ItemGroup>
+    <ProjectReference Include="..\BlackjackStreakSimulator.Engine\BlackjackStreakSimulator.Engine.csproj" />
+  </ItemGroup>
+
+
 </Project>
