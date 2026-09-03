@@ -25,5 +25,11 @@
             "processId": "${command:azureFunctions.pickProcess}",
             "preLaunchTask": "run functions host"
         }
+    ],
+    "compounds": [
+        {
+            "name": "Web + Functions",
+            "configurations": ["BlackjackStreakSimulator.Web", "BlackjackStreakSimulator.Functions"]
+        }
     ]
 }

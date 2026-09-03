@@ -50,8 +50,19 @@ public class RunAndRecordBatch
             return new BadRequestObjectResult(errors);
         }
 
+        BatchSimulationResult batchResult = new BatchSimulationResult(); 
+        // Begin the simulation
+        for (int i = 0; i < config.NumberOfRunsInBatch; i++)
+        {
+            batchResult.AddRun(SimulationRunner.RunSimulation(config), config.InitialBankroll);
+
+
+        
+        }
+
+
         // ... write to SQL here ...
 
-        return new OkObjectResult(config);
+        return new OkObjectResult(batchResult);
     }
 }

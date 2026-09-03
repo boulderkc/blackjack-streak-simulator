@@ -110,3 +110,11 @@
 .finish-btn {
     margin-left: 100px;
 }
+
+.info-note {
+    max-width: 700px;
+    font-size: 0.85rem;
+    opacity: 0.8;
+    margin-top: 4px;
+    margin-bottom: 12px;
+}

@@ -20,6 +20,14 @@ builder.Services.AddScoped<SimulationConfigState>();
 // from and back to the step-through page, same Scoped reasoning as above.
 builder.Services.AddScoped<StepThroughSimulationState>();
 
+// HttpClient for calling the batch Azure Function - hardcoded to Core
+// Tools' local default port for now; needs to move to appsettings.json
+// once there's an actual deployed Function URL to point at too.
+builder.Services.AddHttpClient("BatchFunction", client =>
+{
+    client.BaseAddress = new Uri("http://localhost:7071/");
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

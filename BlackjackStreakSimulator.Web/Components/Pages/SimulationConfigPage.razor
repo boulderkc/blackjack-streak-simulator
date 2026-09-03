@@ -8,6 +8,24 @@
 <h1>Simulation Configuration</h1>
 <h3 class="mb-6">These configurations will be used the next time you run the simulation in either batch or step-through modes.
 </h3>
+
+<div class="terminology-flow">
+    <div class="term-box">
+        <h4>Round</h4>
+        <p>One hand dealt and settled</p>
+    </div>
+    <div class="term-arrow">many make a →</div>
+    <div class="term-box">
+        <h4>Run</h4>
+        <p>One seat's play, start to bust or goal</p>
+    </div>
+    <div class="term-arrow">many make a →</div>
+    <div class="term-box">
+        <h4>Batch</h4>
+        <p>Many Runs, aggregated together</p>
+    </div>
+</div>
+
 @if (RunState.IsRunActive)
 {
     <MudAlert Severity="Severity.Warning">Configuration is disabled while a step-through run is in progress.</MudAlert>
