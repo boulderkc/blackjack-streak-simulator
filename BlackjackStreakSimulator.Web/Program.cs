@@ -1,6 +1,8 @@
 using MudBlazor.Services;
 using BlackjackStreakSimulator.Web.Components;
 using BlackjackStreakSimulator.Web.Services;
+using Microsoft.EntityFrameworkCore;
+using BlackjackStreakSimulator.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +29,10 @@ builder.Services.AddHttpClient("BatchFunction", client =>
 {
     client.BaseAddress = new Uri("http://localhost:7071/");
 });
+
+builder.Services.AddDbContext<BlackjackStreakSimulatorDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("BlackjackStreakSimulator")));
+
 
 var app = builder.Build();
 

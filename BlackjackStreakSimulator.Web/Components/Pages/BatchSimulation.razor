@@ -6,8 +6,19 @@
 
 <div>Kick off a batch simulation, see results.</div>
 
-<MudButton Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" @onclick="RunBatch">Begin Simulation</MudButton>
+<MudButton Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" @onclick="RunBatch" Disabled="@IsRunning">Begin Simulation</MudButton>
 
-<div>initbankroll @ConfigState.Current.InitialBankroll basebet @ConfigState.Current.BaseBet bankrollgoal @ConfigState.Current.BankrollGoal 
-    maxstreakcount @ConfigState.Current.MaxStreakCount decksinshoe @ConfigState.Current.DecksInShoe seatcount @ConfigState.Current.SeatCount 
-    bettingmode @ConfigState.Current.BettingMode</div>
+@if (IsRunning)
+{
+    <MudProgressCircular Indeterminate="true" />
+}
+
+@if (!IsRunning && LastResult is not null)
+{
+    <MudAlert Severity="Severity.Success">Batch complete in @LastRunDuration?.TotalSeconds.ToString("F1") seconds.</MudAlert>
+}
+
+@if (!IsRunning && ErrorMessage is not null)
+{
+    <MudAlert Severity="Severity.Error">@ErrorMessage</MudAlert>
+}

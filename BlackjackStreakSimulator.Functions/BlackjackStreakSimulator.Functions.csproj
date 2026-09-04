@@ -16,6 +16,7 @@
 
     <ItemGroup>
     <ProjectReference Include="..\BlackjackStreakSimulator.Engine\BlackjackStreakSimulator.Engine.csproj" />
+    <ProjectReference Include="..\BlackjackStreakSimulator.Data\BlackjackStreakSimulator.Data.csproj" />
   </ItemGroup>
 
 

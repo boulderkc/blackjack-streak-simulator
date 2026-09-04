@@ -5,6 +5,8 @@ using Microsoft.Azure.Functions.Worker.OpenTelemetry;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OpenTelemetry;
+using Microsoft.EntityFrameworkCore;
+using BlackjackStreakSimulator.Data;
 
 var builder = FunctionsApplication.CreateBuilder(args);
 
@@ -15,6 +17,10 @@ if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("APPLICATIONINSIGHT
     builder.Services.AddOpenTelemetry()
         .UseFunctionsWorkerDefaults()
         .UseAzureMonitorExporter();
+
 }
+
+    builder.Services.AddDbContext<BlackjackStreakSimulatorDbContext>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("BlackjackStreakSimulator")));
 
 builder.Build().Run();

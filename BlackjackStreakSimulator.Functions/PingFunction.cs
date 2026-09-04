@@ -5,9 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BlackjackStreakSimulator.Functions;
 
-// Bogus placeholder trigger - just proves the Functions host, routing, and
-// local debugging pipeline actually work end to end. No real batch
-// simulation logic here yet; that gets built deliberately, together.
+// Bogus tester trigger, not meaningful. 
 public class PingFunction
 {
     private readonly ILogger<PingFunction> _logger;
