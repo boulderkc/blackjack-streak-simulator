@@ -115,7 +115,7 @@ Resolution: a small shared project, `BlackjackStreakSimulator.Data`, referenced 
 **Phase 2 — cloud / infrastructure**
 
 8. Layer in Azure Functions for batch simulation
-9. Add Azure SQL persistence for run history
+9. Add Azure SQL persistence for batch history
 10. Add Azure OpenAI summary feature
 11. Set up Azure DevOps pipeline + App Configuration
 12. Deploy to Azure App Service, link on resume/LinkedIn

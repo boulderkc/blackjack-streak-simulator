@@ -17,7 +17,7 @@ Paroli is a positive-progression betting system: double your bet through a win s
 - Two run modes: watch a bulk simulation play out round-by-round, rendered as actual card and table graphics rather than plain text (engine always plays fixed basic strategy — spectator view, not manual play), or run the whole batch at once for results only
 - Configurable streak length (how many consecutive wins define a "streak")
 - Toggle between streak (Paroli) betting and flat/regular betting, for direct comparison
-- Simulation run history, persisted and browsable, with summary stats (max drawdown, streak-length frequency — how many streaks concluded at each length, 1 through the configured max, hands played) and a plain-English AI-generated summary of each run
+- Batch history, persisted and browsable, with summary stats (max drawdown, streak-length frequency — how many streaks concluded at each length, 1 through the configured max, hands played) and a plain-English AI-generated summary of each batch
 
 ## Tech stack
 
@@ -35,7 +35,7 @@ See [`docs/DECISIONS.md`](docs/DECISIONS.md) for the reasoning behind each of th
 
 ## Architecture
 
-The game engine is a single shared class library — it isn't reimplemented per host. The Blazor app references it directly for step-through play; the Azure Function references it directly to run bulk batches at scale. Neither is a "fallback" for the other; they're two hosts calling the same code. The same pattern applies to persistence: a small shared project writes finished batch results to Azure SQL from the Function, and the Blazor app references that same project to read run history back for display — both referenced directly rather than routed through an extra Function call for either side.
+The game engine is a single shared class library — it isn't reimplemented per host. The Blazor app references it directly for step-through play; the Azure Function references it directly to run bulk batches at scale. Neither is a "fallback" for the other; they're two hosts calling the same code. The same pattern applies to persistence: a small shared project writes finished batch results to Azure SQL from the Function, and the Blazor app references that same project to read batch history back for display — both referenced directly rather than routed through an extra Function call for either side.
 
 ```
 Blazor UI (step-through) ──────────────► BlackjackEngine (class library)
@@ -46,7 +46,7 @@ Blazor UI (kicks off batch) ──► Azure Function ──► BlackjackEngine (
                                      ▼
                          BlackjackStreakSimulator.Data ──► Azure SQL (writes batch summary)
 
-Blazor UI ◄──── BlackjackStreakSimulator.Data ◄──── Azure SQL (reads run history / detail)
+Blazor UI ◄──── BlackjackStreakSimulator.Data ◄──── Azure SQL (reads batch history / detail)
 ```
 
 ## Status
@@ -57,7 +57,7 @@ Blazor UI ◄──── BlackjackStreakSimulator.Data ◄──── Azure SQ
 - [ ] Core game engine (class library)
 - [ ] Blazor UI shell
 - [ ] Azure Functions batch simulation
-- [ ] Azure SQL run history
+- [ ] Azure SQL batch history
 - [ ] Azure OpenAI summary feature
 - [ ] CI/CD + deployment
 
