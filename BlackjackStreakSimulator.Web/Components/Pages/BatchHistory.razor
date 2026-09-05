@@ -17,11 +17,15 @@
 <MudDataGrid Items="@Histories" T="BatchHistoryEntry">
     <Header>
         <MudTh></MudTh>
+        <MudTh></MudTh>
         <MudTh Class="mud-theme-secondary" colspan="7">Configuration</MudTh>
         <MudTh Class="mud-theme-primary" colspan="6">Results</MudTh>
     </Header>
     <Columns>
-        <PropertyColumn Property="x => x.CompletedAtUtc" Title="Completed" Format="g" />
+        <HierarchyColumn T="BatchHistoryEntry" />
+
+        <PropertyColumn Property="x => GetDisplayTime(x.CompletedAtUtc)" Title="Completed" Format="g" InitialDirection="SortDirection.Descending"
+                SortBy="x => x.CompletedAtUtc"/>
 
         <PropertyColumn Property="x => x.InitialBankroll" Title="Initial Bankroll" Format="C0" CellStyle="@ConfigCellStyle" />
         <PropertyColumn Property="x => x.BaseBet" Title="Base Bet" Format="C0" CellStyle="@ConfigCellStyle" />
@@ -38,6 +42,33 @@
         <PropertyColumn Property="x => x.AverageMaxDrawdownWhenReachedGoal" Title="Avg Drawdown" Format="C0" CellStyle="@ResultsCellStyle" />
         <PropertyColumn Property="x => x.WorstMaxDrawdownWhenReachedGoal" Title="Worst Drawdown" Format="C0" CellStyle="@ResultsCellStyle" />
     </Columns>
+    <ChildRowContent>
+        <MudText Typo="Typo.subtitle2">Streak Length Frequency</MudText>
+        <MudSimpleTable Dense="true">
+            <thead>
+                <tr><th>Streak Length</th><th>Count</th></tr>
+            </thead>
+            <tbody>
+                @foreach (StreakLengthFrequencyEntry entry in context.Item.StreakLengthFrequencies.OrderBy(e => e.StreakLength))
+                {
+                    <tr><td>@entry.StreakLength</td><td>@entry.Count</td></tr>
+                }
+            </tbody>
+        </MudSimpleTable>
+
+        <MudText Typo="Typo.subtitle2" Class="mt-4">Lowest Bankroll Buckets</MudText>
+        <MudSimpleTable Dense="true">
+            <thead>
+                <tr><th>Bucket (% of initial)</th><th>Count</th></tr>
+            </thead>
+            <tbody>
+                @foreach (LowestBankrollBucketEntry entry in context.Item.LowestBankrollBuckets.OrderBy(e => e.BucketFloor))
+                {
+                    <tr><td>@entry.BucketFloor%+</td><td>@entry.Count</td></tr>
+                }
+            </tbody>
+        </MudSimpleTable>
+    </ChildRowContent>
 </MudDataGrid>
 
 @code {

@@ -6,7 +6,12 @@
 
 <div>Kick off a batch simulation, see results.</div>
 
-<MudButton Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" @onclick="RunBatch" Disabled="@IsRunning">Begin Simulation</MudButton>
+<MudButton Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" @onclick="RunBatch" Disabled="@(IsRunning || ConfigState.HasProblems)">Begin Simulation</MudButton>
+
+@if (ConfigState.HasProblems)
+{
+    <MudAlert Severity="Severity.Warning">There are errors on the Simulation Configuration tab. Please correct those before beginning a simulation.</MudAlert>
+}
 
 @if (IsRunning)
 {
