@@ -4,4 +4,43 @@
 
 <h1>Batch History</h1>
 
-<div>Grid, grid, grid. Mud grid!</div>
+<MudAlert Severity="Severity.Info" Class="mb-4">
+    <b>What is "drawdown"?</b> It's the biggest drop your bankroll ever took from a
+    high point to a later low point during a run — not just where you started
+    versus where you ended. For example: if a run climbed to $2,000 at its peak,
+    then later fell to $1,200 before recovering and eventually reaching the goal,
+    that's an $800 drawdown — even though the run finished well above where it
+    started. A big drawdown means a rougher ride along the way, even for a run
+    that ultimately succeeded.
+</MudAlert>
+
+<MudDataGrid Items="@Histories" T="BatchHistoryEntry">
+    <Header>
+        <MudTh></MudTh>
+        <MudTh Class="mud-theme-secondary" colspan="7">Configuration</MudTh>
+        <MudTh Class="mud-theme-primary" colspan="6">Results</MudTh>
+    </Header>
+    <Columns>
+        <PropertyColumn Property="x => x.CompletedAtUtc" Title="Completed" Format="g" />
+
+        <PropertyColumn Property="x => x.InitialBankroll" Title="Initial Bankroll" Format="C0" CellStyle="@ConfigCellStyle" />
+        <PropertyColumn Property="x => x.BaseBet" Title="Base Bet" Format="C0" CellStyle="@ConfigCellStyle" />
+        <PropertyColumn Property="x => x.BankrollGoal" Title="Goal" Format="C0" CellStyle="@ConfigCellStyle" />
+        <PropertyColumn Property="x => x.DecksInShoe" Title="Decks" CellStyle="@ConfigCellStyle" />
+        <PropertyColumn Property="x => x.MaxStreakCount" Title="Max Streak" CellStyle="@ConfigCellStyle" />
+        <PropertyColumn Property="x => x.SeatCount" Title="Seats" CellStyle="@ConfigCellStyle" />
+        <PropertyColumn Property="x => x.BettingMode" Title="Mode" CellStyle="@ConfigCellStyle" />
+
+        <PropertyColumn Property="x => x.RunCount" Title="Runs" CellStyle="@ResultsCellStyle" />
+        <PropertyColumn Property="x => x.TimesReachedGoal" Title="Reached Goal" CellStyle="@ResultsCellStyle" />
+        <PropertyColumn Property="x => x.TimesBusted" Title="Busted" CellStyle="@ResultsCellStyle" />
+        <PropertyColumn Property="x => x.AverageHandsPlayedWhenReachedGoal" Title="Avg Hands" Format="F0" CellStyle="@ResultsCellStyle" />
+        <PropertyColumn Property="x => x.AverageMaxDrawdownWhenReachedGoal" Title="Avg Drawdown" Format="C0" CellStyle="@ResultsCellStyle" />
+        <PropertyColumn Property="x => x.WorstMaxDrawdownWhenReachedGoal" Title="Worst Drawdown" Format="C0" CellStyle="@ResultsCellStyle" />
+    </Columns>
+</MudDataGrid>
+
+@code {
+    private const string ConfigCellStyle = "background-color: rgba(156, 39, 176, 0.12);";
+    private const string ResultsCellStyle = "background-color: rgba(25, 118, 210, 0.12);";
+}
