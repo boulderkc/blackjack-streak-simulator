@@ -31,6 +31,15 @@ stages:
           - script: dotnet publish BlackjackStreakSimulator.Functions/BlackjackStreakSimulator.Functions.csproj --configuration $(buildConfiguration) --no-build --output $(Build.ArtifactStagingDirectory)/functions
             displayName: 'Publish Functions'
 
+          - script: dotnet test BlackjackStreakSimulator.Engine.Tests/BlackjackStreakSimulator.Engine.Tests.csproj --configuration $(buildConfiguration) --no-build --logger trx --results-directory $(Agent.TempDirectory)/testresults
+            displayName: 'Test'
+
+          - task: PublishTestResults@2
+            condition: succeededOrFailed()
+            inputs:
+              testResultsFormat: 'VSTest'
+              testResultsFiles: '$(Agent.TempDirectory)/testresults/*.trx'
+
           - task: PublishPipelineArtifact@1
             inputs:
               targetPath: '$(Build.ArtifactStagingDirectory)/web'
