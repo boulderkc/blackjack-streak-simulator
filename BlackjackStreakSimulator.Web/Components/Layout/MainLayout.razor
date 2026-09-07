@@ -1,4 +1,6 @@
 ﻿@inherits LayoutComponentBase
+@using Microsoft.EntityFrameworkCore
+@inject IDbContextFactory<BlackjackStreakSimulatorDbContext> DbContextFactory
 
 <MudThemeProvider Theme="@_theme" IsDarkMode="_isDarkMode" />
 <MudPopoverProvider />
@@ -42,6 +44,36 @@
             PaletteDark = _darkPalette,
             LayoutProperties = new LayoutProperties()
         };
+
+        // Fire-and-forget: nudge the (possibly auto-paused) serverless SQL
+        // database awake as soon as a circuit starts, so it has a head
+        // start warming up while the user looks at config/other pages,
+        // rather than only waking up when Run Simulation is actually
+        // clicked. Deliberately not awaited here - this must never block
+        // or delay rendering, and isn't allowed to fail loudly if the
+        // database is genuinely unreachable; the real batch call still has
+        // its own retry policy and error handling for that.
+        _ = WarmUpDatabaseAsync();
+    }
+
+    private async Task WarmUpDatabaseAsync()
+    {
+        try
+        {
+            // A separate, short-lived context from the factory rather than
+            // an injected scoped one - this runs concurrently with
+            // whatever the rest of the circuit is doing, and DbContext
+            // isn't safe for concurrent use from more than one place at a
+            // time.
+            await using BlackjackStreakSimulatorDbContext context = await DbContextFactory.CreateDbContextAsync();
+            await context.BatchHistories.AsNoTracking().Select(b => b.Id).FirstOrDefaultAsync();
+        }
+        catch
+        {
+            // Best-effort only - if the database is still asleep or
+            // unreachable, the user's actual Run Simulation click will
+            // surface its own error through the normal path.
+        }
     }
 
     private void DrawerToggle()

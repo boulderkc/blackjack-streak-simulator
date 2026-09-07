@@ -45,13 +45,25 @@ builder.Services.AddHttpClient("BatchFunction", client =>
     client.BaseAddress = new Uri(batchFunctionBaseUrl);
 });
 
-builder.Services.AddDbContext<BlackjackStreakSimulatorDbContext>(options =>
+// Shared between both registrations below so the connection string and
+// retry policy can't drift out of sync between them.
+Action<DbContextOptionsBuilder> configureDbContext = options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("BlackjackStreakSimulator"),
         sqlOptions => sqlOptions.EnableRetryOnFailure(
             maxRetryCount: 5,
             maxRetryDelay: TimeSpan.FromSeconds(30),
-            errorNumbersToAdd: null)));
+            errorNumbersToAdd: null));
+
+// Scoped instance for ordinary per-circuit page use (BatchHistory, etc.).
+builder.Services.AddDbContext<BlackjackStreakSimulatorDbContext>(configureDbContext);
+
+// Factory for cases that need an independent context instance rather than
+// the shared per-circuit one - specifically, MainLayout's background
+// database warm-up ping, which runs fire-and-forget and must not risk
+// touching the same DbContext instance a page's own query might be using
+// at the same moment (DbContext isn't safe for concurrent use).
+builder.Services.AddDbContextFactory<BlackjackStreakSimulatorDbContext>(configureDbContext);
 
 var app = builder.Build();
 
