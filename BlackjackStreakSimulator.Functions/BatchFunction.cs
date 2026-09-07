@@ -25,6 +25,8 @@ public class RunAndRecordBatch
     public async Task<IActionResult> Run(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequest req)
     {
+        _logger.LogInformation("RunAndRecordBatchFunction invoked.");
+
         SimulationConfig? config;
 
         try
@@ -33,15 +35,19 @@ public class RunAndRecordBatch
                 req.Body,
                 new JsonSerializerOptions(JsonSerializerDefaults.Web));
         }
-        catch (JsonException)
+        catch (JsonException ex)
         {
+            _logger.LogError(ex, "Request body was malformed JSON.");
             return new BadRequestObjectResult("Malformed JSON body.");
         }
 
         if (config is null)
         {
+            _logger.LogWarning("Request body deserialized to null.");
             return new BadRequestObjectResult("Request body is required.");
         }
+
+        _logger.LogInformation("Config deserialized: {RunCount} runs requested.", config.NumberOfRunsInBatch);
 
         // Same Validator.TryValidateObject call SimulationConfigState uses
         // on the Web side, against the exact same SimulationConfig - the
@@ -54,6 +60,7 @@ public class RunAndRecordBatch
         if (!isValid)
         {
             string errors = string.Join(" ", validationResults.Select(r => r.ErrorMessage));
+            _logger.LogWarning("Config failed validation: {Errors}", errors);
             return new BadRequestObjectResult(errors);
         }
 
@@ -63,6 +70,8 @@ public class RunAndRecordBatch
         {
             batchResult.AddRun(SimulationRunner.RunSimulation(config), config.InitialBankroll);
         }
+
+        _logger.LogInformation("Batch of {RunCount} runs complete. Saving to database.", batchResult.RunCount);
 
         BatchHistoryEntry historyEntry = new BatchHistoryEntry
         {
@@ -121,6 +130,7 @@ public class RunAndRecordBatch
             };
         }
 
+        _logger.LogInformation("Batch result saved. Returning response.");
         return new OkObjectResult(batchResult);
     }
 }

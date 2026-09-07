@@ -6,6 +6,18 @@ using BlackjackStreakSimulator.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Pin the culture explicitly rather than relying on the host OS's locale -
+// on Windows dev machines that's en-US by default so currency formatting
+// (Format="C0" etc.) just works, but Azure App Service's Linux runtime has
+// no LANG/LC_ALL set, so .NET falls back to the invariant culture there and
+// renders amounts with the generic "¤" symbol instead of "$". Setting
+// DefaultThreadCurrentCulture (an AppDomain-wide default for new threads)
+// covers Blazor Server's circuit threads, which request-based localization
+// middleware wouldn't reliably reach.
+var defaultCulture = new System.Globalization.CultureInfo("en-US");
+System.Globalization.CultureInfo.DefaultThreadCurrentCulture = defaultCulture;
+System.Globalization.CultureInfo.DefaultThreadCurrentUICulture = defaultCulture;
+
 // Add MudBlazor services
 builder.Services.AddMudServices();
 
@@ -34,8 +46,12 @@ builder.Services.AddHttpClient("BatchFunction", client =>
 });
 
 builder.Services.AddDbContext<BlackjackStreakSimulatorDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("BlackjackStreakSimulator")));
-
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("BlackjackStreakSimulator"),
+        sqlOptions => sqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 5,
+            maxRetryDelay: TimeSpan.FromSeconds(30),
+            errorNumbersToAdd: null)));
 
 var app = builder.Build();
 

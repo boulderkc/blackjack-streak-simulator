@@ -11,6 +11,8 @@ public partial class BatchSimulation
 
     [Inject] public IHttpClientFactory HttpClientFactory { get; set; }
 
+    [Inject] public ILogger<BatchSimulation> Logger { get; set; }
+
     public bool IsRunning { get; set; }
     public BatchSimulationResult? LastResult { get; set; }
     public string? ErrorMessage { get; set; }
@@ -28,7 +30,10 @@ public partial class BatchSimulation
         try
         {
             HttpClient client = HttpClientFactory.CreateClient("BatchFunction");
+            Logger.LogInformation("Calling batch Function at {BaseAddress}", client.BaseAddress);
+
             HttpResponseMessage response = await client.PostAsJsonAsync("api/RunAndRecordBatchFunction", ConfigState.Current);
+            Logger.LogInformation("Batch Function responded with status {StatusCode}", response.StatusCode);
 
             if (response.IsSuccessStatusCode)
             {
@@ -38,6 +43,16 @@ public partial class BatchSimulation
             {
                 ErrorMessage = await response.Content.ReadAsStringAsync();
             }
+        }
+        catch (Exception ex)
+        {
+            // Previously uncaught - a network-level failure (DNS, refused
+            // connection, TLS, timeout) reaching the Function would escape
+            // this method entirely as an unhandled circuit exception rather
+            // than surfacing here, leaving no ErrorMessage and no log trail
+            // pointing at what actually failed.
+            Logger.LogError(ex, "Failed to reach the batch Function.");
+            ErrorMessage = $"Could not reach the batch simulation service: {ex.Message}";
         }
         finally
         {

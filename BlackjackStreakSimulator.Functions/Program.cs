@@ -20,7 +20,12 @@ if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("APPLICATIONINSIGHT
 
 }
 
-    builder.Services.AddDbContext<BlackjackStreakSimulatorDbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("BlackjackStreakSimulator")));
+builder.Services.AddDbContext<BlackjackStreakSimulatorDbContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("BlackjackStreakSimulator"),
+        sqlOptions => sqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 5,
+            maxRetryDelay: TimeSpan.FromSeconds(30),
+            errorNumbersToAdd: null)));
 
 builder.Build().Run();
