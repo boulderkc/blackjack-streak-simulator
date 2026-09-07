@@ -22,12 +22,15 @@ builder.Services.AddScoped<SimulationConfigState>();
 // from and back to the step-through page, same Scoped reasoning as above.
 builder.Services.AddScoped<StepThroughSimulationState>();
 
-// HttpClient for calling the batch Azure Function - hardcoded to Core
-// Tools' local default port for now; needs to move to appsettings.json
-// once there's an actual deployed Function URL to point at too.
+// HttpClient for calling the batch Azure Function - base URL comes from
+// config rather than being hardcoded, so local dev (appsettings.Development.json)
+// and the deployed App Service (an Application Setting of the same name) can
+// each point at their own Function endpoint.
+string batchFunctionBaseUrl = builder.Configuration["BatchFunctionBaseUrl"]
+    ?? throw new InvalidOperationException("BatchFunctionBaseUrl is not configured.");
 builder.Services.AddHttpClient("BatchFunction", client =>
 {
-    client.BaseAddress = new Uri("http://localhost:7071/");
+    client.BaseAddress = new Uri(batchFunctionBaseUrl);
 });
 
 builder.Services.AddDbContext<BlackjackStreakSimulatorDbContext>(options =>
