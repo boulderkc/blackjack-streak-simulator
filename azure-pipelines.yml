@@ -1,0 +1,73 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+
+stages:
+  - stage: Build
+    jobs:
+      - job: BuildAndPublish
+        steps:
+          - task: UseDotNet@2
+            inputs:
+              packageType: 'sdk'
+              version: '10.x'
+
+          - script: dotnet restore
+            displayName: 'Restore'
+
+          - script: dotnet build --configuration $(buildConfiguration) --no-restore
+            displayName: 'Build'
+
+          - script: dotnet publish BlackjackStreakSimulator.Web/BlackjackStreakSimulator.Web.csproj --configuration $(buildConfiguration) --no-build --output $(Build.ArtifactStagingDirectory)/web
+            displayName: 'Publish Web'
+
+          - script: dotnet publish BlackjackStreakSimulator.Functions/BlackjackStreakSimulator.Functions.csproj --configuration $(buildConfiguration) --no-build --output $(Build.ArtifactStagingDirectory)/functions
+            displayName: 'Publish Functions'
+
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: '$(Build.ArtifactStagingDirectory)/web'
+              artifact: 'web'
+
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: '$(Build.ArtifactStagingDirectory)/functions'
+              artifact: 'functions'
+
+  - stage: Deploy
+    dependsOn: Build
+    jobs:
+      - deployment: DeployWeb
+        environment: 'production'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureWebApp@1
+                  inputs:
+                    azureSubscription: 'blackjack-streak-simulator-arm'
+                    appType: 'webAppLinux'
+                    appName: 'blackjackstreaksimulator-web'
+                    package: '$(Pipeline.Workspace)/web'
+
+      - deployment: DeployFunctions
+        environment: 'production'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureFunctionApp@2
+                  inputs:
+                    azureSubscription: 'blackjack-streak-simulator-arm'
+                    appType: 'functionAppLinux'
+                    appName: 'blackjackstreaksimulator-func'
+                    package: '$(Pipeline.Workspace)/functions'
+
+
