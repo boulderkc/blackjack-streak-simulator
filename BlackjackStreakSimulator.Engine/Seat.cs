@@ -19,9 +19,13 @@ public class Seat
     public decimal LowestBankroll { get; private set; }
 
     // Key = streak length, value = how many times a streak of that length
-    // has concluded so far (either broken by a loss, or hitting the
-    // configured max and auto-resetting). Flat mode never populates this -
-    // streakComplete is never true and StreakCount never leaves 0.
+    // has concluded so far - broken by a loss (0 when there was no active
+    // streak to break), or hit the configured max and auto-reset. This
+    // tracks every loss, so it's a complete account of streak-ending
+    // hands, not just ones that broke an active streak. Populated in flat
+    // mode too, via the loss-breaks-active-streak path - only the
+    // hit-the-max auto-reset path is genuinely streak-mode-only, since
+    // FlatBettingStrategy's streakComplete is always false.
     public Dictionary<int, int> StreakLengthFrequency { get; } = [];
 
     public Seat(decimal initialBankroll, decimal baseBet, IBettingStrategy bettingStrategy)
@@ -84,12 +88,11 @@ public class Seat
         }
         else if (netProfit < 0)
         {
-            // Only a real streak (length 1+) counts as "concluded" - a loss
-            // while already at 0 isn't breaking anything.
-            if (StreakCount > 0)
-            {
-                RecordStreakConclusion(StreakCount);
-            }
+            // Tally every loss, keyed by the streak length it broke - 0
+            // when there was no active streak to break at all. This makes
+            // the table a complete account of every loss, not just ones
+            // that ended an active streak.
+            RecordStreakConclusion(StreakCount);
             StreakCount = 0;
         }
         // else push does not effect streakcount

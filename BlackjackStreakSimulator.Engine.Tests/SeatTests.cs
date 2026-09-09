@@ -63,17 +63,19 @@ public class SeatTests
     }
 
     [Fact]
-    public void ApplyRoundResult_LossAtZeroStreak_TalliesNothing()
+    public void ApplyRoundResult_LossAtZeroStreak_TalliesZeroLengthBucket()
     {
-        // A loss that isn't breaking an active streak shouldn't be recorded
-        // as a "concluded streak" of length 0 - there's nothing to tally.
+        // A loss that isn't breaking an active streak still gets recorded,
+        // under bucket 0 - "the streak length was 0 when this loss
+        // happened" - so the table accounts for every loss, not just ones
+        // that broke an active streak.
         Seat seat = CreateSeat();
         seat.Hands = new List<Hand> { CreateLosingHand(10m) };
 
         seat.ApplyRoundResult(CreateDealerHand());
 
         Assert.Equal(0, seat.StreakCount);
-        Assert.Empty(seat.StreakLengthFrequency);
+        Assert.Equal(1, seat.StreakLengthFrequency[0]);
     }
 
     [Fact]

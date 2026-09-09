@@ -14,12 +14,20 @@
     that ultimately succeeded.
 </MudAlert>
 
+<MudAlert Severity="Severity.Info" Class="mb-4">
+    <b>What does "Streak Length Frequency" count?</b> Only losses - including a loss
+    that happens with no active streak in progress - plus streaks that hit the
+    configured max length and reset automatically. Wins that extend a streak
+    aren't counted on their own; they're reflected in the eventual streak length
+    once it ends. Pushes don't affect streaks at all and never appear here.
+</MudAlert>
+
 <MudDataGrid Items="@Histories" T="BatchHistoryEntry">
     <Header>
         <MudTh></MudTh>
         <MudTh></MudTh>
         <MudTh Class="mud-theme-secondary" colspan="7">Configuration</MudTh>
-        <MudTh Class="mud-theme-primary" colspan="6">Results</MudTh>
+        <MudTh Class="mud-theme-primary" colspan="7">Results</MudTh>
     </Header>
     <Columns>
         <HierarchyColumn T="BatchHistoryEntry" />
@@ -38,33 +46,41 @@
         <PropertyColumn Property="x => x.RunCount" Title="Runs" CellStyle="@ResultsCellStyle" />
         <PropertyColumn Property="x => x.TimesReachedGoal" Title="Reached Goal" CellStyle="@ResultsCellStyle" />
         <PropertyColumn Property="x => x.TimesBankrupt" Title="Bankrupt" CellStyle="@ResultsCellStyle" />
-        <PropertyColumn Property="x => x.AverageHandsPlayedWhenReachedGoal" Title="Avg Hands" Format="F0" CellStyle="@ResultsCellStyle" />
+        <PropertyColumn Property="x => x.AverageHandsPlayedWhenReachedGoal" Title="Avg Hands When Reached Goal" Format="F0" CellStyle="@ResultsCellStyle" />
+        <PropertyColumn Property="x => x.AverageHandsPlayedWhenBankrupt" Title="Avg Hands When Bankrupt" Format="F0" CellStyle="@ResultsCellStyle" />
         <PropertyColumn Property="x => x.AverageMaxDrawdownWhenReachedGoal" Title="Avg Drawdown" Format="C0" CellStyle="@ResultsCellStyle" />
         <PropertyColumn Property="x => x.WorstMaxDrawdownWhenReachedGoal" Title="Worst Drawdown" Format="C0" CellStyle="@ResultsCellStyle" />
     </Columns>
     <ChildRowContent>
-        <MudText Typo="Typo.subtitle2">Streak Length Frequency</MudText>
+        @{
+            int totalStreakEndingHands = context.Item.StreakLengthFrequencies.Sum(e => e.Count);
+        }
+        <MudText Typo="Typo.subtitle2">Streak Length Frequency - how many times was this streak length hit</MudText>
         <MudSimpleTable Dense="true">
             <thead>
-                <tr><th>Streak Length</th><th>Count</th></tr>
+                <tr><th>Streak Length</th><th>% of All Streak-Ending Hands (Across All @context.Item.RunCount Runs)</th></tr>
             </thead>
             <tbody>
                 @foreach (StreakLengthFrequencyEntry entry in context.Item.StreakLengthFrequencies.OrderBy(e => e.StreakLength))
                 {
-                    <tr><td>@entry.StreakLength</td><td>@entry.Count</td></tr>
+                    <tr><td>@entry.StreakLength</td><td>@(totalStreakEndingHands == 0 ? "—" : (entry.Count / (double)totalStreakEndingHands).ToString("P1"))</td></tr>
                 }
             </tbody>
         </MudSimpleTable>
 
-        <MudText Typo="Typo.subtitle2" Class="mt-4">Lowest Bankroll Buckets</MudText>
+        <MudText Typo="Typo.subtitle2" Class="mt-4">Lowest Bankroll Buckets - For each run that reached goal, what was the lowest bankroll as a percentage of the initial bankroll</MudText>
         <MudSimpleTable Dense="true">
             <thead>
-                <tr><th>Bucket (% of initial)</th><th>Count of @context.Item.TimesReachedGoal Runs That Reached Goal</th></tr>
+                <tr><th>Bucket (% of initial)</th><th>Dollar Range</th><th>Count of @context.Item.TimesReachedGoal</th></tr>
             </thead>
             <tbody>
                 @foreach (LowestBankrollBucketEntry entry in context.Item.LowestBankrollBuckets.OrderBy(e => e.BucketFloor))
                 {
-                    <tr><td>@(entry.BucketFloor == 0 ? "0%-9%" : $"{entry.BucketFloor}%+")</td><td>@entry.Count</td></tr>
+                    <tr>
+                        <td>@(entry.BucketFloor == 0 ? "0%-9%" : $"{entry.BucketFloor}%+")</td>
+                        <td>@GetDollarRangeLabel(entry.BucketFloor, context.Item.InitialBankroll)</td>
+                        <td>@entry.Count</td>
+                    </tr>
                 }
             </tbody>
         </MudSimpleTable>
@@ -74,4 +90,22 @@
 @code {
     private const string ConfigCellStyle = "background-color: rgba(156, 39, 176, 0.12);";
     private const string ResultsCellStyle = "background-color: rgba(25, 118, 210, 0.12);";
+
+    // Same percentage-of-initial bucketing (SimulationLoop.GetLowestBankrollBucket)
+    // stays the source of truth - comparable across batches with different
+    // initial bankrolls - this just renders each row's own bucket boundaries
+    // as concrete dollars using that row's InitialBankroll, alongside the
+    // percentage label. Bucket 90 is open-ended (it absorbs 90%-100%
+    // inclusive, not just 90%-99%), so its dollar range stays open-ended too.
+    private static string GetDollarRangeLabel(int bucketFloor, decimal initialBankroll)
+    {
+        if (bucketFloor == 90)
+        {
+            return $"{initialBankroll * 0.90m:C0}+";
+        }
+
+        decimal lower = initialBankroll * bucketFloor / 100m;
+        decimal upper = initialBankroll * (bucketFloor + 10) / 100m - 1m;
+        return $"{lower:C0} - {upper:C0}";
+    }
 }
