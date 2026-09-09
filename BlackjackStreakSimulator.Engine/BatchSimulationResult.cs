@@ -3,11 +3,11 @@ using System.Text.Json.Serialization;
 namespace BlackjackStreakSimulator.Engine;
 
 // Aggregate across many independent Runs (each a full SimulationResult -
-// one seat's playthrough from InitialBankroll to bust or goal), not a
+// one seat's playthrough from InitialBankroll to bankruptcy or goal), not a
 // single Run. FinalBankroll deliberately has no equivalent here - unlike
 // streak length or drawdown, it doesn't carry useful information in
 // aggregate (a reached-goal run's final bankroll clusters near
-// BankrollGoal, a busted run's clusters near 0, by construction of the
+// BankrollGoal, a bankrupt run's clusters near 0, by construction of the
 // stopping condition).
 //
 // Every private-set/get-only property below carries [JsonInclude] - this
@@ -28,7 +28,7 @@ public class BatchSimulationResult
     public int TimesReachedGoal { get; private set; }
 
     [JsonInclude]
-    public int TimesBusted { get; private set; }
+    public int TimesBankrupt { get; private set; }
 
     // Every run's SimulationResult.StreakLengthFrequency summed together,
     // key-by-key - the real headline stat for comparing Streak vs. Flat
@@ -40,21 +40,21 @@ public class BatchSimulationResult
     public Dictionary<int, int> StreakLengthFrequency { get; private set; } = [];
 
     // Split by outcome rather than one blended average across both -
-    // a busted run and a reached-goal run likely have systematically
+    // a bankrupt run and a reached-goal run likely have systematically
     // different typical lengths, so averaging them together describes
     // neither well (the same reasoning FinalBankroll never got an
     // aggregate field over at all).
     public double AverageHandsPlayedWhenReachedGoal
         => TimesReachedGoal == 0 ? 0 : (double)HandsPlayedSumWhenReachedGoal / TimesReachedGoal;
 
-    public double AverageHandsPlayedWhenBusted
-        => TimesBusted == 0 ? 0 : (double)HandsPlayedSumWhenBusted / TimesBusted;
+    public double AverageHandsPlayedWhenBankrupt
+        => TimesBankrupt == 0 ? 0 : (double)HandsPlayedSumWhenBankrupt / TimesBankrupt;
 
     // Reached-goal runs only, same reasoning as LowestBankrollBucketFrequency
-    // below - a busted run's max drawdown is trivially close to its entire
-    // initial bankroll (that's what busting means), so including busted
-    // runs would just dilute the average with near-identical, uninteresting
-    // values. Kept as average+worst rather than bucketed like lowest
+    // below - a bankrupt run's max drawdown is trivially close to its entire
+    // initial bankroll (that's what going bankrupt means), so including
+    // bankrupt runs would just dilute the average with near-identical,
+    // uninteresting values. Kept as average+worst rather than bucketed like lowest
     // bankroll - the pair at least shows both "typical" and "worst case"
     // rather than a single number pretending to summarize a possibly
     // bimodal distribution, though full bucketing is a reasonable future
@@ -68,7 +68,7 @@ public class BatchSimulationResult
     // How close to bankruptcy reached-goal runs got along the way, not
     // just that they succeeded - key = bucket floor (0, 10, ... 90) of
     // lowest-bankroll-as-a-percentage-of-initial, value = how many
-    // reached-goal runs fell in that bucket. Busted runs aren't included -
+    // reached-goal runs fell in that bucket. Bankrupt runs aren't included -
     // their lowest bankroll is trivially near zero by definition of how
     // they ended, so it isn't an interesting question for them. See
     // SimulationLoop.GetLowestBankrollBucket.
@@ -84,7 +84,7 @@ public class BatchSimulationResult
     public int HandsPlayedSumWhenReachedGoal { get; private set; }
 
     [JsonInclude]
-    public int HandsPlayedSumWhenBusted { get; private set; }
+    public int HandsPlayedSumWhenBankrupt { get; private set; }
 
     [JsonInclude]
     public decimal MaxDrawdownSumWhenReachedGoal { get; private set; }
@@ -114,8 +114,8 @@ public class BatchSimulationResult
         }
         else
         {
-            TimesBusted++;
-            HandsPlayedSumWhenBusted += result.HandsPlayed;
+            TimesBankrupt++;
+            HandsPlayedSumWhenBankrupt += result.HandsPlayed;
         }
     }
 }

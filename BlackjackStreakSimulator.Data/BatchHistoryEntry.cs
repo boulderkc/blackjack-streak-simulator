@@ -17,10 +17,10 @@ public class BatchHistoryEntry
     // How many Runs this batch consisted of
     public int RunCount { get; set; }
     public int TimesReachedGoal { get; set; }
-    public int TimesBusted { get; set; }
+    public int TimesBankrupt { get; set; }
 
     public double AverageHandsPlayedWhenReachedGoal { get; set; }
-    public double AverageHandsPlayedWhenBusted { get; set; }
+    public double AverageHandsPlayedWhenBankrupt { get; set; }
     public decimal AverageMaxDrawdownWhenReachedGoal { get; set; }
     public decimal WorstMaxDrawdownWhenReachedGoal { get; set; }
 

@@ -37,7 +37,7 @@
 
         <PropertyColumn Property="x => x.RunCount" Title="Runs" CellStyle="@ResultsCellStyle" />
         <PropertyColumn Property="x => x.TimesReachedGoal" Title="Reached Goal" CellStyle="@ResultsCellStyle" />
-        <PropertyColumn Property="x => x.TimesBusted" Title="Busted" CellStyle="@ResultsCellStyle" />
+        <PropertyColumn Property="x => x.TimesBankrupt" Title="Bankrupt" CellStyle="@ResultsCellStyle" />
         <PropertyColumn Property="x => x.AverageHandsPlayedWhenReachedGoal" Title="Avg Hands" Format="F0" CellStyle="@ResultsCellStyle" />
         <PropertyColumn Property="x => x.AverageMaxDrawdownWhenReachedGoal" Title="Avg Drawdown" Format="C0" CellStyle="@ResultsCellStyle" />
         <PropertyColumn Property="x => x.WorstMaxDrawdownWhenReachedGoal" Title="Worst Drawdown" Format="C0" CellStyle="@ResultsCellStyle" />
@@ -59,12 +59,12 @@
         <MudText Typo="Typo.subtitle2" Class="mt-4">Lowest Bankroll Buckets</MudText>
         <MudSimpleTable Dense="true">
             <thead>
-                <tr><th>Bucket (% of initial)</th><th>Count</th></tr>
+                <tr><th>Bucket (% of initial)</th><th>Count of @context.Item.TimesReachedGoal Runs That Reached Goal</th></tr>
             </thead>
             <tbody>
                 @foreach (LowestBankrollBucketEntry entry in context.Item.LowestBankrollBuckets.OrderBy(e => e.BucketFloor))
                 {
-                    <tr><td>@entry.BucketFloor%+</td><td>@entry.Count</td></tr>
+                    <tr><td>@(entry.BucketFloor == 0 ? "0%-9%" : $"{entry.BucketFloor}%+")</td><td>@entry.Count</td></tr>
                 }
             </tbody>
         </MudSimpleTable>

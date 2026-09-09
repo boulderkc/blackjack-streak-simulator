@@ -168,6 +168,48 @@ public class SeatTests
     }
 
     [Fact]
+    public void CanAffordNextBet_BankrollCoversBaseBet_ReturnsTrue()
+    {
+        Seat seat = CreateSeat(initialBankroll: 100m); // base bet is 10m
+
+        Assert.True(seat.CanAffordNextBet());
+    }
+
+    [Fact]
+    public void CanAffordNextBet_BankrollBelowBaseBet_ReturnsFalse()
+    {
+        Seat seat = CreateSeat(initialBankroll: 5m); // base bet is 10m
+
+        Assert.False(seat.CanAffordNextBet());
+    }
+
+    [Fact]
+    public void CanAffordNextBet_BankrollExactlyEqualsNextBet_ReturnsTrue()
+    {
+        Seat seat = CreateSeat(initialBankroll: 10m); // base bet is 10m - exactly enough
+
+        Assert.True(seat.CanAffordNextBet());
+    }
+
+    [Fact]
+    public void CanAffordNextBet_StreakDoublesBetBeyondRemainingBankroll_ReturnsFalse()
+    {
+        // Two wins on a 10 base bet puts StreakCount at 2, so the next bet
+        // doubles twice to 40 - more than the 30 the seat actually has, even
+        // though it could easily cover a plain 10 base bet. This is the
+        // exact scenario that used to drive Bankroll negative.
+        Seat seat = CreateSeat(initialBankroll: 10m, strategy: new StreakBettingStrategy(maxStreakLength: 4));
+        Hand dealerHand = CreateDealerHand();
+        seat.Hands = new List<Hand> { CreateWinningHand(10m) };
+        seat.ApplyRoundResult(dealerHand);
+        seat.Hands = new List<Hand> { CreateWinningHand(10m) };
+        seat.ApplyRoundResult(dealerHand);
+
+        Assert.Equal(30m, seat.Bankroll); // sanity check on the setup itself
+        Assert.False(seat.CanAffordNextBet());
+    }
+
+    [Fact]
     public void ApplyRoundResult_TracksWorstTrough_NotJustFinalValue()
     {
         // 1000 -> 700 (trough so far) -> 1200 (recovered well past start) -

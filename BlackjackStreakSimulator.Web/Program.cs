@@ -56,7 +56,17 @@ Action<DbContextOptionsBuilder> configureDbContext = options =>
             errorNumbersToAdd: null));
 
 // Scoped instance for ordinary per-circuit page use (BatchHistory, etc.).
-builder.Services.AddDbContext<BlackjackStreakSimulatorDbContext>(configureDbContext);
+// optionsLifetime: Singleton is required for AddDbContextFactory (below) to
+// coexist with this - AddDbContextFactory's factory is itself a singleton,
+// and a singleton can't consume a Scoped DbContextOptions<T>, which is what
+// AddDbContext registers by default. This only changes the lifetime of the
+// options object, not the DbContext itself - the line below still hands out
+// a fresh scoped context per circuit exactly as before. Locally, ASP.NET
+// Core's Development-only strict DI validation catches this mismatch at
+// startup; Production skips that validation, which is why this worked
+// (via an accidental captive-dependency anti-pattern) once deployed but
+// crashed immediately when run locally.
+builder.Services.AddDbContext<BlackjackStreakSimulatorDbContext>(configureDbContext, optionsLifetime: ServiceLifetime.Singleton);
 
 // Factory for cases that need an independent context instance rather than
 // the shared per-circuit one - specifically, MainLayout's background

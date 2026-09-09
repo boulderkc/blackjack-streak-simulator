@@ -45,6 +45,18 @@ public static class SimulationLoop
     // can discard it, SingleRoundRunner keeps it to show the UI.
     public static bool PlayOneRound(Seat trackedSeat, SimulationConfig config, ref Shoe shoe, List<Seat> seats, ref int handsPlayed, out Hand dealerHand)
     {
+        if (!trackedSeat.CanAffordNextBet())
+        {
+            // The tracked seat can't cover its next required bet at all -
+            // same as a real table, you don't get to play a hand you can't
+            // back. The run ends right here, bankrupt, without dealing a
+            // round nobody could actually afford: no cards drawn, no hand
+            // counted. This replaces letting the round play out and the
+            // bet drive Bankroll negative.
+            dealerHand = new Hand();
+            return true;
+        }
+
         if (shoe.NeedsReshuffle)
         {
             shoe = new Shoe(config.DecksInShoe);

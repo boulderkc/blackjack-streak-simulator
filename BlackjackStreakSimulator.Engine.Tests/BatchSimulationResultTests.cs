@@ -33,10 +33,10 @@ public class BatchSimulationResultTests
         Assert.NotNull(roundTripped);
         Assert.Equal(original.RunCount, roundTripped.RunCount);
         Assert.Equal(original.TimesReachedGoal, roundTripped.TimesReachedGoal);
-        Assert.Equal(original.TimesBusted, roundTripped.TimesBusted);
+        Assert.Equal(original.TimesBankrupt, roundTripped.TimesBankrupt);
         Assert.Equal(original.WorstMaxDrawdownWhenReachedGoal, roundTripped.WorstMaxDrawdownWhenReachedGoal);
         Assert.Equal(original.AverageHandsPlayedWhenReachedGoal, roundTripped.AverageHandsPlayedWhenReachedGoal);
-        Assert.Equal(original.AverageHandsPlayedWhenBusted, roundTripped.AverageHandsPlayedWhenBusted);
+        Assert.Equal(original.AverageHandsPlayedWhenBankrupt, roundTripped.AverageHandsPlayedWhenBankrupt);
         Assert.Equal(original.AverageMaxDrawdownWhenReachedGoal, roundTripped.AverageMaxDrawdownWhenReachedGoal);
         Assert.Equal(original.StreakLengthFrequency, roundTripped.StreakLengthFrequency);
         Assert.Equal(original.LowestBankrollBucketFrequency, roundTripped.LowestBankrollBucketFrequency);

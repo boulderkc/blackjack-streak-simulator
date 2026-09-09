@@ -161,6 +161,23 @@ public class SimulationLoopTests
         Assert.False(ReferenceEquals(shoeBeforeRound, shoe));
     }
 
+    [Fact]
+    public void PlayOneRound_CannotAffordNextBet_EndsWithoutPlayingARound()
+    {
+        SimulationConfig config = new SimulationConfig();
+        Shoe shoe = new Shoe(config.DecksInShoe);
+        Seat trackedSeat = new Seat(5m, 10m, new FlatBettingStrategy()); // can't cover a 10 bet with 5
+        List<Seat> seats = new List<Seat> { trackedSeat };
+        int handsPlayed = 3;
+
+        bool finished = SimulationLoop.PlayOneRound(trackedSeat, config, ref shoe, seats, ref handsPlayed, out Hand dealerHand);
+
+        Assert.True(finished);
+        Assert.Equal(3, handsPlayed); // unchanged - no round was actually played
+        Assert.Empty(dealerHand.Cards); // nothing dealt
+        Assert.Equal(5m, trackedSeat.Bankroll); // untouched - no phantom bet applied
+    }
+
     // ---- BuildResult ----
 
     [Fact]

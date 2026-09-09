@@ -36,6 +36,16 @@ public class Seat
         BettingStrategy = bettingStrategy;
     }
 
+    // Pure preview of what NewRound() would bet next, without triggering any
+    // of its side effects (streak-conclusion recording, StreakCount reset) -
+    // GetNextBet itself is stateless, so this is safe to call speculatively
+    // before deciding whether the round can even be played at all.
+    public bool CanAffordNextBet()
+    {
+        (decimal bet, _) = BettingStrategy.GetNextBet(baseBet, StreakCount);
+        return bet <= Bankroll;
+    }
+
     public void NewRound()
     {
         var (bet, streakComplete) = BettingStrategy.GetNextBet(baseBet, StreakCount);

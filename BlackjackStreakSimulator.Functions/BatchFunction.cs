@@ -85,9 +85,9 @@ public class RunAndRecordBatch
             BettingMode = config.BettingMode.ToString(),
             RunCount = batchResult.RunCount,
             TimesReachedGoal = batchResult.TimesReachedGoal,
-            TimesBusted = batchResult.TimesBusted,
+            TimesBankrupt = batchResult.TimesBankrupt,
             AverageHandsPlayedWhenReachedGoal = batchResult.AverageHandsPlayedWhenReachedGoal,
-            AverageHandsPlayedWhenBusted = batchResult.AverageHandsPlayedWhenBusted,
+            AverageHandsPlayedWhenBankrupt = batchResult.AverageHandsPlayedWhenBankrupt,
             AverageMaxDrawdownWhenReachedGoal = batchResult.AverageMaxDrawdownWhenReachedGoal,
             WorstMaxDrawdownWhenReachedGoal = batchResult.WorstMaxDrawdownWhenReachedGoal
         };
