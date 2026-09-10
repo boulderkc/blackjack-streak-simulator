@@ -1,0 +1,11 @@
+/* Applied to all four "section" headers (the two plain ones and the two
+   expander titles) so the eye can find where each section starts,
+   especially once a panel is expanded and the page gets long. Underline
+   uses MudBlazor's own theme variable so it matches the accent color and
+   adapts automatically between light/dark, rather than a hardcoded hex
+   value that might not. */
+.section-header {
+    display: inline-block;
+    border-bottom: 3px solid var(--mud-palette-primary);
+    padding-bottom: 2px;
+}

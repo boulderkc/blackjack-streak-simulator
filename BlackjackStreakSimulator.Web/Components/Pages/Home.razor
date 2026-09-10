@@ -2,71 +2,138 @@
 
 <PageTitle>Home</PageTitle>
 
-<MudText Typo="Typo.h3" GutterBottom="true">Blackjack Streak Simulator</MudText>
-<MudText Typo="Typo.subtitle1" Class="mb-8">Does a "crazy" betting system actually change your odds? Let's find out.</MudText>
+<!-- Hero: full width, two columns - right column reserved for a future
+     graphic. First attempt (bankroll-trajectories.png) shelved for now -
+     couldn't get the layout to close the gap between it and the page
+     content below despite confirmed-working style changes; revisit later
+     rather than keep tuning blind. Image file left in wwwroot/images. -->
+<MudGrid Class="mb-8">
+    <MudItem xs="12" md="8">
+        <MudText Typo="Typo.h4" GutterBottom="true">Welcome to Blackjack Streak Simulator!</MudText>
+        <MudText Typo="Typo.h6" Class="mb-4">Does a "crazy" betting system actually change your odds? Let's find out.</MudText>
+        <MudText Class="mb-4">
+            Simulate thousands of blackjack sessions using the Paroli betting system and see
+            what actually happens.
+        </MudText>
+        <MudStack Row="true" Spacing="4">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" Href="/simconfig">Configure a Simulation</MudButton>
+            <MudButton Variant="Variant.Outlined" Color="Color.Primary" Href="/batchsim">Run a Batch Simulation</MudButton>
+            <MudButton Variant="Variant.Outlined" Color="Color.Primary" Href="/stepthrough">Step Through a Game</MudButton>
+        </MudStack>
+    </MudItem>
+    <MudItem xs="12" md="4">
+        <!-- Reserved for a hero graphic - shelved for now, see comment above. -->
+    </MudItem>
+</MudGrid>
 
-<MudText Typo="Typo.h5" GutterBottom="true">Where this came from</MudText>
-<MudText Class="mb-8">
-    Years ago, a friend and I went to Vegas and played blackjack together. He used a betting
-    system that looked crazy to me at the time - but he walked away from that trip a winner, and
-    I've wondered ever since whether that was the system, or just luck.
-    <br /><br />
-    It turns out the system has a name - <b>Paroli</b> - and mathematicians have already worked
-    out its odds in exhaustive detail. I'm not a mathematician, but I am a software developer.
-    So instead of doing the math myself, I built something that plays it out: thousands of
-    simulated hands, with the results laid out for you to explore.
-</MudText>
+<!-- Narrower reading width for pure prose - reads better around 800-950px
+     than stretched across the full page. The expanders below get their
+     own wider container instead of sharing this one, since their cards
+     need more room than prose does. -->
+<div style="max-width: 900px;">
+    <MudText Typo="Typo.h5" Color="Color.Primary" Class="section-header" GutterBottom="true">Why I built this</MudText>
+    <MudText Class="mb-8">
+        Years ago, a friend and I went to Vegas and played blackjack together. He used a
+        betting system that looked crazy to me at the time - but he walked away from that
+        trip a winner, and I've wondered ever since whether that was the system, or just
+        luck.
+        <br /><br />
+        It turns out the system has a name - <b>Paroli</b> - and mathematicians have
+        already worked out its odds in exhaustive detail. I'm not a mathematician, but I
+        am a software developer. So instead of doing the math myself, I built something
+        that plays it out: thousands of simulated hands, with the results laid out for
+        you to explore.
+    </MudText>
+</div>
 
-<MudText Typo="Typo.h5" GutterBottom="true">How Paroli betting works</MudText>
-<MudText Class="mb-4">
-    The idea is simple: bet more while you're winning, and reset the moment you lose. Say your
-    base bet is $10 and you're chasing a streak of 3:
-</MudText>
-<MudSimpleTable Dense="true" Class="mb-4" Style="max-width: 500px;">
-    <tbody>
-        <tr><td>Hand 1</td><td>Bet $10, win</td><td>Streak of 1</td></tr>
-        <tr><td>Hand 2</td><td>Bet $20, win</td><td>Streak of 2</td></tr>
-        <tr><td>Hand 3</td><td>Bet $40, win</td><td>Streak of 3 - reset to $10</td></tr>
-    </tbody>
-</MudSimpleTable>
-<MudText Class="mb-8">
-    Lose at any point, and you're straight back to your $10 base bet. That's the whole system.
-    <br /><br />
-    Compare that to <b>flat betting</b> - what most players actually do - where the bet stays
-    the same every single hand, win or lose. This app lets you run both side by side.
-    <br /><br />
-    Betting is only half the picture, though. Every player at the table - including the one
-    being tracked - always plays the same well-established
-    <MudLink Href="basic-strategy.html" Target="_blank">standard strategy</MudLink> for how to
-    play each hand. Nobody's making judgment calls; only the bet sizing changes.
-</MudText>
+<!-- Wider than the prose column above - the cards inside these panels felt
+     cramped at 900px. Not full page width, just enough room to breathe. -->
+<div style="max-width: 1150px;">
+    <MudExpansionPanels Class="mb-8">
+        <MudExpansionPanel>
+            <TitleContent>
+                <MudText Typo="Typo.h6" Color="Color.Primary" Class="section-header">How Paroli betting works</MudText>
+            </TitleContent>
+            <ChildContent>
+                <MudGrid Class="mb-4">
+                    <MudItem xs="12" sm="4">
+                        <MudCard>
+                            <MudCardContent>
+                                <MudText Typo="Typo.subtitle1"><b>Paroli</b></MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Win, double, double, reset</MudText>
+                                <MudText Typo="Typo.h6">$10 &rarr; $20 &rarr; $40 &rarr; reset</MudText>
+                            </MudCardContent>
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" sm="4">
+                        <MudCard>
+                            <MudCardContent>
+                                <MudText Typo="Typo.subtitle1"><b>Flat Betting</b></MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">The same bet every hand</MudText>
+                                <MudText Typo="Typo.h6">$10 &rarr; $10 &rarr; $10 &rarr; $10</MudText>
+                            </MudCardContent>
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" sm="4">
+                        <MudCard>
+                            <MudCardContent>
+                                <MudText Typo="Typo.subtitle1"><b>Standard Strategy</b></MudText>
+                                <MudText Typo="Typo.body2">For both Paroli and Flat betting, every player uses the same well-established strategy - only bet sizing changes.</MudText>
+                            </MudCardContent>
+                        </MudCard>
+                    </MudItem>
+                </MudGrid>
+                <MudText>
+                    Lose at any point during a Paroli streak, and you're straight back to your $10 base bet.
+                    <b>Flat betting</b> - what most players actually do - just keeps the same bet every hand,
+                    win or lose. This app lets you run both side by side.
+                    <br /><br />
+                    Betting is only half the picture, though. Every player at the table - including the one
+                    being tracked - always plays the same well-established
+                    <MudLink Href="basic-strategy.html" Target="_blank">standard strategy</MudLink> for how to
+                    play each hand. Nobody's making judgment calls; only the bet sizing changes.
+                </MudText>
+            </ChildContent>
+        </MudExpansionPanel>
+        <MudExpansionPanel>
+            <TitleContent>
+                <MudText Typo="Typo.h6" Color="Color.Primary" Class="section-header">What you can do here</MudText>
+            </TitleContent>
+            <ChildContent>
+                <MudText>
+                    In <b>Simulation Configuration</b>, you can set your starting bankroll, base bet, goal,
+                    and streak length, and choose between Paroli-style streak betting or flat betting.
+                    <br /><br />
+                    In <b>Step-Through Simulation</b>, you can play a single simulated game one hand at a
+                    time. There's no real strategic reason to watch it live - every seat plays fixed basic
+                    strategy, nobody's making decisions - it's mostly here to show off Blazor's interactive
+                    rendering.
+                    <br /><br />
+                    In <b>Batch Simulation</b>, you can run however many simulated attempts you like - 1,000
+                    is a good starting point - and see what happened: how often the goal got hit, how often
+                    the bankroll went <i>bankrupt</i>, and how rough the ride was along the way.
+                    <br /><br />
+                    In <b>Batch History</b>, you can look back at every batch you've run, compare
+                    configurations side by side, and dig into the details - streak lengths, drawdowns, and
+                    lowest-bankroll buckets - for any past batch.
+                </MudText>
+            </ChildContent>
+        </MudExpansionPanel>
+    </MudExpansionPanels>
+</div>
 
-<MudText Typo="Typo.h5" GutterBottom="true">What you can do here</MudText>
-<MudText Class="mb-8">
-    Set a starting bankroll (say $1,000) and a goal (say $3,000), then run a batch of however
-    many simulated attempts you like - 1,000 is a good starting point. The app runs them all and
-    shows you what actually happened: how often the goal got hit, how often the bankroll went
-    <i>bankrupt</i>, and how rough the ride was along the way.
-    <br /><br />
-    You can also step through a single simulated game one hand at a time. There's no real
-    strategic reason to watch it live - every seat plays fixed basic strategy, nobody's making
-    decisions - it's mostly here to show off Blazor's interactive rendering.
-</MudText>
-
-<MudText Typo="Typo.h5" GutterBottom="true">About this project</MudText>
-<MudText Class="mb-8">
-    This app is also a demo of my own skills - see the <MudLink Href="/techstack">Technology
-    Stack</MudLink> page for a look at everything under the hood.
-    <br /><br />
-    I didn't write most of the code myself. I know these technologies and I'm an experienced
-    developer, but for this project I worked closely with <b>Claude Code</b>, an AI coding
-    assistant, discussing nearly every line of code so I understood exactly what was built and
-    why. Every decision here was mine - the AI just helped me get there faster. Pairing real
-    software engineering experience with an AI that can move fast turns out to be a genuinely
-    effective combination.
-</MudText>
-
-<MudStack Row="true" Spacing="4">
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" Href="/simconfig">Configure a Simulation</MudButton>
-    <MudButton Variant="Variant.Outlined" Color="Color.Primary" Href="/stepthrough">Step Through a Game</MudButton>
-</MudStack>
+<div style="max-width: 900px;">
+    <MudText Typo="Typo.h5" Color="Color.Primary" Class="section-header" GutterBottom="true">About this project</MudText>
+    <MudText Class="mb-4">
+        This application is both a working simulation and a demonstration of my software
+        development skills. The <MudLink Href="/techstack">Technology Stack</MudLink> page
+        describes the architecture and technologies used throughout.
+        <br /><br />
+        I didn't type most of the code in this repository myself - but I made every design
+        decision, reviewed every line, and directed the build end-to-end using <b>Claude
+        Code</b> as my implementation partner. Knowing how to effectively direct, evaluate, and
+        take ownership of AI-generated code is itself a real engineering skill, and this project
+        is a demonstration of exactly that.
+    </MudText>
+    <MudButton Variant="Variant.Outlined" Color="Color.Primary" Href="/techstack" Class="mb-8">View Technology Stack</MudButton>
+</div>

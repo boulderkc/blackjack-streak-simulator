@@ -4,6 +4,7 @@ using System.Diagnostics;
 using BlackjackStreakSimulator.Engine;
 using BlackjackStreakSimulator.Web.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 public partial class BatchSimulation
 {
@@ -13,10 +14,29 @@ public partial class BatchSimulation
 
     [Inject] public ILogger<BatchSimulation> Logger { get; set; }
 
+    [Inject] public IJSRuntime JsRuntime { get; set; }
+
     public bool IsRunning { get; set; }
     public BatchSimulationResult? LastResult { get; set; }
     public string? ErrorMessage { get; set; }
     public TimeSpan? LastRunDuration { get; set; }
+    public TimeZoneInfo? ViewerTimeZone { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            string timeZoneId = await JsRuntime.InvokeAsync<string>("getBrowserTimeZone");
+            ViewerTimeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
+            StateHasChanged();
+        }
+    }
+
+    // Same viewer-local-time approach as BatchHistory.razor.cs - falls back
+    // to plain UTC until ViewerTimeZone is known (the brief window before
+    // the JS interop call above has come back).
+    public DateTime GetDisplayTime(DateTime utc)
+        => ViewerTimeZone is null ? utc : TimeZoneInfo.ConvertTimeFromUtc(utc, ViewerTimeZone);
 
     public async Task RunBatch()
     {

@@ -26,8 +26,15 @@ public class SeatTests
         return hand;
     }
 
+    // Default strategy is Streak with a generously high cap, not Flat -
+    // most tests using this default are really testing ApplyRoundResult's
+    // general streak/drawdown tracking, not anything flat-mode-specific,
+    // and flat-mode seats no longer track streaks at all (see
+    // ApplyRoundResult_FlatMode_NeverTracksStreaks below). The high cap
+    // keeps these short test scenarios (a handful of wins) well clear of
+    // ever triggering the hit-the-max auto-reset path by accident.
     private static Seat CreateSeat(decimal initialBankroll = 1000m, IBettingStrategy? strategy = null)
-        => new Seat(initialBankroll, baseBet: 10m, strategy ?? new FlatBettingStrategy());
+        => new Seat(initialBankroll, baseBet: 10m, strategy ?? new StreakBettingStrategy(maxStreakLength: 100));
 
     [Fact]
     public void ApplyRoundResult_Win_IncrementsStreakCountAndDoesNotTally()
@@ -93,6 +100,27 @@ public class SeatTests
         seat.ApplyRoundResult(dealerHand);
 
         Assert.Equal(2, seat.StreakCount);
+        Assert.Empty(seat.StreakLengthFrequency);
+    }
+
+    [Fact]
+    public void ApplyRoundResult_FlatMode_NeverTracksStreaks()
+    {
+        // Flat betting never changes the bet regardless of streak length,
+        // so streak tracking can't describe anything it actually does -
+        // wins, losses, and pushes should all leave StreakCount and
+        // StreakLengthFrequency completely untouched.
+        Seat seat = CreateSeat(strategy: new FlatBettingStrategy());
+        Hand dealerHand = CreateDealerHand();
+
+        seat.Hands = new List<Hand> { CreateWinningHand(10m) };
+        seat.ApplyRoundResult(dealerHand);
+        seat.Hands = new List<Hand> { CreateWinningHand(10m) };
+        seat.ApplyRoundResult(dealerHand);
+        seat.Hands = new List<Hand> { CreateLosingHand(10m) };
+        seat.ApplyRoundResult(dealerHand);
+
+        Assert.Equal(0, seat.StreakCount);
         Assert.Empty(seat.StreakLengthFrequency);
     }
 

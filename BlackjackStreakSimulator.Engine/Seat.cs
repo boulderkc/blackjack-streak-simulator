@@ -22,10 +22,10 @@ public class Seat
     // has concluded so far - broken by a loss (0 when there was no active
     // streak to break), or hit the configured max and auto-reset. This
     // tracks every loss, so it's a complete account of streak-ending
-    // hands, not just ones that broke an active streak. Populated in flat
-    // mode too, via the loss-breaks-active-streak path - only the
-    // hit-the-max auto-reset path is genuinely streak-mode-only, since
-    // FlatBettingStrategy's streakComplete is always false.
+    // hands, not just ones that broke an active streak. Stays empty for
+    // flat-mode seats - see ApplyRoundResult - since the bet never changes
+    // regardless of streak length, this data can't describe anything
+    // flat betting actually does.
     public Dictionary<int, int> StreakLengthFrequency { get; } = [];
 
     public Seat(decimal initialBankroll, decimal baseBet, IBettingStrategy bettingStrategy)
@@ -81,21 +81,31 @@ public class Seat
 
         LowestBankroll = Math.Min(LowestBankroll, Bankroll);
 
-        // Using profit rather than win/loss because a seat might hold more than one hand after a split.
-        if (netProfit > 0)
+        // Streak tracking is meaningless for flat betting - the bet never
+        // changes regardless of streak length, so there's nothing for this
+        // data to describe. Skipped here at the source, rather than
+        // filtered out downstream, so a flat-mode seat never accumulates
+        // the long tail of near-empty buckets an uncapped winning streak
+        // can produce (nothing resets it early the way hitting a
+        // configured max would in streak mode).
+        if (BettingStrategy is not FlatBettingStrategy)
         {
-            StreakCount++;
+            // Using profit rather than win/loss because a seat might hold more than one hand after a split.
+            if (netProfit > 0)
+            {
+                StreakCount++;
+            }
+            else if (netProfit < 0)
+            {
+                // Tally every loss, keyed by the streak length it broke - 0
+                // when there was no active streak to break at all. This makes
+                // the table a complete account of every loss, not just ones
+                // that ended an active streak.
+                RecordStreakConclusion(StreakCount);
+                StreakCount = 0;
+            }
+            // else push does not effect streakcount
         }
-        else if (netProfit < 0)
-        {
-            // Tally every loss, keyed by the streak length it broke - 0
-            // when there was no active streak to break at all. This makes
-            // the table a complete account of every loss, not just ones
-            // that ended an active streak.
-            RecordStreakConclusion(StreakCount);
-            StreakCount = 0;
-        }
-        // else push does not effect streakcount
     }
 
     private void RecordStreakConclusion(int length)

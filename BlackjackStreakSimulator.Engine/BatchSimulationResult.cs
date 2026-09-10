@@ -21,6 +21,13 @@ namespace BlackjackStreakSimulator.Engine;
 // thing that can mutate this class from regular C# code.
 public class BatchSimulationResult
 {
+    // Plain public setter, unlike everything below it - this is simple
+    // metadata set once from outside (by BatchFunction, mirroring the exact
+    // value it also writes to BatchHistoryEntry) rather than an
+    // AddRun-accumulated stat, so it doesn't need the private-set +
+    // [JsonInclude] guard the rest of this class uses.
+    public DateTime CompletedAtUtc { get; set; }
+
     [JsonInclude]
     public int RunCount { get; private set; }
 

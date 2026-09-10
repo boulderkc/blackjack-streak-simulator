@@ -73,9 +73,17 @@ public class RunAndRecordBatch
 
         _logger.LogInformation("Batch of {RunCount} runs complete. Saving to database.", batchResult.RunCount);
 
+        // Captured once and reused for both batchResult (sent back to the
+        // Web app) and historyEntry (saved to SQL) - not two separate
+        // DateTime.UtcNow calls, so a viewer can trust the "batch complete"
+        // message's timestamp actually matches this exact row in Batch
+        // History, not a value a few milliseconds off from it.
+        DateTime completedAtUtc = DateTime.UtcNow;
+        batchResult.CompletedAtUtc = completedAtUtc;
+
         BatchHistoryEntry historyEntry = new BatchHistoryEntry
         {
-            CompletedAtUtc = DateTime.UtcNow,
+            CompletedAtUtc = completedAtUtc,
             InitialBankroll = config.InitialBankroll,
             BaseBet = config.BaseBet,
             BankrollGoal = config.BankrollGoal,

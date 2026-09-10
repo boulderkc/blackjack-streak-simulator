@@ -17,7 +17,7 @@
     <div class="term-arrow">many make a →</div>
     <div class="term-box">
         <h4>Run</h4>
-        <p>One seat's play, start to bust or goal</p>
+        <p>One seat's play, start to bankrupt or goal</p>
     </div>
     <div class="term-arrow">many make a →</div>
     <div class="term-box">
@@ -31,6 +31,7 @@
     <MudAlert Severity="Severity.Warning">Configuration is disabled while a step-through run is in progress.</MudAlert>
 }
 
+<h4 style="color: var(--mud-palette-secondary);">Money</h4>
 <div Class="num-input-size">
     <MudNumericField HideSpinButtons="true" @bind-Value="ConfigState.Current.InitialBankroll" Label="Initial bankroll"
                      Variant="Variant.Outlined" Min="@SimulationConfig.InitialBankrollMin" Disabled="@RunState.IsRunActive" />
@@ -54,10 +55,7 @@
     <div class="field-error">@baseBetError</div>
 }
 
-<div Class="num-input-size">
-    <MudNumericField @bind-Value="ConfigState.Current.MaxStreakCount" Label="Max streak count"
-                     Variant="Variant.Outlined" Min="@SimulationConfig.MaxStreakCountMin" Max="@SimulationConfig.MaxStreakCountMax" Disabled="@RunState.IsRunActive" />
-</div>
+<h4 class="mt-6" style="color: var(--mud-palette-tertiary);">Table</h4>
 <div Class="num-input-size">
     <MudNumericField @bind-Value="ConfigState.Current.DecksInShoe" Label="Decks in shoe" Variant="Variant.Outlined"
                      Min="@SimulationConfig.DecksInShoeMin" Max="@SimulationConfig.DecksInShoeMax" Disabled="@RunState.IsRunActive" />
@@ -68,13 +66,19 @@
 }
 
 <div Class="num-input-size">
-    <MudNumericField @bind-Value="ConfigState.Current.NumberOfRunsInBatch" Label="Number of runs in batch" Variant="Variant.Outlined"
-                     Min="@SimulationConfig.NumberOfRunsInBatchMin" Max="@SimulationConfig.NumberOfRunsInBatchMax" Disabled="@RunState.IsRunActive" />
-</div>
-
-<div Class="num-input-size">
     <MudNumericField @bind-Value="ConfigState.Current.SeatCount" Label="Number of players, including target player"
                      Variant="Variant.Outlined" Min="@SimulationConfig.SeatCountMin" Max="@SimulationConfig.SeatCountMax" Disabled="@RunState.IsRunActive" />
+</div>
+
+<h4 class="mt-6" style="color: var(--mud-palette-info);">Simulation</h4>
+<div Class="num-input-size">
+    <MudNumericField @bind-Value="ConfigState.Current.MaxStreakCount" Label="Max streak count"
+                     Variant="Variant.Outlined" Min="@SimulationConfig.MaxStreakCountMin" Max="@SimulationConfig.MaxStreakCountMax"
+                     Disabled="@(RunState.IsRunActive || ConfigState.Current.BettingMode == BettingMode.Flat)" />
+</div>
+<div Class="num-input-size">
+    <MudNumericField @bind-Value="ConfigState.Current.NumberOfRunsInBatch" Label="Number of runs in batch" Variant="Variant.Outlined"
+                     Min="@SimulationConfig.NumberOfRunsInBatchMin" Max="@SimulationConfig.NumberOfRunsInBatchMax" Disabled="@RunState.IsRunActive" />
 </div>
 <div class="betting-mode-size">
     <MudSelect @bind-Value="ConfigState.Current.BettingMode" Label="Betting mode" Variant="Variant.Outlined"

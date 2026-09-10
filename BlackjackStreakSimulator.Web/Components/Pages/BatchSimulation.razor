@@ -4,7 +4,7 @@
 
 <h1>Batch Simulation</h1>
 
-<div>Kick off a batch simulation, see results.</div>
+<div Class="mb-4">Kick off a batch simulation, view the results in Batch History when complete.</div>
 
 <MudButton Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" @onclick="RunBatch" Disabled="@(IsRunning || ConfigState.HasProblems)">Begin Simulation</MudButton>
 
@@ -15,12 +15,18 @@
 
 @if (IsRunning)
 {
-    <MudProgressCircular Indeterminate="true" />
+    <div Class="mt-8">
+        <MudProgressCircular Indeterminate="true" Style="width: 120px; height: 120px;" />
+    </div>
 }
 
 @if (!IsRunning && LastResult is not null)
 {
-    <MudAlert Severity="Severity.Success">Batch complete in @LastRunDuration?.TotalSeconds.ToString("F1") seconds.</MudAlert>
+    <MudAlert Severity="Severity.Success">
+        Batch complete in @LastRunDuration?.TotalSeconds.ToString("F1") seconds.
+        See the results for batch completed at @GetDisplayTime(LastResult.CompletedAtUtc).ToString("g")
+        in <MudLink Href="/batchhistory">Batch History</MudLink>.
+    </MudAlert>
 }
 
 @if (!IsRunning && ErrorMessage is not null)
