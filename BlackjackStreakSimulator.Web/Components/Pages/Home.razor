@@ -1,17 +1,72 @@
-﻿@page "/"
+@page "/"
 
 <PageTitle>Home</PageTitle>
 
-<MudText Typo="Typo.h3" GutterBottom="true">Hello, world!</MudText>
-<MudText Class="mb-8">Welcome to Blackjack Streak Simulator!</MudText>
+<MudText Typo="Typo.h3" GutterBottom="true">Blackjack Streak Simulator</MudText>
+<MudText Typo="Typo.subtitle1" Class="mb-8">Does a "crazy" betting system actually change your odds? Let's find out.</MudText>
 
-
-
-<br />
-<MudText Typo="Typo.h5" GutterBottom="true">Why this exists</MudText>
-<br />
-<MudText Typo="Typo.body2">
-    I want a job! Gimme a job! Looks at all this cool stuff.<br />
-    
+<MudText Typo="Typo.h5" GutterBottom="true">Where this came from</MudText>
+<MudText Class="mb-8">
+    Years ago, a friend and I went to Vegas and played blackjack together. He used a betting
+    system that looked crazy to me at the time - but he walked away from that trip a winner, and
+    I've wondered ever since whether that was the system, or just luck.
+    <br /><br />
+    It turns out the system has a name - <b>Paroli</b> - and mathematicians have already worked
+    out its odds in exhaustive detail. I'm not a mathematician, but I am a software developer.
+    So instead of doing the math myself, I built something that plays it out: thousands of
+    simulated hands, with the results laid out for you to explore.
 </MudText>
 
+<MudText Typo="Typo.h5" GutterBottom="true">How Paroli betting works</MudText>
+<MudText Class="mb-4">
+    The idea is simple: bet more while you're winning, and reset the moment you lose. Say your
+    base bet is $10 and you're chasing a streak of 3:
+</MudText>
+<MudSimpleTable Dense="true" Class="mb-4" Style="max-width: 500px;">
+    <tbody>
+        <tr><td>Hand 1</td><td>Bet $10, win</td><td>Streak of 1</td></tr>
+        <tr><td>Hand 2</td><td>Bet $20, win</td><td>Streak of 2</td></tr>
+        <tr><td>Hand 3</td><td>Bet $40, win</td><td>Streak of 3 - reset to $10</td></tr>
+    </tbody>
+</MudSimpleTable>
+<MudText Class="mb-8">
+    Lose at any point, and you're straight back to your $10 base bet. That's the whole system.
+    <br /><br />
+    Compare that to <b>flat betting</b> - what most players actually do - where the bet stays
+    the same every single hand, win or lose. This app lets you run both side by side.
+    <br /><br />
+    Betting is only half the picture, though. Every player at the table - including the one
+    being tracked - always plays the same well-established
+    <MudLink Href="basic-strategy.html" Target="_blank">standard strategy</MudLink> for how to
+    play each hand. Nobody's making judgment calls; only the bet sizing changes.
+</MudText>
+
+<MudText Typo="Typo.h5" GutterBottom="true">What you can do here</MudText>
+<MudText Class="mb-8">
+    Set a starting bankroll (say $1,000) and a goal (say $3,000), then run a batch of however
+    many simulated attempts you like - 1,000 is a good starting point. The app runs them all and
+    shows you what actually happened: how often the goal got hit, how often the bankroll went
+    <i>bankrupt</i>, and how rough the ride was along the way.
+    <br /><br />
+    You can also step through a single simulated game one hand at a time. There's no real
+    strategic reason to watch it live - every seat plays fixed basic strategy, nobody's making
+    decisions - it's mostly here to show off Blazor's interactive rendering.
+</MudText>
+
+<MudText Typo="Typo.h5" GutterBottom="true">About this project</MudText>
+<MudText Class="mb-8">
+    This app is also a demo of my own skills - see the <MudLink Href="/techstack">Technology
+    Stack</MudLink> page for a look at everything under the hood.
+    <br /><br />
+    I didn't write most of the code myself. I know these technologies and I'm an experienced
+    developer, but for this project I worked closely with <b>Claude Code</b>, an AI coding
+    assistant, discussing nearly every line of code so I understood exactly what was built and
+    why. Every decision here was mine - the AI just helped me get there faster. Pairing real
+    software engineering experience with an AI that can move fast turns out to be a genuinely
+    effective combination.
+</MudText>
+
+<MudStack Row="true" Spacing="4">
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" Href="/simconfig">Configure a Simulation</MudButton>
+    <MudButton Variant="Variant.Outlined" Color="Color.Primary" Href="/stepthrough">Step Through a Game</MudButton>
+</MudStack>

@@ -1,8 +1,8 @@
 # Basic Strategy Reference
 
-Every seat in a simulation — including the tracked player — always plays this exact strategy. No human ever makes a hit/stand/double/split decision anywhere in the app (see `CLAUDE.md`). This document is a human-readable transcription of `BlackjackStreakSimulator.Engine/BasicStrategy.cs`, kept in sync by hand — if the code changes, this file (and `basic_strategy.html`) need updating too, neither is generated from it.
+Every seat in a simulation — including the tracked player — always plays this exact strategy. No human ever makes a hit/stand/double/split decision anywhere in the app (see `CLAUDE.md`). This document is a human-readable transcription of `BlackjackStreakSimulator.Engine/BasicStrategy.cs`, kept in sync by hand — if the code changes, this file (and the web app's copy) need updating too, neither is generated from it.
 
-A color-coded, easier-to-scan version of these same tables is at [`basic_strategy.html`](basic_strategy.html) — open it directly in a browser (GitHub won't render `.html` files as a page in its file browser, only as source, so this markdown version is the one that reads cleanly there).
+A color-coded, easier-to-scan version of these same tables lives in the Web app at [`BlackjackStreakSimulator.Web/wwwroot/basic-strategy.html`](../BlackjackStreakSimulator.Web/wwwroot/basic-strategy.html) (also linked from the app's home page) — open it directly in a browser (GitHub won't render `.html` files as a page in its file browser, only as source, so this markdown version is the one that reads cleanly there).
 
 **House rules assumed** (see `CLAUDE.md` for the full list): dealer hits soft 17 · double down allowed on any two cards · double after split (DAS) allowed · resplit up to 4 hands total, except Aces (never resplit, one card each, no further hitting).
 
