@@ -17,18 +17,19 @@ Paroli is a positive-progression betting system: double your bet through a win s
 - Two run modes: watch a bulk simulation play out round-by-round, rendered as actual card and table graphics rather than plain text (engine always plays fixed basic strategy — spectator view, not manual play), or run the whole batch at once for results only
 - Configurable streak length (how many consecutive wins define a "streak")
 - Toggle between streak (Paroli) betting and flat/regular betting, for direct comparison
-- Batch history, persisted and browsable, with summary stats (max drawdown, streak-length frequency — how many streaks concluded at each length, 1 through the configured max, hands played) and a plain-English AI-generated summary of each batch
+- Batch history, persisted and browsable, with summary stats (max drawdown, streak-length frequency — how many streaks concluded at each length, 1 through the configured max, hands played)
+- A plain-English AI-generated summary of each batch is an idea under consideration, not yet built
 
 ## Tech stack
 
 | Layer | Choice |
 |---|---|
-| Core engine | C# class library (.NET), unit-tested independently of the UI — shared by both the Blazor app and the Azure Functions app |
-| Front end | Blazor Web App, Interactive Server render mode |
-| Batch simulation | Azure Functions, HTTP-triggered, Consumption plan (standard Functions — not Durable Functions) |
-| Persistence | Azure SQL Database |
-| AI summary | Azure OpenAI |
-| CI/CD | Azure DevOps, Azure App Configuration |
+| Core engine | C# class library (.NET 10), unit-tested independently of the UI (142 tests) — shared by both the Blazor app and the Azure Functions app |
+| Front end | Blazor Server (Interactive Server render mode), MudBlazor components |
+| Batch simulation | Azure Functions, HTTP-triggered, Flex Consumption plan (standard Functions — not Durable Functions) |
+| Persistence | Azure SQL Database, Basic (5 DTU) tier |
+| AI summary | Azure OpenAI — under consideration, not yet built |
+| CI/CD | Azure DevOps |
 | Hosting | Azure App Service |
 
 See [`docs/DECISIONS.md`](docs/DECISIONS.md) for the reasoning behind each of these choices.
@@ -51,16 +52,18 @@ Blazor UI ◄──── BlackjackStreakSimulator.Data ◄──── Azure SQ
 
 ## Status
 
-🚧 Early build — currently working through the core game engine and Blazor UI locally before layering in the Azure pieces.
+✅ Deployed and running end-to-end on Azure.
 
 - [x] Repo + tooling set up
-- [ ] Core game engine (class library)
-- [ ] Blazor UI shell
-- [ ] Azure Functions batch simulation
-- [ ] Azure SQL batch history
-- [ ] Azure OpenAI summary feature
-- [ ] CI/CD + deployment
+- [x] Core game engine (class library, 142 unit tests)
+- [x] Blazor UI shell (Simulation Configuration, Step-Through, Batch Simulation, Batch History, Home, Technology Stack pages)
+- [x] Azure Functions batch simulation
+- [x] Azure SQL batch history
+- [ ] Azure OpenAI summary feature — under consideration, not committed to
+- [x] CI/CD + deployment (Azure DevOps, builds and deploys on every push to `main`)
 
 ## Running locally
 
-*(to be filled in once the project is scaffolded)*
+- **Web app**: `dotnet run` from `BlackjackStreakSimulator.Web` (requires `appsettings.Development.json` with a `BatchFunctionBaseUrl` pointing at a locally-running Function, and a `ConnectionStrings:BlackjackStreakSimulator` — LocalDB works out of the box).
+- **Functions**: `func start` (or F5 in VS Code) from `BlackjackStreakSimulator.Functions`, with a `local.settings.json` providing the SQL connection string (not committed — see `.gitignore`).
+- **Tests**: `dotnet test` from the repo root runs the full Engine test suite.

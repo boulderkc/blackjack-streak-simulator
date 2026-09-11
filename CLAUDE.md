@@ -18,7 +18,7 @@ Operational rules and domain context for AI-assisted work in this repo. Keep thi
 - Configurable seat count (5-player table by default).
 - Configurable shoe size (e.g. 5 decks).
 - Configurable starting bankroll (X), base bet, and win-goal target (Y) for the tracked seat.
-  - Bankroll reaching 0 = run fails.
+  - Bankroll reaching 0 = run fails (shown throughout the UI as "Bankrupt" — not "Busted"; renamed after launch to avoid overloading "bust," which already means a hand going over 21).
   - Bankroll reaching Y = run succeeds.
 - Betting modes:
   - **Streak (Paroli-style) mode** — double the bet through a win streak of N hands (N configurable); any loss resets to base bet.
@@ -55,11 +55,12 @@ Operational rules and domain context for AI-assisted work in this repo. Keep thi
 
 ## Tech stack (quick reference)
 
-- C# / .NET (latest), Blazor Web App, Interactive Server render mode (to start).
-- Azure Functions — standard HTTP-triggered function, Consumption plan (not Durable Functions) — for batch simulation runs.
-- Azure SQL Database for run-history persistence — one row per run (parameters, result, summary stats); not per-hand data in v1.
-- Azure OpenAI / Azure AI Foundry for a plain-English summary of simulation results.
-- Azure DevOps for CI/CD; Azure App Configuration for runtime config.
+- C# / .NET 10, Blazor Server (Interactive Server render mode), MudBlazor component library.
+- Azure Functions — standard HTTP-triggered function, **Flex Consumption plan** (not Durable Functions) — for batch simulation runs. Deliberately left at default Instance Memory with no Always-Ready instances after a cost/perf tradeoff review found scaling those up mainly bought lower latency, not a materially different max batch size — not worth the added always-on cost for this project. See `docs/DECISIONS.md`.
+- Azure SQL Database, **Basic (5 DTU) fixed tier** — switched from serverless after its free monthly vCore-seconds grant got burned through in days of light dev/demo traffic. One row per run (parameters, result, summary stats); not per-hand data in v1.
+- Azure OpenAI / Azure AI Foundry for a plain-English summary of simulation results — **still an open decision, not built**; see `azure-openai-summary-decision` in project memory.
+- Azure DevOps for CI/CD (`azure-pipelines.yml`, live and building on every push to `main`).
+- The batch-call `HttpClient`'s 100-second default timeout is kept deliberately, not raised — it's the boundary the Batch Simulation page's own UX (live stopwatch, "1,000-3,000 runs is a safe bet" copy, friendly timeout message) is built around, not an oversight.
 
 See `docs/DECISIONS.md` for the reasoning behind each of these choices.
 

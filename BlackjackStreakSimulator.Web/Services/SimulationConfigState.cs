@@ -19,6 +19,13 @@ public class SimulationConfigState
 {
     public SimulationConfig Current { get; set; } = new();
 
+    // True while a batch simulation is in flight. Set by BatchSimulation
+    // page's RunBatch(); read by the config page to lock its controls so
+    // settings can't change out from under a batch already running - same
+    // reasoning as StepThroughSimulationState.IsRunActive, just for the
+    // other run mode.
+    public bool IsBatchRunning { get; set; }
+
     // The rules themselves live on SimulationConfig (IValidatableObject.Validate),
     // not here - this is just a thin adapter translating
     // Validator.TryValidateObject's results into the bool/string shape the

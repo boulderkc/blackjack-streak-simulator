@@ -96,6 +96,11 @@
 
 .overflowwide {
     overflow-x: auto;
+    /* On narrow screens the button row wraps to more lines, shrinking the
+       gap above the table grid to almost nothing - the dealer box ends up
+       nearly touching the buttons. A fixed top margin keeps real breathing
+       room regardless of how many lines the buttons wrap to. */
+    margin-top: 16px;
 }
 
 .playertitle {

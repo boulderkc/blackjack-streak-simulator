@@ -16,9 +16,16 @@ Durable Functions were considered (suggested by another AI tool) but deliberatel
 
 Worth being honest about the ceiling this assumption rests on: HTTP-triggered Functions on the Consumption plan have a hard execution-time limit (check current Azure docs for the exact figure — it's changed over time). A request for hundreds of thousands of hands or more, depending on how fast the engine actually runs per hand, could plausibly bump into that ceiling with a naive synchronous implementation. That's not a reason to abandon the plain-Functions approach up front — it's the exact point at which the v2 stretch goal below stops being hypothetical.
 
-Durable Functions remain a legitimate **v2 stretch goal** if there's ever a deliberate reason to showcase fan-out/fan-in orchestration (e.g., splitting a very large batch into parallel chunks) — but that would be an intentional addition once standard Functions are comfortable, not a default reached for up front. If a real batch request ever times out against the Consumption plan's execution limit, that's the trigger to actually build it, not just a hypothetical.
+Durable Functions remain a legitimate **v2 stretch goal** if there's ever a deliberate reason to showcase fan-out/fan-in orchestration (e.g., splitting a very large batch into parallel chunks) — but that would be an intentional addition once standard Functions are comfortable, not a default reached for up front. If a real batch request ever times out against the plan's execution limit, that's the trigger to actually build it, not just a hypothetical.
 
-Running on the Consumption plan, which includes a free monthly grant of executions/compute-time — expected to keep the Functions piece itself at or near $0 for a low-traffic personal demo.
+**Update — actually running on Flex Consumption, not classic Consumption**, and the execution-time ceiling turned out not to be the real constraint. Real numbers gathered by timing actual batches at different Instance Memory sizes (this workload is pure CPU, no I/O per hand, so memory tier and CPU allocation are coupled on Flex Consumption):
+
+- 2048MB: ~4.8ms/run (10,000 runs in ~48s; 100,000 runs times out)
+- 512MB: ~21ms/run, roughly 4x slower (1,000 runs in 18-26s; 10,000 runs times out)
+
+Azure Functions Flex Consumption's execution timeout defaults to 30 minutes with no hard low ceiling (unlike classic Consumption's 10-minute cap) — the actual wall clicking down on a large batch is **`HttpClient.Timeout`'s plain .NET default of 100 seconds**, on the Blazor app's own `AddHttpClient("BatchFunction", ...)` registration, not an Azure platform limit. This was worth nailing down precisely, since a third-party AI tool (Copilot) initially and incorrectly claimed 100 seconds was a hard Azure cap — disproven by checking Microsoft Learn directly rather than taking that at face value.
+
+"Always-Ready" instances (a fixed number of pre-warmed instances, configured under Scale and Concurrency) would remove per-request cold-start variance and, per the timing above, let more instance memory buy a real, consistent throughput improvement — but Flex Consumption's Always-Ready billing has **no free monthly grant** (unlike its own On-Demand executions, which do), so it's a flat ongoing cost (2048MB continuous ≈ $20.74/mo at the Always-Ready Baseline rate) for a low-traffic personal demo that mostly sits idle. Decided against it: kept the Function App at default Instance Memory with zero Always-Ready instances, and addressed the resulting variable/limited throughput as a UX problem instead of an infrastructure one — see "Why the batch size stays capped by UX messaging" below.
 
 ## Why the engine isn't behind a swappable "local vs. remote" interface
 
@@ -40,13 +47,29 @@ Three different kinds of state, three different homes — deliberately not unifi
 
 Would have liked to use Cosmos DB to pick up NoSQL experience, but deliberately limited new-skill surface area for this project — Blazor, Azure Functions, and Azure OpenAI already represent three new things to learn at once. SQL is familiar territory, so it's a low-effort Azure-hosted addition rather than another learning curve. Persisting one row per simulation run (parameters, result, summary stats: max drawdown, streak-length frequency, hands played) — not every individual hand, at least not in v1.
 
+## Why Azure SQL moved from serverless to a fixed Basic (5 DTU) tier
+
+Started on Azure SQL's serverless tier, expecting its free monthly vCore-seconds grant to comfortably cover a low-traffic personal demo. That grant got exhausted within days — actual dev/demo usage, plus a background DB warm-up ping (added to reduce cold-start hits on serverless, see `MainLayout.razor`) firing on every page load, added up faster than expected. Once exhausted, serverless bills per-second for real, so continuing to develop against it risked real, unpredictable cost from ordinary local testing.
+
+Switched to the **Basic (5 DTU) fixed tier** — small enough for this project's actual traffic, and priced as a flat predictable monthly cost (~$5/mo) rather than metered by usage. The DB warm-up ping is now largely vestigial (Basic doesn't auto-pause/cold-start the way serverless does) but left in place — harmless, and a cheap insurance policy if the tier ever changes again.
+
+## Why the batch size stays capped by UX messaging, not bigger infrastructure
+
+Once the Flex Consumption memory/throughput tradeoff above was understood, the next question was whether to invest further — Always-Ready instances, or migrating the Function App to a Dedicated App Service Plan — to support genuinely large batches (100,000+ runs) without timing out.
+
+Decided against further infrastructure investment, for a product reason rather than a technical one: this app's actual target audience (employers evaluating a portfolio piece) has no reason to wait 5-10 minutes for a huge batch to finish, and a player seriously chasing high-precision statistics isn't who this project is built for. It's also not mathematically necessary — running several smaller batches (e.g. a handful of 1,000-run batches) gives the same statistical confidence as one giant batch of the same total size (standard error of a proportion scales with `1/sqrt(N)` regardless of how the N runs are split into batches), just with visible run-to-run variance across the separate batches, which has its own communicative value.
+
+Resolution: kept the Function App at its cheap default configuration and `HttpClient.Timeout` at its unconfigured 100-second default, and turned the resulting constraint into intentional, transparent UX on the Batch Simulation page — a collapsed "why might this time out" explainer, a live-updating stopwatch visible while a batch runs (so the 100-second approach is something the user can actually watch happen), and a specific friendly error message on timeout suggesting 1,000-3,000 runs instead of a generic failure. If demand for larger batches ever becomes real (e.g. the project gets outside traffic beyond its original purpose), that's the trigger to revisit Always-Ready or a Dedicated plan — not a default reached for now.
+
 ## Why Azure OpenAI
 
 A lightweight AI feature: a plain-English summary/commentary on simulation results, rather than per-hand AI calls, to keep cost and complexity down.
 
 ## Why Azure DevOps + Azure App Configuration
 
-Azure DevOps for the CI/CD pipeline. Azure App Configuration for runtime config (deck count, bankroll targets, etc.) rather than relying solely on pipeline variables.
+Azure DevOps for the CI/CD pipeline — built and live, running the full test suite on every push to `main` before deploying. Azure App Configuration for runtime config (deck count, bankroll targets, etc.) rather than relying solely on pipeline variables was the original plan.
+
+**Update:** never actually built. Runtime config ended up flowing through plain per-environment `appsettings.json`/`appsettings.Development.json` plus Azure App Service application settings instead — enough for this project's actual needs (a handful of values like `BatchFunctionBaseUrl` and connection strings), so a dedicated App Configuration resource hasn't been worth adding yet. Revisit if the number of runtime-tunable values grows enough that pipeline/app-settings management gets unwieldy on its own.
 
 ## Why VS Code + C# Dev Kit, not Visual Studio or Rider
 
@@ -62,11 +85,12 @@ Local development on a Windows 11 machine; Azure is used only for deployment/CI-
 
 ## On cost
 
-This doesn't need to be free — it needs to be reasonable for a personal demo touched only by its owner and a handful of potential employers. Expectation, not yet verified:
+This doesn't need to be free — it needs to be reasonable for a personal demo touched only by its owner and a handful of potential employers. Actual findings after deploying and running real usage/cost experiments (see the two decisions above for the full stories):
 
-- **Azure Functions (Consumption plan)** — likely $0, covered by the free monthly execution/compute grant at this traffic level.
-- **Azure SQL, Azure OpenAI, App Service** — each has real (if modest) cost at low volume; not chasing free tiers here at the expense of a smoother build.
-- **Budget/spending alerts** are planned, but deliberately deferred until something is actually deployed — not needed during local engine/UI development.
+- **Azure Functions (Flex Consumption)** — at or near $0 at this traffic level, kept that way deliberately by staying off Always-Ready instances (which have no free grant and would run ~$5-20+/mo depending on memory size, billed continuously whether or not anyone's using the app).
+- **Azure SQL** — switched from serverless (whose free grant got burned through in days) to the Basic (5 DTU) fixed tier, ~$5/mo flat.
+- **Azure OpenAI, App Service** — App Service has real (if modest) cost at low volume; not chasing free tiers here at the expense of a smoother build. Azure OpenAI's cost is moot for now since the summary feature it would support remains an open decision, not yet built.
+- **Budget/spending alerts** are still planned but not yet set up — an outstanding to-do, not a decision that's been made and closed.
 
 ## Why player decisions are fixed basic strategy, not configurable or human-controlled
 

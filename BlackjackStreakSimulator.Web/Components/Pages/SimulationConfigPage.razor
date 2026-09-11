@@ -30,16 +30,20 @@
 {
     <MudAlert Severity="Severity.Warning">Configuration is disabled while a step-through run is in progress.</MudAlert>
 }
+@if (ConfigState.IsBatchRunning)
+{
+    <MudAlert Severity="Severity.Warning">Configuration is disabled while a batch simulation is in progress.</MudAlert>
+}
 
 <h4 style="color: var(--mud-palette-secondary);">Money</h4>
 <div Class="num-input-size">
     <MudNumericField HideSpinButtons="true" @bind-Value="ConfigState.Current.InitialBankroll" Label="Initial bankroll"
-                     Variant="Variant.Outlined" Min="@SimulationConfig.InitialBankrollMin" Disabled="@RunState.IsRunActive" />
+                     Variant="Variant.Outlined" Min="@SimulationConfig.InitialBankrollMin" Disabled="@IsLocked" />
 </div>
 
 <div Class="num-input-size">
     <MudNumericField HideSpinButtons="true" @bind-Value="ConfigState.Current.BankrollGoal" Label="Bankroll goal"
-                     Variant="Variant.Outlined" Min="@SimulationConfig.BankrollGoalMin" Disabled="@RunState.IsRunActive" />
+                     Variant="Variant.Outlined" Min="@SimulationConfig.BankrollGoalMin" Disabled="@IsLocked" />
 </div>
 @if (ConfigState.GetErrorFor(nameof(SimulationConfig.BankrollGoal)) is string bankrollGoalError)
 {
@@ -48,7 +52,7 @@
 
 <div Class="num-input-size">
     <MudNumericField HideSpinButtons="true" @bind-Value="ConfigState.Current.BaseBet" Label="Base bet"
-                     Variant="Variant.Outlined" Min="@SimulationConfig.BaseBetMin" Disabled="@RunState.IsRunActive" />
+                     Variant="Variant.Outlined" Min="@SimulationConfig.BaseBetMin" Disabled="@IsLocked" />
 </div>
 @if (ConfigState.GetErrorFor(nameof(SimulationConfig.BaseBet)) is string baseBetError)
 {
@@ -58,7 +62,7 @@
 <h4 class="mt-6" style="color: var(--mud-palette-tertiary);">Table</h4>
 <div Class="num-input-size">
     <MudNumericField @bind-Value="ConfigState.Current.DecksInShoe" Label="Decks in shoe" Variant="Variant.Outlined"
-                     Min="@SimulationConfig.DecksInShoeMin" Max="@SimulationConfig.DecksInShoeMax" Disabled="@RunState.IsRunActive" />
+                     Min="@SimulationConfig.DecksInShoeMin" Max="@SimulationConfig.DecksInShoeMax" Disabled="@IsLocked" />
 </div>
 @if (ConfigState.GetErrorFor(nameof(SimulationConfig.DecksInShoe)) is string deckCountError)
 {
@@ -67,24 +71,30 @@
 
 <div Class="num-input-size">
     <MudNumericField @bind-Value="ConfigState.Current.SeatCount" Label="Number of players, including target player"
-                     Variant="Variant.Outlined" Min="@SimulationConfig.SeatCountMin" Max="@SimulationConfig.SeatCountMax" Disabled="@RunState.IsRunActive" />
+                     Variant="Variant.Outlined" Min="@SimulationConfig.SeatCountMin" Max="@SimulationConfig.SeatCountMax" Disabled="@IsLocked" />
 </div>
 
 <h4 class="mt-6" style="color: var(--mud-palette-info);">Simulation</h4>
 <div Class="num-input-size">
     <MudNumericField @bind-Value="ConfigState.Current.MaxStreakCount" Label="Max streak count"
                      Variant="Variant.Outlined" Min="@SimulationConfig.MaxStreakCountMin" Max="@SimulationConfig.MaxStreakCountMax"
-                     Disabled="@(RunState.IsRunActive || ConfigState.Current.BettingMode == BettingMode.Flat)" />
+                     Disabled="@(IsLocked || ConfigState.Current.BettingMode == BettingMode.Flat)" />
 </div>
 <div Class="num-input-size">
     <MudNumericField @bind-Value="ConfigState.Current.NumberOfRunsInBatch" Label="Number of runs in batch" Variant="Variant.Outlined"
-                     Min="@SimulationConfig.NumberOfRunsInBatchMin" Max="@SimulationConfig.NumberOfRunsInBatchMax" Disabled="@RunState.IsRunActive" />
+                     Min="@SimulationConfig.NumberOfRunsInBatchMin" Max="@SimulationConfig.NumberOfRunsInBatchMax" Disabled="@IsLocked" />
 </div>
 <div class="betting-mode-size">
     <MudSelect @bind-Value="ConfigState.Current.BettingMode" Label="Betting mode" Variant="Variant.Outlined"
-               Disabled="@RunState.IsRunActive">
+               Disabled="@IsLocked">
         <MudSelectItem Value="@(BettingMode.Streak)">Streak</MudSelectItem>
         <MudSelectItem Value="@(BettingMode.Flat)">Flat</MudSelectItem>
     </MudSelect>
 </div>
+
+@code {
+    // Locked while either run mode is using the current config - a
+    // step-through run in progress, or a batch simulation in flight.
+    private bool IsLocked => RunState.IsRunActive || ConfigState.IsBatchRunning;
+}
 

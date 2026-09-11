@@ -6,6 +6,33 @@
 
 <div Class="mb-4">Kick off a batch simulation, view the results in Batch History when complete.</div>
 
+<MudExpansionPanels Class="mb-4" Style="max-width: 700px;">
+    <MudExpansionPanel>
+        <TitleContent>
+            <MudText Color="Color.Warning">Warning about possible timeouts for large batches</MudText>
+        </TitleContent>
+        <ChildContent>
+            <div class="mb-2">
+                Keeping this portfolio project's Azure bill reasonable means running batches on
+                modest, shared compute - bigger batches need more resources, and those cost real
+                money and real time (we're talking minutes, not seconds).
+            </div>
+            <div class="mb-2">
+                A batch of <b>1,000 runs</b> typically finishes in <b>5-30 seconds</b>, depending on
+                the mood of that shared compute. Sometimes it's busy serving other, higher-paying
+                customers and barely gives us the time of day. Sometimes it's bored and hands over
+                everything at once. You never quite know which day you'll get.
+            </div>
+            <div>
+                <b>1,000-3,000 runs</b> is a safe bet. Ask for more and you're racing Azure
+                Function's default <b>100-second clock</b> - go ahead and try it, just don't be
+                surprised if it times out. Watch the stopwatch below while a batch runs to see how
+                close you cut it.
+            </div>
+        </ChildContent>
+    </MudExpansionPanel>
+</MudExpansionPanels>
+
 <MudButton Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" @onclick="RunBatch" Disabled="@(IsRunning || ConfigState.HasProblems)">Begin Simulation</MudButton>
 
 @if (ConfigState.HasProblems)
@@ -15,8 +42,10 @@
 
 @if (IsRunning)
 {
-    <div Class="mt-8">
+    <div Class="mt-8 d-flex flex-column align-center" Style="gap: 8px;">
         <MudProgressCircular Indeterminate="true" Style="width: 120px; height: 120px;" />
+        <MudText Typo="Typo.h4" Color="@StopwatchColor">@LiveElapsed.TotalSeconds.ToString("F1")s</MudText>
+        <MudText Typo="Typo.caption">Racing Azure Function's 100-second clock...</MudText>
     </div>
 }
 
