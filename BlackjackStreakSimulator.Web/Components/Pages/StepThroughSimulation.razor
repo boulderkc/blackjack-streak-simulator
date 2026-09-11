@@ -3,9 +3,7 @@
 <PageTitle>Watch a Simulation, Round by Round</PageTitle>
 
 <h1>Watch a Simulation, Round by Round</h1>
-
-<div>Begin and observe a simulation in progress.</div>
-<p class="info-note">This is a single Run — it ends when the tracked player's bankroll busts or reaches the goal. A batch simulation repeats many Runs together, with no round-by-round display.</p>
+<h3 class="mb-6">This is a single Run — it ends when the tracked player's bankroll bankrupts or reaches the goal. A batch simulation repeats many Runs together, with no round-by-round display.</h3>
 
 <MudButton Disabled="@(RunState.IsRunActive || ConfigState.HasProblems)" Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" @onclick="RunSim">Begin Simulation</MudButton>
 <MudButton Disabled="@(!RunState.IsRunActive)" Size="Size.Large" Variant="Variant.Filled" Color="Color.Secondary" @onclick="NextRound">Next Round</MudButton>
