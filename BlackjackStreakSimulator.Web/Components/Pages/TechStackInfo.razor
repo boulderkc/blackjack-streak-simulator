@@ -1,7 +1,119 @@
 @page "/techstack"
 
-<PageTitle>Tech Stack</PageTitle>
+<PageTitle>Technology Stack</PageTitle>
 
-<h1>Technologies used for this application</h1>
+<MudText Typo="Typo.overline" Color="Color.Primary">Blackjack Streak Simulator</MudText>
+<MudText Typo="Typo.h4" GutterBottom="true">How this got built</MudText>
+<MudText Typo="Typo.subtitle1" Class="mb-8" Style="max-width: 62ch;">
+    From a betting-system argument in Vegas to a deployed Blazor app on Azure - the pipeline
+    this project actually runs through, editor to database.
+</MudText>
 
-<div>list of cool things</div>
+<MudGrid Class="mb-4">
+    <MudItem xs="12" sm="6" md="4">
+        <MudCard Style="height: 100%;" Class="stage-card" Elevation="2">
+            <MudCardContent Class="d-flex flex-column" Style="height: 100%;">
+                <MudText Typo="Typo.subtitle1" Color="Color.Primary" Class="mb-2"><b>Write</b></MudText>
+                <MudText Typo="Typo.body2" Class="mb-3">
+                    Every line reviewed and directed by hand - Claude Code as implementation
+                    partner, not autopilot.
+                </MudText>
+                <MudStack Row="true" Wrap="Wrap.Wrap" Spacing="1" Class="mt-auto">
+                    <MudChip T="string" Size="Size.Small">Visual Studio Code</MudChip>
+                    <MudChip T="string" Size="Size.Small">C# / .NET Core 10</MudChip>
+                    <MudTooltip Text="Via Blazor JS interop">
+                        <MudChip T="string" Size="Size.Small">JavaScript</MudChip>
+                    </MudTooltip>
+                    <MudTooltip Text="Primary CLI used in Visual Studio Code">
+                        <MudChip T="string" Size="Size.Small">PowerShell / Bash</MudChip>
+                    </MudTooltip>
+                    <MudChip T="string" Size="Size.Small">Claude Code</MudChip>
+                </MudStack>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+
+    <MudItem xs="12" sm="6" md="4">
+        <MudCard Style="height: 100%;" Class="stage-card" Elevation="2">
+            <MudCardContent Class="d-flex flex-column" Style="height: 100%;">
+                <MudText Typo="Typo.subtitle1" Color="Color.Primary" Class="mb-2"><b>Version Control</b></MudText>
+                <MudText Typo="Typo.body2" Class="mb-3">
+                    Full history lives on GitHub - boulderkc/blackjack-streak-simulator.
+                </MudText>
+                <MudStack Row="true" Wrap="Wrap.Wrap" Spacing="1" Class="mt-auto">
+                    <MudChip T="string" Size="Size.Small">Git</MudChip>
+                    <MudChip T="string" Size="Size.Small">GitHub</MudChip>
+                </MudStack>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+
+    <MudItem xs="12" sm="6" md="4">
+        <MudCard Style="height: 100%;" Class="stage-card" Elevation="2">
+            <MudCardContent Class="d-flex flex-column" Style="height: 100%;">
+                <MudText Typo="Typo.subtitle1" Color="Color.Primary" Class="mb-2"><b>Build &amp; Deploy</b></MudText>
+                <MudText Typo="Typo.body2" Class="mb-3">
+                    The pipeline builds straight from GitHub, runs the xUnit suite, then deploys -
+                    a failing test blocks the release.
+                </MudText>
+                <MudStack Row="true" Wrap="Wrap.Wrap" Spacing="1" Class="mt-auto">
+                    <MudTooltip Text="Builds and deploys straight from the GitHub repo">
+                        <MudChip T="string" Size="Size.Small">Azure DevOps</MudChip>
+                    </MudTooltip>
+                    <MudTooltip Text="142 unit tests, run before every deploy">
+                        <MudChip T="string" Size="Size.Small">xUnit</MudChip>
+                    </MudTooltip>
+                </MudStack>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+
+    <MudItem xs="12" md="8">
+        <MudCard Style="height: 100%;" Class="stage-card" Elevation="2">
+            <MudCardContent>
+                <MudText Typo="Typo.subtitle1" Color="Color.Primary" Class="mb-2"><b>Run</b></MudText>
+                <MudGrid>
+                    <MudItem xs="12" sm="6">
+                        <MudText Typo="Typo.body2" Class="mb-3">
+                            Interactive UI, one circuit per visitor.
+                        </MudText>
+                        <MudStack Row="true" Wrap="Wrap.Wrap" Spacing="1">
+                            <MudChip T="string" Size="Size.Small">Blazor Server</MudChip>
+                            <MudTooltip Text="A UI component library - an alternative to Bootstrap">
+                                <MudChip T="string" Size="Size.Small">MudBlazor</MudChip>
+                            </MudTooltip>
+                            <MudChip T="string" Size="Size.Small">Azure App Service</MudChip>
+                        </MudStack>
+                    </MudItem>
+                    <MudItem xs="12" sm="6">
+                        <MudText Typo="Typo.body2" Class="mb-3">
+                            Batch simulation compute, kept off the UI thread entirely.
+                        </MudText>
+                        <MudStack Row="true" Wrap="Wrap.Wrap" Spacing="1">
+                            <MudChip T="string" Size="Size.Small">Azure Functions</MudChip>
+                        </MudStack>
+                    </MudItem>
+                </MudGrid>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+
+    <MudItem xs="12" md="4">
+        <MudCard Style="height: 100%;" Class="stage-card" Elevation="2">
+            <MudCardContent Class="d-flex flex-column" Style="height: 100%;">
+                <MudText Typo="Typo.subtitle1" Color="Color.Primary" Class="mb-2"><b>Persist</b></MudText>
+                <MudText Typo="Typo.body2" Class="mb-3">
+                    A batch result is written once and read back for every later comparison.
+                </MudText>
+                <MudStack Row="true" Wrap="Wrap.Wrap" Spacing="1" Class="mt-auto">
+                    <MudChip T="string" Size="Size.Small">Entity Framework Core</MudChip>
+                    <MudChip T="string" Size="Size.Small">Azure SQL Database</MudChip>
+                </MudStack>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+</MudGrid>
+
+<MudText Typo="Typo.caption">
+    Built by Casey Parsons, directing Claude Code end to end.
+</MudText>

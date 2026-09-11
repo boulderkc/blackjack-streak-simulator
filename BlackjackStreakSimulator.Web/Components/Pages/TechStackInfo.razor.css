@@ -1,0 +1,10 @@
+/* MudCard's default elevation (shadow-based) barely registers against
+   this app's dark theme, since Surface and Background are close in
+   value - shadows generally don't read well on dark grounds regardless.
+   An explicit border using the theme's own LinesDefault color (already
+   defined specifically for visible dividers against Surface) plus a
+   subtle overlay tint gives real, theme-consistent separation instead
+   of relying on a shadow that isn't showing up. */
+.stage-card {
+    border: 1px solid var(--mud-palette-lines-default);
+}
