@@ -4,7 +4,7 @@ A .NET / Blazor web app that simulates a "Paroli"-style positive-progression bet
 
 Built as a personal project to get current, hands-on experience with Blazor, Azure Functions, Azure SQL, and Azure OpenAI — built end-to-end and deployed live.
 
-**[Live demo →](#)** *(link once deployed)*
+**[Live demo →](https://blackjackstreaksimulator-web-azduhkcbewfxasbe.westus3-01.azurewebsites.net/)**
 
 ## The idea
 
