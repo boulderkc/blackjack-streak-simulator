@@ -56,7 +56,7 @@ Operational rules and domain context for AI-assisted work in this repo. Keep thi
 ## Tech stack (quick reference)
 
 - C# / .NET 10, Blazor Server (Interactive Server render mode), MudBlazor component library.
-- Azure Functions — standard HTTP-triggered function, **Flex Consumption plan** (not Durable Functions) — for batch simulation runs. Deliberately left at default Instance Memory with no Always-Ready instances after a cost/perf tradeoff review found scaling those up mainly bought lower latency, not a materially different max batch size — not worth the added always-on cost for this project. See `docs/DECISIONS.md`.
+- Azure Functions — standard HTTP-triggered function, **Flex Consumption plan** (not Durable Functions) — for batch simulation runs. Running **1 Always-Ready instance at 512MB** (~$5/mo) after a cost/perf tradeoff review: Always-Ready avoids cold-start variance, but a higher memory tier (2048MB, ~$20.74/mo) mainly buys lower per-run latency, not a materially different max batch size — not worth the extra always-on cost for this project. See `docs/DECISIONS.md`.
 - Azure SQL Database, **Basic (5 DTU) fixed tier** — switched from serverless after its free monthly vCore-seconds grant got burned through in days of light dev/demo traffic. One row per run (parameters, result, summary stats); not per-hand data in v1.
 - Azure OpenAI / Azure AI Foundry for a plain-English summary of simulation results — **considered, decided against**; see `docs/DECISIONS.md`, "Why Azure OpenAI was considered, and ultimately not built."
 - Azure DevOps for CI/CD (`azure-pipelines.yml`, live and building on every push to `main`).
