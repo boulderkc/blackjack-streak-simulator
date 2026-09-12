@@ -1,18 +1,18 @@
+/* Single column at every width, capped at a sane card-sized max instead of
+   stretching edge-to-edge on a wide monitor. minmax(0, 560px) does both
+   jobs with one declaration: it shrinks freely below 560px (so it still
+   fills a phone) and stops growing there (so a desktop doesn't get a
+   banner-wide seat box) - no @media breakpoint needed. */
 #page {
     display: grid;
-    grid-template-columns: repeat(5, minmax(60px, 1fr));
+    grid-template-columns: minmax(0, 560px);
     grid-template-areas:
-        ".  .  Dealer  .  ."
-        "Player1  .  .  .  ."
-        ".  Player2  Player3  Player4  Player5"
-        ".  .  .  .  .";
-    /*
-    grid-template-areas: 
-        ".  .  Dealer  .  ."
-        "Player1  .  .  .  Player5"
-        ".  Player2  .  Player4  ."
-        ".  .  Player3  .  .";
-        */
+        "Dealer"
+        "Player1"
+        "Player2"
+        "Player3"
+        "Player4"
+        "Player5";
     gap: 8px;
 }
 
@@ -60,9 +60,7 @@
     /* optional - row is already flex's default */
     align-items: center;
     min-width: 0;
-    /* flex items default to min-width: auto - without this, a
-                     wide hand-row refuses to shrink below its own content
-                     size and overflows its column instead of respecting it */
+    overflow-x: auto;
 }
 
 .hand-info {
@@ -113,10 +111,6 @@
 
 .down {
     color: #ff6b6b;
-}
-
-.finish-btn {
-    margin-left: 100px;
 }
 
 .info-note {
