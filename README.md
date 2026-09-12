@@ -2,7 +2,7 @@
 
 A .NET / Blazor web app that simulates a "Paroli"-style positive-progression betting strategy in blackjack across thousands of simulated hands, to see how it reshapes bankroll risk and variance compared to flat betting.
 
-Built as a personal project to get current, hands-on experience with Blazor, Azure Functions, Azure SQL, and Azure OpenAI — built end-to-end and deployed live.
+Built as a personal project to get current, hands-on experience with Blazor and Azure (Functions, SQL, DevOps) — built end-to-end and deployed live, directing Claude Code as an AI implementation partner throughout.
 
 **[Live demo →](https://blackjackstreaksimulator-web-azduhkcbewfxasbe.westus3-01.azurewebsites.net/)**
 
@@ -18,7 +18,6 @@ Paroli is a positive-progression betting system: double your bet through a win s
 - Configurable streak length (how many consecutive wins define a "streak")
 - Toggle between streak (Paroli) betting and flat/regular betting, for direct comparison
 - Batch history, persisted and browsable, with summary stats (max drawdown, streak-length frequency — how many streaks concluded at each length, 1 through the configured max, hands played)
-- A plain-English AI-generated summary of each batch is an idea under consideration, not yet built
 
 ## Tech stack
 
@@ -28,7 +27,6 @@ Paroli is a positive-progression betting system: double your bet through a win s
 | Front end | Blazor Server (Interactive Server render mode), MudBlazor components |
 | Batch simulation | Azure Functions, HTTP-triggered, Flex Consumption plan (standard Functions — not Durable Functions) |
 | Persistence | Azure SQL Database, Basic (5 DTU) tier |
-| AI summary | Azure OpenAI — under consideration, not yet built |
 | CI/CD | Azure DevOps |
 | Hosting | Azure App Service |
 
@@ -59,8 +57,8 @@ Blazor UI ◄──── BlackjackStreakSimulator.Data ◄──── Azure SQ
 - [x] Blazor UI shell (Simulation Configuration, Step-Through, Batch Simulation, Batch History, Home, Technology Stack pages)
 - [x] Azure Functions batch simulation
 - [x] Azure SQL batch history
-- [ ] Azure OpenAI summary feature — under consideration, not committed to
 - [x] CI/CD + deployment (Azure DevOps, builds and deploys on every push to `main`)
+- [x] Azure OpenAI summary feature — considered, decided against (see `docs/DECISIONS.md`)
 
 ## Running locally
 

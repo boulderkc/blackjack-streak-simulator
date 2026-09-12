@@ -58,7 +58,7 @@ Operational rules and domain context for AI-assisted work in this repo. Keep thi
 - C# / .NET 10, Blazor Server (Interactive Server render mode), MudBlazor component library.
 - Azure Functions — standard HTTP-triggered function, **Flex Consumption plan** (not Durable Functions) — for batch simulation runs. Deliberately left at default Instance Memory with no Always-Ready instances after a cost/perf tradeoff review found scaling those up mainly bought lower latency, not a materially different max batch size — not worth the added always-on cost for this project. See `docs/DECISIONS.md`.
 - Azure SQL Database, **Basic (5 DTU) fixed tier** — switched from serverless after its free monthly vCore-seconds grant got burned through in days of light dev/demo traffic. One row per run (parameters, result, summary stats); not per-hand data in v1.
-- Azure OpenAI / Azure AI Foundry for a plain-English summary of simulation results — **still an open decision, not built**; see `azure-openai-summary-decision` in project memory.
+- Azure OpenAI / Azure AI Foundry for a plain-English summary of simulation results — **considered, decided against**; see `docs/DECISIONS.md`, "Why Azure OpenAI was considered, and ultimately not built."
 - Azure DevOps for CI/CD (`azure-pipelines.yml`, live and building on every push to `main`).
 - The batch-call `HttpClient`'s 100-second default timeout is kept deliberately, not raised — it's the boundary the Batch Simulation page's own UX (live stopwatch, "1,000-3,000 runs is a safe bet" copy, friendly timeout message) is built around, not an oversight.
 

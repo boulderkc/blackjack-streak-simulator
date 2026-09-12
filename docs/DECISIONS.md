@@ -61,9 +61,16 @@ Decided against further infrastructure investment, for a product reason rather t
 
 Resolution: kept the Function App at its cheap default configuration and `HttpClient.Timeout` at its unconfigured 100-second default, and turned the resulting constraint into intentional, transparent UX on the Batch Simulation page — a collapsed "why might this time out" explainer, a live-updating stopwatch visible while a batch runs (so the 100-second approach is something the user can actually watch happen), and a specific friendly error message on timeout suggesting 1,000-3,000 runs instead of a generic failure. If demand for larger batches ever becomes real (e.g. the project gets outside traffic beyond its original purpose), that's the trigger to revisit Always-Ready or a Dedicated plan — not a default reached for now.
 
-## Why Azure OpenAI
+## Why Azure OpenAI was considered, and ultimately not built
 
-A lightweight AI feature: a plain-English summary/commentary on simulation results, rather than per-hand AI calls, to keep cost and complexity down.
+Original plan: a lightweight AI feature, a plain-English summary/commentary on each batch's results ("here's what you're seeing and what it means"), rather than per-hand AI calls, to keep cost and complexity down. The idea originated from a general "what AI-flavored feature could this project include" brainstorm before the project itself existed — not from an actual gap in the app.
+
+**Decided against building it.** Two reasons, not one:
+
+- **Weak fit with what this feature is for.** Batch History's design already leans hard on presenting results plainly — dollar-range buckets, streak-length frequency instead of a single "longest streak" number, percentages instead of raw counts. An AI-generated narration layered on top of output that's deliberately built to already be self-explanatory doesn't add insight; it adds a layer between the user and the numbers.
+- **It would have contradicted the project's own standard for adding technology.** Cosmos DB, Durable Functions, and Azure App Configuration were each considered and passed over above for a real reason specific to this project - not "because it wasn't trendy enough to include." Building an AI feature mainly because AI is a hot topic, on a fit even its own originating idea admits was thin, would be the one exception to that pattern - and a project whose `DECISIONS.md` is largely a record of *not* reaching for things without justification is a worse portfolio piece if it does exactly that once, than if it just says so honestly here.
+
+The stronger AI story for this project turned out to be the one already happening throughout it: directing an actual coding agent (Claude Code) through real infrastructure decisions, catching its mistakes, and making cost/performance tradeoffs — see the Function Flex Consumption and SQL tier decisions above. That's a more substantial demonstration of AI fluency than a summary paragraph would have been, and it didn't need a dedicated Azure resource to prove.
 
 ## Why Azure DevOps + Azure App Configuration
 
