@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace BlackjackStreakSimulator.Engine;
 
@@ -18,7 +18,7 @@ public class SimulationConfig : IValidatableObject
     public const decimal InitialBankrollMin = 1m;
     public const decimal BankrollGoalMin = 1m;
     public const decimal BaseBetMin = 1m;
-    public const int MaxStreakCountMin = 1;
+    public const int MaxStreakCountMin = 2; // 1 is just flat betting with extra steps
     public const int MaxStreakCountMax = 10;
     public const int DecksInShoeMin = 1;
     public const int DecksInShoeMax = 10;
@@ -53,10 +53,10 @@ public class SimulationConfig : IValidatableObject
     public SimulationConfig()
     {
         InitialBankroll = 1000m;
-        BankrollGoal = 5000m;
-        BaseBet = 10m;
+        BankrollGoal = 3000m;
+        BaseBet = 100m;
         DecksInShoe = 6;
-        MaxStreakCount = 5;
+        MaxStreakCount = 3;
         SeatCount = 5;
         BettingMode = BettingMode.Streak;
         NumberOfRunsInBatch = 1000;

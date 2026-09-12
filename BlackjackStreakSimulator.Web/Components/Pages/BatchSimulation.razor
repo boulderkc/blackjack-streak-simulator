@@ -19,13 +19,15 @@
             </div>
             <div class="mb-2">
                 A batch of <b>1,000 runs</b> typically finishes in <b>5-30 seconds</b>, depending on
-                the mood of that shared compute. Sometimes it's busy serving other, higher-paying
-                customers and barely gives us the time of day. Sometimes it's bored and hands over
-                everything at once. You never quite know which day you'll get.
+                the mood of the shared compute behind it and the configuration you're running.
+                Sometimes it's busy serving other, higher-paying customers and barely gives us the
+                time of day; sometimes it's bored and hands over everything at once. A lopsided
+                config adds time too - a $100,000 bankroll against a $10 base bet means a lot more
+                hands per run before anyone goes bankrupt or hits goal.
             </div>
             <div>
                 <b>1,000-3,000 runs</b> is a safe bet. Ask for more and you're racing Azure
-                Function's default <b>100-second clock</b> - go ahead and try it, just don't be
+                Function's default <b>100-second timeout clock</b> - go ahead and try it, just don't be
                 surprised if it times out. Watch the stopwatch below while a batch runs to see how
                 close you cut it.
             </div>
@@ -45,7 +47,7 @@
     <div Class="mt-8 d-flex flex-column align-center" Style="gap: 8px;">
         <MudProgressCircular Indeterminate="true" Style="width: 120px; height: 120px;" />
         <MudText Typo="Typo.h4" Color="@StopwatchColor">@LiveElapsed.TotalSeconds.ToString("F1")s</MudText>
-        <MudText Typo="Typo.caption">Racing Azure Function's 100-second clock...</MudText>
+        <MudText Typo="Typo.caption">Racing Azure Function's 100-second timeout...</MudText>
     </div>
 }
 

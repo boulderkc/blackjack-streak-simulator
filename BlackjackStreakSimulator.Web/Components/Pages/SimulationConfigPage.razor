@@ -75,10 +75,33 @@
 </div>
 
 <h4 class="mt-6" style="color: var(--mud-palette-info);">Simulation</h4>
-<div Class="num-input-size">
+<div Class="num-input-size d-flex align-center" style="gap: 4px;">
     <MudNumericField @bind-Value="ConfigState.Current.MaxStreakCount" Label="Max streak count"
                      Variant="Variant.Outlined" Min="@SimulationConfig.MaxStreakCountMin" Max="@SimulationConfig.MaxStreakCountMax"
                      Disabled="@(IsLocked || ConfigState.Current.BettingMode == BettingMode.Flat)" />
+    <MudTooltip Arrow="true" Placement="Placement.Right">
+        <TooltipContent>
+            <div style="max-width: 320px; text-align: left;">
+                <p class="mb-2">
+                    Winning 3 hands in a row (excluding pushes) happens roughly 10-10.5% of the
+                    time with basic strategy. Push for a 4th consecutive win and that drops to
+                    about 4.8% - meaning a loss on that final, biggest bet is the <i>more</i>
+                    likely outcome, wiping out the whole streak's profit.
+                </p>
+                <p class="mb-2">
+                    <b>Aggressive (4):</b> $10 &rarr; $20 &rarr; $40 &rarr; $80, netting $150 on
+                    a full run. Bigger payout when it hits, more wipeouts on the last hand.
+                </p>
+                <p>
+                    <b>Conservative (2):</b> $10 &rarr; $20, netting $30. Safer, but gives up
+                    most of the exponential growth that makes Paroli appealing in the first place.
+                </p>
+            </div>
+        </TooltipContent>
+        <ChildContent>
+            <MudIconButton Icon="@Icons.Material.Filled.Info" Size="Size.Small" Color="Color.Info" />
+        </ChildContent>
+    </MudTooltip>
 </div>
 <div Class="num-input-size">
     <MudNumericField @bind-Value="ConfigState.Current.NumberOfRunsInBatch" Label="Number of runs in batch" Variant="Variant.Outlined"

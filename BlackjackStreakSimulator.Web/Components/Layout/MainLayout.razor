@@ -9,7 +9,17 @@
 <MudLayout>
     <MudAppBar Elevation="1">
         <MudIconButton Icon="@Icons.Material.Filled.MenuOpen" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        <MudText Typo="Typo.h5" Class="ml-3">Blackjack Streak Simulator</MudText>
+        <!-- Two tiny card-shaped tiles (no rank, just a suit) as a compact
+             logomark - plain Unicode glyphs, not Material icons, since
+             MudBlazor's icon set has no card-suit symbol. Fill uses the
+             theme's own Background color (black in dark mode, white in
+             light mode - MainLayout.razor.css), both outline and glyph in
+             the app's Primary purple - monochrome, no red. -->
+        <div class="brand-mark ml-3">
+            <span class="mini-card club">&#9827;</span>
+            <span class="mini-card diamond">&#9830;</span>
+        </div>
+        <MudText Typo="Typo.h5" Class="ml-2">Blackjack Streak Simulator</MudText>
         <MudSpacer />
         <MudIconButton Icon="@(DarkLightModeButtonIcon)" Color="Color.Inherit" OnClick="@DarkModeToggle" />
         <MudIconButton Icon="@Icons.Material.Filled.AccountCircle" Color="Color.Inherit" Edge="Edge.End" Href="/about" />

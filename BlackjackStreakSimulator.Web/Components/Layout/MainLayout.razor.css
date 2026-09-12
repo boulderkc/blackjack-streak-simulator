@@ -1,0 +1,22 @@
+/* App bar logomark: two miniature card faces (suit only, no rank). Fill
+   comes from the theme's own Background token, so it's black in dark mode
+   and white in light mode automatically - no separate light/dark rule
+   needed here, MudBlazor's CSS variable already flips on its own. */
+.brand-mark {
+    display: flex;
+    gap: 2px;
+}
+
+.mini-card {
+    width: 16px;
+    aspect-ratio: 7 / 10;
+    background-color: var(--mud-palette-background);
+    border: 1.5px solid var(--mud-palette-primary);
+    border-radius: 3px;
+    color: var(--mud-palette-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    line-height: 1;
+}
