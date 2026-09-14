@@ -39,4 +39,10 @@ public partial class BatchHistory
     // OnAfterRenderAsync has come back yet.
     public DateTime GetDisplayTime(DateTime utc)
         => ViewerTimeZone is null ? utc : TimeZoneInfo.ConvertTimeFromUtc(utc, ViewerTimeZone);
+
+    // A raw count alone is misleading across batches of very different
+    // sizes - 284 out of 300 runs and 284 out of 10,000 runs tell very
+    // different stories, so Reached Goal/Bankrupt show both together.
+    public static string GetCountAndPercent(int count, int total)
+        => total == 0 ? count.ToString() : $"{count} / {count / (double)total:P1}";
 }

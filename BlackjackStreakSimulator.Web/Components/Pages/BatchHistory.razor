@@ -44,8 +44,8 @@
         <PropertyColumn Property="x => x.BettingMode" Title="Mode" CellStyle="@ConfigCellStyle" />
 
         <PropertyColumn Property="x => x.RunCount" Title="Runs" CellStyle="@ResultsCellStyle" />
-        <PropertyColumn Property="x => x.TimesReachedGoal" Title="Reached Goal" CellStyle="@SuccessCellStyle" />
-        <PropertyColumn Property="x => x.TimesBankrupt" Title="Bankrupt" CellStyle="@ErrorCellStyle" />
+        <PropertyColumn Property="x => GetCountAndPercent(x.TimesReachedGoal, x.RunCount)" Title="Reached Goal" SortBy="x => x.TimesReachedGoal" CellStyle="@SuccessCellStyle" />
+        <PropertyColumn Property="x => GetCountAndPercent(x.TimesBankrupt, x.RunCount)" Title="Bankrupt" SortBy="x => x.TimesBankrupt" CellStyle="@ErrorCellStyle" />
         <PropertyColumn Property="x => x.AverageHandsPlayedWhenReachedGoal" Title="Avg Hands When Reached Goal" Format="F0" CellStyle="@ResultsCellStyle" />
         <PropertyColumn Property="x => x.AverageHandsPlayedWhenBankrupt" Title="Avg Hands When Bankrupt" Format="F0" CellStyle="@ResultsCellStyle" />
         <PropertyColumn Property="x => x.AverageMaxDrawdownWhenReachedGoal" Title="Avg Drawdown" Format="C0" CellStyle="@ResultsCellStyle" />
