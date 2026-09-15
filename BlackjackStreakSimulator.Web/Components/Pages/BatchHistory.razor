@@ -23,12 +23,6 @@
 </MudAlert>
 
 <MudDataGrid Items="@Histories" T="BatchHistoryEntry">
-    <Header>
-        <MudTh></MudTh>
-        <MudTh></MudTh>
-        <MudTh Class="mud-theme-secondary" colspan="7">Configuration</MudTh>
-        <MudTh Class="mud-theme-primary" colspan="7">Results</MudTh>
-    </Header>
     <Columns>
         <HierarchyColumn T="BatchHistoryEntry" />
 
@@ -66,7 +60,7 @@
             int totalStreakEndingHands = context.Item.StreakLengthFrequencies.Sum(e => e.Count);
             <MudSimpleTable Dense="true">
                 <thead>
-                    <tr><th>Streak Length</th><th>% of All Streak-Ending Hands (Across All @context.Item.RunCount Runs)</th></tr>
+                    <tr><th>Streak Length</th><th>% of Hands</th></tr>
                 </thead>
                 <tbody>
                     @foreach (StreakLengthFrequencyEntry entry in context.Item.StreakLengthFrequencies.OrderBy(e => e.StreakLength))
@@ -80,7 +74,7 @@
         <MudText Typo="Typo.subtitle2" Class="mt-4">Lowest Bankroll Buckets - For each run that reached goal, what was the lowest bankroll as a percentage of the initial bankroll</MudText>
         <MudSimpleTable Dense="true">
             <thead>
-                <tr><th>Bucket (% of initial)</th><th>Dollar Range</th><th>Count of @context.Item.TimesReachedGoal</th></tr>
+                <tr><th>Bucket</th><th>Dollar Range</th><th>Count</th></tr>
             </thead>
             <tbody>
                 @foreach (LowestBankrollBucketEntry entry in context.Item.LowestBankrollBuckets.OrderBy(e => e.BucketFloor))
