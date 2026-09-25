@@ -7,9 +7,13 @@ using Microsoft.JSInterop;
 
 public partial class BatchHistory
 {
-    [Inject] public BlackjackStreakSimulatorDbContext DbContext { get; set; }
+    // = default! on each: Blazor sets these via reflection after the
+    // constructor runs, so the compiler can't see the guarantee that
+    // they're non-null by the time anything else touches them - this
+    // silences that known false positive instead of leaving it as noise.
+    [Inject] public BlackjackStreakSimulatorDbContext DbContext { get; set; } = default!;
 
-    [Inject] public IJSRuntime JsRuntime { get; set; }
+    [Inject] public IJSRuntime JsRuntime { get; set; } = default!;
 
     public TimeZoneInfo? ViewerTimeZone { get; set; }
 

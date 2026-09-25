@@ -6,8 +6,12 @@ using Microsoft.AspNetCore.Components;
 
 public partial class StepThroughSimulation
 {
-    [Inject] public SimulationConfigState ConfigState { get; set; }
-    [Inject] public StepThroughSimulationState RunState { get; set; }
+    // = default! on each: Blazor sets these via reflection after the
+    // constructor runs, so the compiler can't see the guarantee that
+    // they're non-null by the time anything else touches them - this
+    // silences that known false positive instead of leaving it as noise.
+    [Inject] public SimulationConfigState ConfigState { get; set; } = default!;
+    [Inject] public StepThroughSimulationState RunState { get; set; } = default!;
 
     public void RunSim()
     {

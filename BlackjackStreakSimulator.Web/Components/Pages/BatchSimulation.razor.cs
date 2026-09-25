@@ -9,13 +9,17 @@ using MudBlazor;
 
 public partial class BatchSimulation
 {
-    [Inject] public SimulationConfigState ConfigState { get; set; }
+    // = default! on each: Blazor sets these via reflection after the
+    // constructor runs, so the compiler can't see the guarantee that
+    // they're non-null by the time anything else touches them - this
+    // silences that known false positive instead of leaving it as noise.
+    [Inject] public SimulationConfigState ConfigState { get; set; } = default!;
 
-    [Inject] public IHttpClientFactory HttpClientFactory { get; set; }
+    [Inject] public IHttpClientFactory HttpClientFactory { get; set; } = default!;
 
-    [Inject] public ILogger<BatchSimulation> Logger { get; set; }
+    [Inject] public ILogger<BatchSimulation> Logger { get; set; } = default!;
 
-    [Inject] public IJSRuntime JsRuntime { get; set; }
+    [Inject] public IJSRuntime JsRuntime { get; set; } = default!;
 
     public bool IsRunning { get; set; }
     public BatchSimulationResult? LastResult { get; set; }
