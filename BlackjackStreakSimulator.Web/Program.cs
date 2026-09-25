@@ -24,7 +24,6 @@ builder.Services.AddMudServices();
 // Add app insights so we can track unique users on the azure portal
 builder.Services.AddApplicationInsightsTelemetry();
 
-
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
@@ -92,6 +91,33 @@ app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages:
 
 app.UseHttpsRedirection();
 
+// Resolves (or creates) a stable, anonymous per-browser ID used solely for
+// Application Insights unique-visitor counting - never tied to a real
+// identity, never used for authentication. Named "ai_user" deliberately:
+// Microsoft.ApplicationInsights.AspNetCore ships its own built-in
+// WebUserTelemetryInitializer (auto-registered by AddApplicationInsightsTelemetry
+// above) that already looks for a cookie with this exact name and uses it
+// to populate telemetry's User.Id - normally the client-side JS SDK sets
+// this cookie, which this server-only app doesn't have, so we just set it
+// ourselves and let that existing, already-active logic do the rest. No
+// custom ITelemetryInitializer needed.
+app.Use(async (context, next) =>
+{
+    const string cookieName = "ai_user";
+
+    if (string.IsNullOrEmpty(context.Request.Cookies[cookieName]))
+    {
+        context.Response.Cookies.Append(cookieName, Guid.NewGuid().ToString(), new CookieOptions
+        {
+            Expires = DateTimeOffset.UtcNow.AddYears(1),
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Lax,
+        });
+    }
+
+    await next();
+});
 
 app.UseAntiforgery();
 
