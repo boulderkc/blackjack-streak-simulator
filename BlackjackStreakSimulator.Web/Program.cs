@@ -21,6 +21,10 @@ System.Globalization.CultureInfo.DefaultThreadCurrentUICulture = defaultCulture;
 // Add MudBlazor services
 builder.Services.AddMudServices();
 
+// Add app insights so we can track unique users on the azure portal
+builder.Services.AddApplicationInsightsTelemetry();
+
+
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
