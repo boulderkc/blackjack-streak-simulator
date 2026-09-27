@@ -11,6 +11,8 @@ public class BlackjackStreakSimulatorDbContext : DbContext
 
     public DbSet<BatchHistoryEntry> BatchHistories => Set<BatchHistoryEntry>();
 
+    public DbSet<VisitorSessionEntry> VisitorSessions => Set<VisitorSessionEntry>();
+
     // Without this, EF names a table after its DbSet property when one
     // exists (BatchHistories, pluralized) but falls back to the raw class
     // name for entities only reachable via navigation (singular) - forcing
@@ -20,5 +22,6 @@ public class BlackjackStreakSimulatorDbContext : DbContext
         modelBuilder.Entity<BatchHistoryEntry>().ToTable(nameof(BatchHistoryEntry));
         modelBuilder.Entity<StreakLengthFrequencyEntry>().ToTable(nameof(StreakLengthFrequencyEntry));
         modelBuilder.Entity<LowestBankrollBucketEntry>().ToTable(nameof(LowestBankrollBucketEntry));
+        modelBuilder.Entity<VisitorSessionEntry>().ToTable(nameof(VisitorSessionEntry));
     }
 }

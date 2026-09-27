@@ -1,6 +1,7 @@
 using MudBlazor.Services;
 using BlackjackStreakSimulator.Web.Components;
 using BlackjackStreakSimulator.Web.Services;
+using Microsoft.AspNetCore.Components.Server.Circuits;
 using Microsoft.EntityFrameworkCore;
 using BlackjackStreakSimulator.Data;
 
@@ -36,6 +37,12 @@ builder.Services.AddScoped<SimulationConfigState>();
 // Per-circuit in-progress step-through session - survives navigating away
 // from and back to the step-through page, same Scoped reasoning as above.
 builder.Services.AddScoped<StepThroughSimulationState>();
+
+// Self-owned visitor count - one row per Blazor circuit, written via the
+// factory-based DbContext pattern established below. Replaces the
+// Application Insights ai_user cookie approach, which never reliably
+// tracked unique Users/Sessions for this server-rendered app.
+builder.Services.AddScoped<CircuitHandler, VisitorTrackingCircuitHandler>();
 
 // HttpClient for calling the batch Azure Function - base URL comes from
 // config rather than being hardcoded, so local dev (appsettings.Development.json)
